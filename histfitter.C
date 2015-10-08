@@ -1,0 +1,264 @@
+{
+	gStyle->SetFrameBorderMode(0);
+	gStyle->SetCanvasBorderMode(0);
+	gStyle->SetPadBorderMode(0);
+	gStyle->SetPadColor(0);
+	gStyle->SetCanvasColor(0);
+	gStyle->SetFrameFillColor(0);
+	gStyle->SetTitleFillColor(0);
+	gStyle->SetPaperSize(20,26);
+	gStyle->SetPadTopMargin(0.13);
+	gStyle->SetPadRightMargin(0.16);
+	gStyle->SetPadBottomMargin(0.14);
+	gStyle->SetPadLeftMargin(0.12);
+	Int_t font=42;
+	Double_t tsize=0.04;
+	gStyle->SetTextFont(font);
+	gStyle->SetTextSize(tsize);
+	gStyle->SetLabelFont(font,"x");
+	gStyle->SetTitleFont(font,"x");
+	gStyle->SetLabelFont(font,"y");
+	gStyle->SetTitleFont(font,"y");
+	gStyle->SetLabelFont(font,"z");
+	gStyle->SetTitleFont(font,"z");
+	gStyle->SetLabelSize(tsize,"x");
+	gStyle->SetTitleSize(tsize,"x");
+	gStyle->SetLabelSize(tsize,"y");
+	gStyle->SetTitleSize(tsize,"y");
+	gStyle->SetLabelSize(tsize,"z");
+	gStyle->SetTitleSize(tsize,"z");
+	gStyle->SetStatColor(0);
+	gStyle->SetStatBorderSize(0);
+	gStyle->SetStatColor(0);
+	gStyle->SetStatX(0);
+	gStyle->SetStatY(0);
+	gStyle->SetStatFont(42);
+	gStyle->SetStatFontSize(0);
+	gStyle->SetOptStat(0);
+	gStyle->SetStatW(0);
+	gStyle->SetStatH(0);
+	gStyle->SetTitleX(0.25); //title X location 
+	gStyle->SetTitleY(0.96); //title Y location 
+	gStyle->SetTitleW(0.5); //title width 
+	gStyle->SetTitleH(0.05); //title height
+	gStyle->SetTitleBorderSize(0);
+	
+	
+	TH2F* hNUL95 = new TH2F("HistFitter95","HistFitter exclusion at 95\% CLs;N_{bkg}^{exp};N_{obs};N_{UL} at 95\% CLs", 6,-0.5,5.5, 11,-0.5,10.5);
+	TH2F* hNUL90 = new TH2F("HistFitter90","HistFitter exclusion at 90\% CLs;N_{bkg}^{exp};N_{obs};N_{UL} at 90\% CLs", 6,-0.5,5.5, 11,-0.5,10.5);
+	
+	hNUL90->SetBinContent(0+1, 0+1,  1.38);
+	hNUL90->SetBinContent(0+1, 1+1,  3.12);
+	hNUL90->SetBinContent(0+1, 2+1,  4.59);
+	hNUL90->SetBinContent(0+1, 3+1,  6.00);
+	hNUL90->SetBinContent(0+1, 4+1,  7.19);
+	hNUL90->SetBinContent(0+1, 5+1,  8.03);
+	hNUL90->SetBinContent(0+1, 6+1,  8.77);
+	// hNUL90->SetBinContent(0+1, 7+1,  -1);
+	// hNUL90->SetBinContent(0+1, 8+1,  -1);
+	// hNUL90->SetBinContent(0+1, 9+1,  -1);
+	// hNUL90->SetBinContent(0+1, 10+1, -1);
+	hNUL90->SetBinContent(1+1, 0+1,  1.82);
+	hNUL90->SetBinContent(1+1, 1+1,  2.74);
+	hNUL90->SetBinContent(1+1, 2+1,  3.91);
+	hNUL90->SetBinContent(1+1, 3+1,  5.16);
+	hNUL90->SetBinContent(1+1, 4+1,  6.46 );
+	hNUL90->SetBinContent(1+1, 5+1,  7.77 );
+	hNUL90->SetBinContent(1+1, 6+1,  9.03);
+	hNUL90->SetBinContent(1+1, 7+1,  10.03);
+	hNUL90->SetBinContent(1+1, 8+1,  10.84);
+	hNUL90->SetBinContent(1+1, 9+1,  11.59);
+	hNUL90->SetBinContent(1+1, 10+1, 20.36 );
+	hNUL90->SetBinContent(2+1, 0+1,  2.00);
+	hNUL90->SetBinContent(2+1, 1+1,  2.61 );
+	hNUL90->SetBinContent(2+1, 2+1,  3.48);
+	hNUL90->SetBinContent(2+1, 3+1,  4.50);
+	hNUL90->SetBinContent(2+1, 4+1,  5.66);
+	hNUL90->SetBinContent(2+1, 5+1,  6.88);
+	hNUL90->SetBinContent(2+1, 6+1,  8.14);
+	hNUL90->SetBinContent(2+1, 7+1,  9.41);
+	hNUL90->SetBinContent(2+1, 8+1,  10.63);
+	hNUL90->SetBinContent(2+1, 9+1,  11.60);
+	hNUL90->SetBinContent(2+1, 10+1, 12.44);
+	hNUL90->SetBinContent(3+1, 0+1,  2.10);
+	hNUL90->SetBinContent(3+1, 1+1,  2.54);
+	hNUL90->SetBinContent(3+1, 2+1,  3.18);
+	hNUL90->SetBinContent(3+1, 3+1,  4.059);
+	hNUL90->SetBinContent(3+1, 4+1,  5.02);
+	hNUL90->SetBinContent(3+1, 5+1,  6.12);
+	hNUL90->SetBinContent(3+1, 6+1,  7.28);
+	hNUL90->SetBinContent(3+1, 7+1,  8.49);
+	hNUL90->SetBinContent(3+1, 8+1,  9.72);
+	hNUL90->SetBinContent(3+1, 9+1,  10.98);
+	hNUL90->SetBinContent(3+1, 10+1, 12.12);
+	hNUL90->SetBinContent(4+1, 0+1,  2.16);
+	hNUL90->SetBinContent(4+1, 1+1,  2.58);
+	hNUL90->SetBinContent(4+1, 2+1,  3.09);
+	hNUL90->SetBinContent(4+1, 3+1,  3.73);
+	hNUL90->SetBinContent(4+1, 4+1,  4.55);
+	hNUL90->SetBinContent(4+1, 5+1,  5.48);
+	hNUL90->SetBinContent(4+1, 6+1,  6.54 );
+	hNUL90->SetBinContent(4+1, 7+1,  7.64);
+	hNUL90->SetBinContent(4+1, 8+1,  8.83);
+	hNUL90->SetBinContent(4+1, 9+1,  10.03);
+	hNUL90->SetBinContent(4+1, 10+1, 11.25);
+	hNUL90->SetBinContent(5+1, 0+1,  2.21);
+	hNUL90->SetBinContent(5+1, 1+1,  2.60);
+	hNUL90->SetBinContent(5+1, 2+1,  2.99);
+	hNUL90->SetBinContent(5+1, 3+1,  3.55);
+	hNUL90->SetBinContent(5+1, 4+1,  4.21);
+	hNUL90->SetBinContent(5+1, 5+1,  5.02);
+	hNUL90->SetBinContent(5+1, 6+1,  5.92);
+	hNUL90->SetBinContent(5+1, 7+1,  6.93);
+	hNUL90->SetBinContent(5+1, 8+1,  8.02);
+	hNUL90->SetBinContent(5+1, 9+1,  9.15);
+	hNUL90->SetBinContent(5+1, 10+1, 10.34);
+	
+	
+	
+	hNUL95->SetBinContent(0+1, 0+1,  1.98);
+	hNUL95->SetBinContent(0+1, 1+1,  3.96);
+	hNUL95->SetBinContent(0+1, 2+1,  5.58);
+	hNUL95->SetBinContent(0+1, 3+1,  7.13);
+	hNUL95->SetBinContent(0+1, 4+1,  8.53);
+	hNUL95->SetBinContent(0+1, 5+1,  9.21);
+	hNUL95->SetBinContent(0+1, 6+1,  10.00);
+	hNUL95->SetBinContent(0+1, 7+1,  10.77);
+	hNUL95->SetBinContent(0+1, 8+1,  11.52);
+	// hNUL95->SetBinContent(0+1, 9+1,  -1.00);
+	// hNUL95->SetBinContent(0+1, 10+1, -1.00);
+	hNUL95->SetBinContent(1+1, 0+1,  2.45);
+	hNUL95->SetBinContent(1+1, 1+1,  3.54);
+	hNUL95->SetBinContent(1+1, 2+1,  4.91);
+	hNUL95->SetBinContent(1+1, 3+1,  6.28);
+	hNUL95->SetBinContent(1+1, 4+1,  7.71);
+	hNUL95->SetBinContent(1+1, 5+1,  9.12);
+	hNUL95->SetBinContent(1+1, 6+1,  10.55);
+	hNUL95->SetBinContent(1+1, 7+1,  11.64);
+	hNUL95->SetBinContent(1+1, 8+1,  12.14);
+	hNUL95->SetBinContent(1+1, 9+1,  12.79);
+	hNUL95->SetBinContent(1+1, 10+1, 13.51);
+	hNUL95->SetBinContent(2+1, 0+1,  2.60);
+	hNUL95->SetBinContent(2+1, 1+1,  3.36);
+	hNUL95->SetBinContent(2+1, 2+1,  4.42);
+	hNUL95->SetBinContent(2+1, 3+1,  5.62);
+	hNUL95->SetBinContent(2+1, 4+1,  6.90);
+	hNUL95->SetBinContent(2+1, 5+1,  8.23);
+	hNUL95->SetBinContent(2+1, 6+1,  9.59);
+	hNUL95->SetBinContent(2+1, 7+1,  10.96);
+	hNUL95->SetBinContent(2+1, 8+1,  12.34);
+	hNUL95->SetBinContent(2+1, 9+1,  13.46);
+	hNUL95->SetBinContent(2+1, 10+1, 14.10);
+	hNUL95->SetBinContent(3+1, 0+1,  2.71);
+	hNUL95->SetBinContent(3+1, 1+1,  3.38);
+	hNUL95->SetBinContent(3+1, 2+1,  4.15);
+	hNUL95->SetBinContent(3+1, 3+1,  5.12);
+	hNUL95->SetBinContent(3+1, 4+1,  6.24);
+	hNUL95->SetBinContent(3+1, 5+1,  7.42);
+	hNUL95->SetBinContent(3+1, 6+1,  8.73);
+	hNUL95->SetBinContent(3+1, 7+1,  10.03);
+	hNUL95->SetBinContent(3+1, 8+1,  11.37);
+	hNUL95->SetBinContent(3+1, 9+1,  12.70);
+	hNUL95->SetBinContent(3+1, 10+1, 14.06);
+	hNUL95->SetBinContent(4+1, 0+1,  2.82);
+	hNUL95->SetBinContent(4+1, 1+1,  3.34);
+	hNUL95->SetBinContent(4+1, 2+1,  3.99);
+	hNUL95->SetBinContent(4+1, 3+1,  4.78);
+	hNUL95->SetBinContent(4+1, 4+1,  5.74);
+	hNUL95->SetBinContent(4+1, 5+1,  6.80);
+	hNUL95->SetBinContent(4+1, 6+1,  7.96);
+	hNUL95->SetBinContent(4+1, 7+1,  9.17);
+	hNUL95->SetBinContent(4+1, 8+1,  10.46);
+	hNUL95->SetBinContent(4+1, 9+1,  11.76);
+	hNUL95->SetBinContent(4+1, 10+1, 13.07);
+	hNUL95->SetBinContent(5+1, 0+1,  2.92);
+	hNUL95->SetBinContent(5+1, 1+1,  3.33);
+	hNUL95->SetBinContent(5+1, 2+1,  3.93);
+	hNUL95->SetBinContent(5+1, 3+1,  4.53);
+	hNUL95->SetBinContent(5+1, 4+1,  5.33);
+	hNUL95->SetBinContent(5+1, 5+1,  6.29);
+	hNUL95->SetBinContent(5+1, 6+1,  7.32);
+	hNUL95->SetBinContent(5+1, 7+1,  8.45);
+	hNUL95->SetBinContent(5+1, 8+1,  9.63);
+	hNUL95->SetBinContent(5+1, 9+1,  10.86);
+	hNUL95->SetBinContent(5+1, 10+1, 12.14);
+	
+	// TH2F* hUL95 = new TH2F("Upper limit", "Upper limit on Br(#it{#tau#rightarrow3#mu}) = #frac{N_{UL}/#it{#epsilon}#times#it{A}}{#it{k}_{F}#timesN_{#it{#tau}}} at 95\% CLs;Acceptance #times Efficiency (signal);N_{UL} at 95\% CLs;Br(#it{#tau#rightarrow3#mu}) at 95\% CLs", 50,0.02,0.05, 50,1.0,6.5);
+	// TH2F* hUL90 = new TH2F("Upper limit", "Upper limit on Br(#it{#tau#rightarrow3#mu}) = #frac{N_{UL}/#it{#epsilon}#times#it{A}}{#it{k}_{F}#timesN_{#it{#tau}}} at 90\% CLs;Acceptance #times Efficiency (signal);N_{UL} at 90\% CLs;Br(#it{#tau#rightarrow3#mu}) at 90\% CLs", 50,0.02,0.05, 50,1.0,6.5);
+	// for(int i=1 ; i<=50 ;++i)
+	// {
+	// 	Float_t eff = hUL90->GetBinCenter(i);
+	// 	for(int x=1 ; x<=hNUL90->GetNbinsX() ; ++ x)
+	// 	{
+	// 		for(int y=1 ; y<=hNUL90->GetNbinsY() ; ++ y)
+	// 		{
+	// 			Float_t NUL = hNUL90->GetBinContent(x,y);
+	// 			Int_t biny = hUL90->GetYaxis()->FindBin(NUL);
+	// 			hUL90->SetBinContent(i,biny,NUL/eff/(1.19*2.e8));
+	// 		}
+	// 	}
+	// }
+	
+	TH1F* hUL90 = new TH1F("UpperLimit", "Upper limit on Br(#it{#tau#rightarrow3#mu}) = #frac{N_{UL}^{median}/#it{#epsilon}#times#it{A}}{#it{k}_{F}#timesN_{#it{#tau}}} at 90\% CLs;BDT score cut;Br(#it{#tau#rightarrow3#mu}) at 90\% CLs", 50,0.8985,0.9985);
+	hUL90->SetBinContent(1, 6.10E-07);
+	hUL90->SetBinContent(2, 6.04E-07);
+	hUL90->SetBinContent(3, 6.06E-07);
+	hUL90->SetBinContent(4, 6.05E-07);
+	hUL90->SetBinContent(5, 6.07E-07);
+	hUL90->SetBinContent(6, 6.03E-07);
+	hUL90->SetBinContent(7, 5.97E-07);
+	hUL90->SetBinContent(8, 5.89E-07);
+	hUL90->SetBinContent(9, 5.92E-07);
+	hUL90->SetBinContent(10, 5.89E-07);
+	hUL90->SetBinContent(11, 5.83E-07);
+	hUL90->SetBinContent(12, 5.83E-07);
+	hUL90->SetBinContent(13, 5.87E-07);
+	hUL90->SetBinContent(14, 5.72E-07);
+	hUL90->SetBinContent(15, 5.67E-07);
+	hUL90->SetBinContent(16, 5.67E-07);
+	hUL90->SetBinContent(17, 5.71E-07);
+	hUL90->SetBinContent(18, 5.63E-07);
+	hUL90->SetBinContent(19, 5.57E-07);
+	hUL90->SetBinContent(20, 5.59E-07);
+	hUL90->SetBinContent(21, 5.53E-07);
+	hUL90->SetBinContent(22, 5.42E-07);
+	hUL90->SetBinContent(23, 5.44E-07);
+	hUL90->SetBinContent(24, 5.28E-07);
+	hUL90->SetBinContent(25, 5.23E-07);
+	hUL90->SetBinContent(26, 5.24E-07);
+	hUL90->SetBinContent(27, 5.08E-07);
+	hUL90->SetBinContent(28, 5.15E-07);
+	hUL90->SetBinContent(29, 5.15E-07);
+	hUL90->SetBinContent(30, 5.23E-07);
+	hUL90->SetBinContent(31, 5.14E-07);
+	hUL90->SetBinContent(32, 5.16E-07);
+	hUL90->SetBinContent(33, 5.19E-07);
+	hUL90->SetBinContent(34, 5.10E-07);
+	hUL90->SetBinContent(35, 5.03E-07);
+	hUL90->SetBinContent(36, 4.90E-07);
+	hUL90->SetBinContent(37, 4.80E-07);
+	hUL90->SetBinContent(38, 4.69E-07);
+	hUL90->SetBinContent(39, 4.48E-07);
+	hUL90->SetBinContent(40, 4.35E-07);
+	hUL90->SetBinContent(41, 4.19E-07);
+	hUL90->SetBinContent(42, 4.30E-07);
+	hUL90->SetBinContent(43, 4.28E-07);
+	hUL90->SetBinContent(44, 4.13E-07);
+	hUL90->SetBinContent(45, 4.40E-07);
+	hUL90->SetBinContent(46, 3.75E-07);
+	hUL90->SetBinContent(47, 4.50E-07);
+	hUL90->SetBinContent(48, 5.99E-07);
+	hUL90->SetBinContent(49, 9.42E-07);
+	hUL90->SetBinContent(50, 2.18E-06);
+	
+
+	TCanvas* cnv = new TCanvas("c","", 1200,500);
+	cnv->cd();
+	cnv->Divide(2,1);
+	cnv->Draw();
+	cnv->cd(1);
+	hNUL90->Draw("COLZ TEXT0");
+	cnv->cd(2);
+	hUL90->Draw("");
+	cnv->SaveAs("optimization.pdf");
+}
