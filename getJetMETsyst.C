@@ -506,7 +506,6 @@ void getJetMETsyst()
 	
 	
 	cnv = new TCanvas("cnv","",600,400); cnv->Draw(); cnv->SaveAs("figures/JetMetTrk.syst.pdf)");	
-	return;
 	
 	
 	
