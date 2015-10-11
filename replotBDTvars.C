@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 bool isBlinded = true;
+bool resonVeto = false;
 
 enum twoBody
 {
@@ -367,7 +368,7 @@ void NormToEntries(TH2* h)
 }
 
 
-void plot(TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProfile& profiles, TMapTSf& rescales, TLegend* leg, TString rangeOS="")
+void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProfile& profiles, TMapTSf& rescales, TLegend* leg, TString rangeOS="")
 {
 	TString varname = var+rangeOS;
 	TCanvas* cnv = new TCanvas("cnv","",800,600);
@@ -389,42 +390,66 @@ void plot(TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 	leg->Draw("same");
 	cnv->Update();
 	cnv->RedrawAxis();
-	if(rangeOS!="") cnv->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf");
+	if(rangeOS!="") cnv->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".pdf");
 	else
 	{
-		cnv->SaveAs("figures/paperplots."+varname+".png");
-		cnv->SaveAs("figures/paperplots."+varname+".eps");
-		cnv->SaveAs("figures/paperplots."+varname+".pdf");
-		cnv->SaveAs("figures/paperplots.pdf");
+		cnv->SaveAs("figures/"+prefix+".pdf");
+		cnv->SaveAs("figures/"+prefix+"."+varname+".png");
+		cnv->SaveAs("figures/"+prefix+"."+varname+".eps");
+		cnv->SaveAs("figures/"+prefix+"."+varname+".pdf");
 	}
 	
 	TCanvas* cnv2 = new TCanvas("cnv2","",1200,600);
 	cnv2->Divide(2,1);
 	cnv2->cd(1); histos2["bdt_vs_Data_"+varname]->Draw("col");       profiles["prof_bdt_Data_"+varname]->Draw("same");
 	cnv2->cd(2); histos2["bdt_vs_Wtaunu_3mu_"+varname]->Draw("col"); profiles["prof_bdt_Wtaunu_3mu_"+varname]->Draw("same");
-	if(rangeOS!="") cnv2->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf");
-	else            cnv2->SaveAs("figures/paperplots.pdf");
+	if(rangeOS!="") cnv2->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".pdf");
+	else
+	{
+		cnv2->SaveAs("figures/"+prefix+".pdf");
+		cnv2->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_loose.pdf");
+		cnv2->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_loose.eps");
+		cnv2->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_loose.png");
+	}
 	
 	TCanvas* cnv3 = new TCanvas("cnv3","",1200,600);
 	cnv3->Divide(2,1);
 	cnv3->cd(1); histos2["bdt_vs_Data_tight_"+varname]->Draw("col");       profiles["prof_bdt_Data_tight_"+varname]->Draw("same");
 	cnv3->cd(2); histos2["bdt_vs_Wtaunu_3mu_tight_"+varname]->Draw("col"); profiles["prof_bdt_Wtaunu_3mu_tight_"+varname]->Draw("same");
-	if(rangeOS!="") cnv3->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf");
-	else            cnv3->SaveAs("figures/paperplots.pdf");
+	if(rangeOS!="") cnv3->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".pdf");
+	else
+	{
+		cnv3->SaveAs("figures/"+prefix+".pdf");
+		cnv3->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_tight.pdf");
+		cnv3->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_tight.eps");
+		cnv3->SaveAs("figures/"+prefix+".bdt_vs_"+varname+"_tight.png");
+	}
 	
 	TCanvas* cnv4 = new TCanvas("cnv4","",1200,600);
 	cnv4->Divide(2,1);
 	cnv4->cd(1); histos2["m3body_vs_Data_"+varname]->Draw("col");       profiles["prof_m3body_Data_"+varname]->Draw("same");
 	cnv4->cd(2); histos2["m3body_vs_Wtaunu_3mu_"+varname]->Draw("col"); profiles["prof_m3body_Wtaunu_3mu_"+varname]->Draw("same");
-	if(rangeOS!="") cnv4->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf");
-	else            cnv4->SaveAs("figures/paperplots.pdf");
+	if(rangeOS!="") cnv4->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".pdf");
+	else
+	{
+		cnv4->SaveAs("figures/"+prefix+".pdf");
+		cnv4->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_loose.pdf");
+		cnv4->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_loose.eps");
+		cnv4->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_loose.png");
+	}
 	
 	TCanvas* cnv5 = new TCanvas("cnv5","",1200,600);
 	cnv5->Divide(2,1);
 	cnv5->cd(1); histos2["m3body_vs_Data_tight_"+varname]->Draw("col");       profiles["prof_m3body_Data_tight_"+varname]->Draw("same");
 	cnv5->cd(2); histos2["m3body_vs_Wtaunu_3mu_tight_"+varname]->Draw("col"); profiles["prof_m3body_Wtaunu_3mu_tight_"+varname]->Draw("same");
-	if(rangeOS!="") cnv5->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf");
-	else            cnv5->SaveAs("figures/paperplots.pdf");
+	if(rangeOS!="") cnv5->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".pdf");
+	else
+	{
+		cnv5->SaveAs("figures/"+prefix+".pdf");
+		cnv5->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_tight.pdf");
+		cnv5->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_tight.eps");
+		cnv5->SaveAs("figures/"+prefix+".m3body_vs_"+varname+"_tight.png");
+	}
 	
 	delete cnv;
 	delete cnv2;
@@ -434,7 +459,7 @@ void plot(TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 }
 
 
-void plot9(TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1)
+void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1)
 {
 	TCanvas* cnv = new TCanvas("cnv","",1200,900);
 	cnv->Divide(3,3);
@@ -473,10 +498,10 @@ void plot9(TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2
 	
 	cnv->Update();
 	cnv->RedrawAxis();
-	cnv->SaveAs("figures/paperplots."+name+".png");
-	cnv->SaveAs("figures/paperplots."+name+".eps");
-	cnv->SaveAs("figures/paperplots."+name+".pdf");
-	cnv->SaveAs("figures/paperplots.pdf");
+	cnv->SaveAs("figures/"+prefix+"."+name+".png");
+	cnv->SaveAs("figures/"+prefix+"."+name+".eps");
+	cnv->SaveAs("figures/"+prefix+"."+name+".pdf");
+	cnv->SaveAs("figures/"+prefix+".pdf");
 	delete cnv;
 }
 
@@ -604,7 +629,7 @@ int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 		vf.insert(make_pair("mtcal"     , calo_mt));
 		vf.insert(make_pair("dphihttrk" , trk_dphimet_ht));
 		vf.insert(make_pair("dphihtcal" , calo_dphimet_ht));
-		bool pass = passPostBDTcut(0,vf,vi,xFullMin,xBlindMin,xBlindMax,xFullMax, minBDTcut,minBDTcut, type, -1,-1,isBlinded,doBDT,mode);
+		bool pass = passPostBDTcut(0,vf,vi,xFullMin,xBlindMin,xBlindMax,xFullMax, minBDTcut,minBDTcut, type, -1,-1,isBlinded,doBDT,mode,resonVeto);
 		delete metcal;
 		delete mettrk;
 		if(!pass) continue;
@@ -1012,8 +1037,12 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	
 	TCanvas* cnv = NULL;
 	
+	TString pdffilename = "paperplots";
+	if(!isBlinded) pdffilename += ".unblinded";
+	if(!resonVeto) pdffilename += ".noresveto";
+	
 	cnv = new TCanvas("cnv","",800,600);
-	cnv->SaveAs("figures/paperplots.pdf(");
+	cnv->SaveAs("figures/"+pdffilename+".pdf(");
 	
 	for(int k=0 ; k<MAXRANGE ; ++k)
 	{
@@ -1023,7 +1052,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 		
 		delete cnv;
 		cnv = new TCanvas("cnv","",800,600);
-		cnv->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf(");
+		cnv->SaveAs("figures/"+pdffilename+"_resonances"+rangeOS+".pdf(");
 	}
 	
 	_INF(1,"");	
@@ -1032,44 +1061,44 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	{
 		TString rangeOS = getRangeOS(k);
 		
-		plot("m3body", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("PVNtrk", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("dRmax", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("pT3body", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("mSS", histos1, histos2,profiles, rescales, legTM,rangeOS);
-		plot("mOS1", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("mOS2", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("isolation003", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("isolation010", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("isolation020", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("isolation030", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("trksfitprob", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("maxpbalsig", histos1, histos2,profiles, rescales, legTL,rangeOS);
-		plot("pvalue", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("Lxy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("dLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("SLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("a0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("da0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("Sa0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("Sa0xy_zoom", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("calo_met", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("trk_met", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("calo_mt", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("trk_mt", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("calo_dphi3mu", histos1, histos2,profiles, rescales, legL,rangeOS);
-		plot("trk_dphi3mu", histos1, histos2,profiles, rescales, legL,rangeOS);
-		plot("calo_trk_dphi", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("dptreltrk", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("dptrelcal", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("ht", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("ht_dphimet_calo", histos1, histos2,profiles, rescales, legL,rangeOS);
-		plot("ht_dphimet_trk", histos1, histos2,profiles, rescales, legL,rangeOS);
-		plot("calo_mht", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("trk_mht", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("dR3body_ht", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("njets", histos1, histos2,profiles, rescales, legR,rangeOS);
-		plot("muonauthor", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"m3body", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"PVNtrk", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"dRmax", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"pT3body", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"mSS", histos1, histos2,profiles, rescales, legTM,rangeOS);
+		plot(pdffilename,"mOS1", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"mOS2", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"isolation003", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"isolation010", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"isolation020", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"isolation030", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"trksfitprob", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"maxpbalsig", histos1, histos2,profiles, rescales, legTL,rangeOS);
+		plot(pdffilename,"pvalue", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"Lxy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"dLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"SLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"a0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"da0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"Sa0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"Sa0xy_zoom", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"calo_met", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"trk_met", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"calo_mt", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"trk_mt", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"calo_dphi3mu", histos1, histos2,profiles, rescales, legL,rangeOS);
+		plot(pdffilename,"trk_dphi3mu", histos1, histos2,profiles, rescales, legL,rangeOS);
+		plot(pdffilename,"calo_trk_dphi", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"dptreltrk", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"dptrelcal", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"ht", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"ht_dphimet_calo", histos1, histos2,profiles, rescales, legL,rangeOS);
+		plot(pdffilename,"ht_dphimet_trk", histos1, histos2,profiles, rescales, legL,rangeOS);
+		plot(pdffilename,"calo_mht", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"trk_mht", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"dR3body_ht", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"njets", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"muonauthor", histos1, histos2,profiles, rescales, legR,rangeOS);
 	}
 	
 	vector<TString>  vars;
@@ -1082,7 +1111,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legL);
-	plot9("BDTinputs01to09",vars,legs,histos1);
+	plot9(pdffilename,"BDTinputs01to09",vars,legs,histos1);
 	
 	vars.clear(); legs.clear();
 	vars.push_back("pvalue");    vars.push_back("Sa0xy");   vars.push_back("trksfitprob");
@@ -1091,7 +1120,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR);
-	plot9("BDTinputs10to16",vars,legs,histos1);
+	plot9(pdffilename,"BDTinputs10to16",vars,legs,histos1);
 	
 	vars.clear(); legs.clear();
 	vars.push_back("mSS");          vars.push_back("mOS1");            vars.push_back("mOS2");
@@ -1100,12 +1129,12 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	legs.push_back(legTM); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR); legs.push_back(legL); legs.push_back(legL);
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
-	plot9("Others17to25",vars,legs,histos1);
+	plot9(pdffilename,"Others17to25",vars,legs,histos1);
 	
 	
 	// delete cnv;
 	cnv = new TCanvas("cnv","",800,600);
-	cnv->SaveAs("figures/paperplots.pdf)");
+	cnv->SaveAs("figures/"+pdffilename+".pdf)");
 	
 	for(int k=0 ; k<MAXRANGE ; ++k)
 	{
@@ -1115,6 +1144,6 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 		
 		delete cnv;
 		cnv = new TCanvas("cnv","",800,600);
-		cnv->SaveAs("figures/paperplots_resonances"+rangeOS+".pdf)");
+		cnv->SaveAs("figures/"+pdffilename+"_resonances"+rangeOS+".pdf)");
 	}
 }

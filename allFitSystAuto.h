@@ -785,10 +785,10 @@ void getEnvelopes(TH1* hdBDT, TH1* hdSB, TH1* hBDT, TH1* hSB, bool print=false)
 		TString name = it->first;
 		estimates.insert(make_pair(name,setEstimate(it->second)));
 		
-		TString tf1BDTstr0 = (TString)estimates[name]->vtf1BDTstr[0]->GetTitle(); cout << "fBDT0=" << tf1BDTstr0 << endl;
-		TString tf1BDTstr1 = (TString)estimates[name]->vtf1BDTstr[1]->GetTitle(); cout << "fBDT1=" << tf1BDTstr1 << endl;
-		TString tf1BDTstr2 = (TString)estimates[name]->vtf1BDTstr[2]->GetTitle(); cout << "fBDT2=" << tf1BDTstr2 << endl;
-		TString tf1BDTstr3 = (TString)estimates[name]->vtf1BDTstr[3]->GetTitle(); cout << "fBDT3=" << tf1BDTstr3 << endl;
+		TString tf1BDTstr0 = (TString)estimates[name]->vtf1BDTstr[0]->GetTitle(); // cout << "fBDT0=" << tf1BDTstr0 << endl;
+		TString tf1BDTstr1 = (TString)estimates[name]->vtf1BDTstr[1]->GetTitle(); // cout << "fBDT1=" << tf1BDTstr1 << endl;
+		TString tf1BDTstr2 = (TString)estimates[name]->vtf1BDTstr[2]->GetTitle(); // cout << "fBDT2=" << tf1BDTstr2 << endl;
+		TString tf1BDTstr3 = (TString)estimates[name]->vtf1BDTstr[3]->GetTitle(); // cout << "fBDT3=" << tf1BDTstr3 << endl;
 		
 		
 		float sfbdt0 = estimates[name]->nSB/(estimates[name]->vtf1BDT[0]->Integral(estimates[name]->minBDTabs,estimates[name]->maxBDTabs)/estimates[name]->BDTbinWidth);
@@ -814,10 +814,10 @@ void getEnvelopes(TH1* hdBDT, TH1* hdSB, TH1* hBDT, TH1* hSB, bool print=false)
 		Double_t mFullMax  = (Double_t)regexp[3].Atof();
 		if(print) cout << mFullMin << " -> " << mBlindMin << " -> " << mBlindMax << " -> " << mFullMax << endl;
 		
-		TString tf1SBstr0 = (TString)estimates[name]->vtf1SBstr[0]->GetTitle(); cout << "fSB0=" << tf1SBstr0 << endl;
-		TString tf1SBstr1 = (TString)estimates[name]->vtf1SBstr[1]->GetTitle(); cout << "fSB1=" << tf1SBstr1 << endl;
-		TString tf1SBstr2 = (TString)estimates[name]->vtf1SBstr[2]->GetTitle(); cout << "fSB2=" << tf1SBstr2 << endl;
-		TString tf1SBstr3 = (TString)estimates[name]->vtf1SBstr[3]->GetTitle(); cout << "fSB3=" << tf1SBstr3 << endl;
+		TString tf1SBstr0 = (TString)estimates[name]->vtf1SBstr[0]->GetTitle(); //cout << "fSB0=" << tf1SBstr0 << endl;
+		TString tf1SBstr1 = (TString)estimates[name]->vtf1SBstr[1]->GetTitle(); //cout << "fSB1=" << tf1SBstr1 << endl;
+		TString tf1SBstr2 = (TString)estimates[name]->vtf1SBstr[2]->GetTitle(); //cout << "fSB2=" << tf1SBstr2 << endl;
+		TString tf1SBstr3 = (TString)estimates[name]->vtf1SBstr[3]->GetTitle(); //cout << "fSB3=" << tf1SBstr3 << endl;
 		
 		float sfsb0 = estimates[name]->nSB/(estimates[name]->vtf1SB[0]->Integral(mFullMin,mBlindMin)/mBinSize + estimates[name]->vtf1SB[0]->Integral(mBlindMax,mFullMax)/mBinSize);
 		float sfsb1 = estimates[name]->nSB/(estimates[name]->vtf1SB[1]->Integral(mFullMin,mBlindMin)/mBinSize + estimates[name]->vtf1SB[1]->Integral(mBlindMax,mFullMax)/mBinSize);

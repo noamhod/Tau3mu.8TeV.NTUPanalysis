@@ -62,6 +62,16 @@ float maxdistance(vector<float>& v, float reference, bool print=false)
 	return maxd;
 }
 
+float quadrature(vector<float>& v, float reference, bool print=false)
+{
+	float quad = 0;
+	for(unsigned int i=0 ; i<v.size() ; ++i) quad += pow(fabs(v[i]-reference)/reference,2);
+	quad = sqrt(quad);
+	if(print) cout << "quadrature=" << quad <<endl;
+	return quad;
+}
+
+
 void setLogBins(Int_t nbins, Double_t min, Double_t max, Double_t* xpoints)
 {
 	Double_t logmin  = log10(min);
@@ -229,8 +239,10 @@ void plot(TMapTSP2TH1& histos1, TString name, TString title, unsigned int ranges
 			TString word = getTrkJetMETword(mode);
 			if(mode>=rangestart && mode<=rangeend) values.push_back(histos1[name+word]->GetBinContent(b));
 		}
-		float maxdistbin = maxdistance(values,histos1[name]->GetBinContent(b));
-		histos1[name]->SetBinError(b,maxdistbin);
+		// float maxdistbin = maxdistance(values,histos1[name]->GetBinContent(b));
+		// histos1[name]->SetBinError(b,maxdistbin);
+		float quadbin = quadrature(values,histos1[name]->GetBinContent(b));
+		histos1[name]->SetBinError(b,quadbin);
 	}
 	
 	TH1* hLine;
@@ -401,9 +413,11 @@ void getJetMETsyst()
 		else if(mode==ALL_CALIB)   acceffNom = AccEffSig;
 		else                       vacceff.push_back(AccEffSig);
 	}
-	float maxdist = maxdistance(vacceff,acceffNom);
+	// float maxdist = maxdistance(vacceff,acceffNom);
+	float quad = quadrature(vacceff,acceffNom);
 	cout << "-------------------------------------------------" << endl;
-	cout << "Uncertainty on Acc*Eff at x=x1 is " << maxdist/acceffNom*100 << "\%" << endl;
+	// cout << "Uncertainty on Acc*Eff at x=x1 is " << maxdist/acceffNom*100 << "\%" << endl;
+	cout << "Uncertainty on Acc*Eff at x=x1 is " << quad*100 << "\%" << endl;
 	cout << endl;
 	
 	TCanvas* cnv = new TCanvas("cnv","",600,400); cnv->Draw(); cnv->SaveAs("figures/JetMetTrk.syst.pdf(");
@@ -480,10 +494,11 @@ void getJetMETsyst()
 			float AccEffSigx  = npassedS/200000*100;
 			vacceff.push_back(AccEffSigx);
 		}
-		float maxdist = maxdistance(vacceff,AccEffSig1);
+		// float maxdist = maxdistance(vacceff,AccEffSig1);
+		float quad = quadrature(vacceff,AccEffSig1);
 		hEff0->SetBinContent(b,AccEffSig0);
 		hEff1->SetBinContent(b,AccEffSig1);
-		hEff1->SetBinError(b,maxdist);
+		hEff1->SetBinError(b,quad);
 	}
 	cnv = new TCanvas("cnv","",600,400);
 	cnv->Draw();

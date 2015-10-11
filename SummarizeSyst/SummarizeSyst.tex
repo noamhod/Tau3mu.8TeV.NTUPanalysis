@@ -1,0 +1,560 @@
+\documentclass[12pt]{article}
+\usepackage{caption,xcolor,verbatim,amsmath,bm,comment,url,cite,epsfig,bm,wrapfig,Tabbing,wasysym,amssymb,axodraw,graphics,graphicx,color,appendix,multirow}
+\usepackage[abs]{overpic}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage[tight,TABTOPCAP]{subfigure}
+\usepackage{tikz}
+\hypersetup
+{
+	colorlinks,bookmarksopen,bookmarksnumbered,
+	linkcolor=blue,citecolor=blue,urlcolor=blue,
+	linkbordercolor={0 0 1}, urlbordercolor={0 0 1},
+	pdfstartview=FitW, plainpages=false,
+	pdfauthor = {Noam Hod},
+	pdftitle = {},
+	pdfsubject = {},
+	pdfkeywords = {},
+	pdfcreator = {LaTeX with hyperref package},
+	pdfproducer = {dvips + ps2pdf}
+}
+
+\renewcommand{\baselinestretch}{1.5}
+
+\definecolor{orange}{rgb}{1,0.5,0}
+\definecolor{brown}{rgb}{0.4,0.1,0}
+\definecolor{green}{rgb}{0.5,0.5,0}
+\definecolor{clearblue}{rgb}{0,0.2,1}
+
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+%% Now actually use the newly defined style.
+\urlstyle{leo}
+
+\newcommand{\code}[1]{{\fontfamily{pcr}\selectfont\small#1}}
+\newcommand{\smallcode}[1]{{\fontfamily{pcr}\selectfont\scriptsize#1}}
+\newcommand{\redbf}[1]{{\color{red}\textbf{#1}}}
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\renewcommand{\refname}{}
+
+
+% set margins:
+% These commands don't set the absolute value of the margins,
+% but rather either add to or subtract from the starting value. 
+\addtolength{\oddsidemargin}{-4cm}
+%\addtolength{\evensidemargin}{-0cm}
+\addtolength{\textwidth}{7cm}
+\addtolength{\textheight}{7cm}
+\addtolength{\topmargin}{-6cm}
+
+\pagestyle{empty}
+
+
+
+
+% 1450-1690-1870-2110.neg089.pos1000 Nominal
+
+% 1450-1690-1870-2110.neg089.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg088.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg087.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg086.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg085.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg084.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg083.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg082.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg081.pos1000 BDT cutoff
+% 1450-1690-1870-2110.neg080.pos1000 BDT cutoff
+
+% 1420-1690-1870-2140.neg090.pos1000 SB range
+% 1390-1690-1870-2170.neg090.pos1000 SB range
+% 1360-1690-1870-2200.neg090.pos1000 SB range
+% 1330-1690-1870-2230.neg090.pos1000 SB range
+% 1300-1690-1870-2260.neg090.pos1000 SB range
+% 1270-1690-1870-2290.neg090.pos1000 SB range
+% 1540-1690-1870-2020.neg090.pos1000 SB range
+% 1510-1690-1870-2050.neg090.pos1000 SB range
+% 1480-1690-1870-2080.neg090.pos1000 SB range
+
+
+
+\begin{document}
+
+
+bla\\\\
+{\footnotesize
+\begin{itemize}
+	\item  Nominal   : [1450-1690]+[1870-2110]~MeV, $x>-0.90$
+
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.89$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.88$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.87$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.86$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.85$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.84$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.83$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.82$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.81$
+	\item  BDT cutoff: [1450-1690]+[1870-2110]~MeV, $x>-0.80$
+
+	\item  SB range  : [1420-1690]+[1870-2140]~MeV, $x>-0.90$
+	\item  SB range  : [1390-1690]+[1870-2170]~MeV, $x>-0.90$
+	\item  SB range  : [1360-1690]+[1870-2200]~MeV, $x>-0.90$
+	\item  SB range  : [1330-1690]+[1870-2230]~MeV, $x>-0.90$
+	\item  SB range  : [1300-1690]+[1870-2260]~MeV, $x>-0.90$
+	\item  SB range  : [1270-1690]+[1870-2290]~MeV, $x>-0.90$
+	\item  SB range  : [1540-1690]+[1870-2020]~MeV, $x>-0.90$
+	\item  SB range  : [1510-1690]+[1870-2050]~MeV, $x>-0.90$
+	\item  SB range  : [1480-1690]+[1870-2080]~MeV, $x>-0.90$
+\end{itemize}
+}
+
+
+\newpage
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg087.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.87$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg084.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.84$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg081.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.81$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg089.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.89$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg086.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.86$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg083.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.83$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg080.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.80$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg088.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.88$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg085.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.85$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg082.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.82$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+ 
+\newpage
+
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg087.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.87$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg084.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.84$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg081.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.81$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg089.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.89$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg086.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.86$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg083.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.83$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg080.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.80$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg088.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.88$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg085.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.85$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg082.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.82$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+
+\newpage
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg087.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.87$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg084.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.84$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg081.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.81$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg089.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.89$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg086.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.86$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg083.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.83$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg080.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.80$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg088.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.88$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg085.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.85$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg082.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.82$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+
+
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1360-1690-1870-2200.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1360,1690]+[1870,2200]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1270-1690-1870-2290.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1270,1690]+[1870,2290]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1480-1690-1870-2080.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1480,1690]+[1870,2080]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1420-1690-1870-2140.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1420,1690]+[1870,2140]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1330-1690-1870-2230.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1330,1690]+[1870,2230]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1540-1690-1870-2020.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1540,1690]+[1870,2020]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1390-1690-1870-2170.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1390,1690]+[1870,2170]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1300-1690-1870-2260.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1300,1690]+[1870,2260]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDT.1510-1690-1870-2050.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1510,1690]+[1870,2050]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+\newpage
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1360-1690-1870-2200.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1360,1690]+[1870,2200]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1270-1690-1870-2290.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1270,1690]+[1870,2290]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1480-1690-1870-2080.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1480,1690]+[1870,2080]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1420-1690-1870-2140.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1420,1690]+[1870,2140]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1330-1690-1870-2230.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1330,1690]+[1870,2230]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1540-1690-1870-2020.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1540,1690]+[1870,2020]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1390-1690-1870-2170.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1390,1690]+[1870,2170]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1300-1690-1870-2260.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1300,1690]+[1870,2260]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.BDTzoom.1510-1690-1870-2050.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1510,1690]+[1870,2050]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+\newpage
+
+
+\begin{figure}
+\centering
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1450-1690-1870-2110.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1450,1690]+[1870,2110]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1360-1690-1870-2200.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1360,1690]+[1870,2200]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1270-1690-1870-2290.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1270,1690]+[1870,2290]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1480-1690-1870-2080.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1480,1690]+[1870,2080]~MeV};
+\end{tikzpicture}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1420-1690-1870-2140.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1420,1690]+[1870,2140]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1330-1690-1870-2230.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1330,1690]+[1870,2230]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1540-1690-1870-2020.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1540,1690]+[1870,2020]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[b]{0.31\textwidth}
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1390-1690-1870-2170.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1390,1690]+[1870,2170]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1300-1690-1870-2260.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1300,1690]+[1870,2260]~MeV};
+\end{tikzpicture}\\
+\begin{tikzpicture}
+        \node{\includegraphics[scale=0.33]{../figures/BkgEstimate.SB0.1510-1690-1870-2050.neg090.pos1000.eps}};
+        \draw (+0.1,+0.7)    node[scale=0.7]{$x>-0.9$};
+        \draw (+0.1,+0.35) node[scale=0.7]{SB=[1510,1690]+[1870,2050]~MeV};
+\end{tikzpicture}\\
+\vspace{4.55cm}
+\end{minipage}
+\end{figure}
+
+
+
+
+\end{document}

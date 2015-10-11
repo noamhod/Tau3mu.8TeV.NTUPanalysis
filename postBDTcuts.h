@@ -6,7 +6,7 @@
 
 int visual = 0;
 
-TString postBDTcut(TString xFullMin, TString xBlindMin, TString xBlindMax, TString xFullMax, TString xBDTMin, TString xBDTOpt, TString type, TString xSRmin="", TString xSRmax="", bool isBlinded=1, bool doBDT=1, TString mode="postTraining", TString ntuple="mvaout", TString jetmetword="", TString trkmetword="")
+TString postBDTcut(TString xFullMin, TString xBlindMin, TString xBlindMax, TString xFullMax, TString xBDTMin, TString xBDTOpt, TString type, TString xSRmin="", TString xSRmax="", bool isBlinded=1, bool doBDT=1, TString mode="postTraining", TString ntuple="mvaout", TString jetmetword="", TString trkmetword="", bool resVeto=true)
 {
 	TString pt3body   = (ntuple=="mvaout") ? "pt3body"   : "vtx_pt";
 	TString m3body    = (ntuple=="mvaout") ? "m3body"    : "vtx_mass";
@@ -55,7 +55,7 @@ TString postBDTcut(TString xFullMin, TString xBlindMin, TString xBlindMax, TStri
 	TString resonances    = "!((TMath::Abs("+mOS1+"-1020)<50 || TMath::Abs("+mOS2+"-1020)<50 || TMath::Abs("+mOS1+"-782)<50 || TMath::Abs("+mOS2+"-782)<50) && ("+mettrk+"<35000 || "+metcal+"<35000 || "+pt3body+"<35000))";
 	TString passDs        = "!((TMath::Abs("+mOS1+"-1020)<50 || TMath::Abs("+mOS2+"-1020)<50) && TMath::Abs("+m3body+"-1968)<100)"; // 100 because of 2*3body_resolution=~65 + margins because of the pi-mu mass differernce
 	// TString postTraining  = pvallxytrks+" && "+MTHT+" && "+passNjets+" && "+resonances+" && "+lowmass2+" && "+passDs;
-	TString postTraining  = pvallxytrks+" && "+MTHT+" && "+resonances+" && "+lowmass2+" && "+passDs;
+	TString postTraining  = (resVeto) ? (pvallxytrks+" && "+MTHT+" && "+resonances+" && "+lowmass2+" && "+passDs) : (pvallxytrks+" && "+MTHT+" && "+lowmass2);
 	
 	TString basecuts = ncandcuts+" && "+sidebandscuts+" && "+BDTcuts;
 	if     (mode=="preTraining")  basecuts+=" && "+preTraining;
@@ -74,7 +74,7 @@ TString postBDTcut(TString xFullMin, TString xBlindMin, TString xBlindMax, TStri
 }
 
 
-bool passPostBDTcut(unsigned int vtx, TMapTSP2vf& vf, TMapTSP2vi& vi, float xFullMin, float xBlindMin, float xBlindMax, float xFullMax, float xBDTMin, float xBDTOpt, TString type, float xSRmin=-1, float xSRmax=-1, bool isBlinded=1, bool doBDT=1, TString mode="postTraining")
+bool passPostBDTcut(unsigned int vtx, TMapTSP2vf& vf, TMapTSP2vi& vi, float xFullMin, float xBlindMin, float xBlindMax, float xFullMax, float xBDTMin, float xBDTOpt, TString type, float xSRmin=-1, float xSRmax=-1, bool isBlinded=1, bool doBDT=1, TString mode="postTraining", bool resVeto=true)
 {
 	float pt3body   = vf["pt3body"]->at(vtx);
 	float m3body    = vf["m3body"]->at(vtx);    
@@ -120,7 +120,7 @@ bool passPostBDTcut(unsigned int vtx, TMapTSP2vf& vf, TMapTSP2vi& vi, float xFul
 	bool onResonances = ((TMath::Abs(mOS1-1020)<50 || TMath::Abs(mOS2-1020)<50 || TMath::Abs(mOS1-782)<50 || TMath::Abs(mOS2-782)<50) && (mettrk<35000 || metcal<35000 || pt3body<35000));
 	bool onDs         = ((TMath::Abs(mOS1-1020)<50 || TMath::Abs(mOS2-1020)<50) && TMath::Abs(m3body-1968)<100); // 100 because of 2*3body_resolution=~65 + margins because of the pi-mu mass differernce
 	// bool postTraining = (pvallxytrks && MTHT && !onResonances && lowmass2 && Njets && !onDs);
-	bool postTraining = (pvallxytrks && MTHT && !onResonances && lowmass2 && !onDs);
+	bool postTraining = (resVeto) ? (pvallxytrks && MTHT && !onResonances && lowmass2 && !onDs) : (pvallxytrks && MTHT && lowmass2);
 	
 	bool basecuts = (ncandcuts && passloose && sidebandscuts && BDTcuts);
 	if     (mode=="preTraining")  basecuts = (basecuts && preTraining);

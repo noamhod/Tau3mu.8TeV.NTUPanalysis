@@ -1,11 +1,12 @@
-/////////////////////////////////////////////////////
-//// root -b -l -q allFitSystAuto.C++\(63,0.94\) ////
-/////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+//// root -b -l -q allFitSystAuto.C++\(63,0.933\) ////
+//////////////////////////////////////////////////////
 
 #include "postBDTcuts.h"
 #include "allFitSystAuto.h"
 
 TPaveText* ptxt;
+TPaveText* ptxtR;
 void makeAtlasLabel()
 {
 	// ptxt = new TPaveText(0.62,0.70,0.87,0.87,"NDC");
@@ -17,17 +18,33 @@ void makeAtlasLabel()
 	ptxt->AddText("#bf{#it{ATLAS}} internal");
 	ptxt->AddText("#scale[0.55]{#int}Ldt="+slumi);
 	ptxt->AddText("#sqrt{s}=8 TeV");
+	
+	ptxtR = new TPaveText(0.60,0.70,0.85,0.87,"NDC");
+	ptxtR->SetFillStyle(4000); //will be transparent
+	ptxtR->SetFillColor(0);
+	ptxtR->SetTextFont(42);
+	ptxtR->SetBorderSize(0);
+	ptxtR->AddText("#bf{#it{ATLAS}} internal");
+	ptxtR->AddText("#scale[0.55]{#int}Ldt="+slumi);
+	ptxtR->AddText("#sqrt{s}=8 TeV");
 }
 
 TLegend* leg;
+TLegend* legR;
 void makeLegend()
 {
 	// leg = new TLegend(0.15,0.55,0.45,0.88,NULL,"brNDC");
-	leg = new TLegend(0.62,0.55,0.90,0.87,NULL,"brNDC");
+	leg = new TLegend(0.15,0.55,0.43,0.87,NULL,"brNDC");
 	leg->SetFillStyle(4000); //will be transparent
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
+	
+	legR = new TLegend(0.5,0.70,0.88,0.86,NULL,"brNDC");
+	legR->SetFillStyle(4000); //will be transparent
+	legR->SetFillColor(0);
+	legR->SetTextFont(42);
+	legR->SetBorderSize(0);
 }
 
 
@@ -102,18 +119,18 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	Int_t hNbins  = (hXmax-hXmin)/dx;
 	Int_t hbin    = 1;
 	
-	TH1F* hSBshape  = new TH1F("SBshape",  SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBshape->SetLineWidth(2);  hSBshape->SetLineColor(kRed+1);  hSBshape->SetLineStyle(2); 
-	TH1F* hSBrange  = new TH1F("SBrange",  SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBrange->SetLineWidth(2);  hSBrange->SetLineColor(kRed+1);  hSBrange->SetLineStyle(3); 
-	TH1F* hSBcutoff = new TH1F("SBcutoff", SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBcutoff->SetLineWidth(2); hSBcutoff->SetLineColor(kRed+1); hSBcutoff->SetLineStyle(5); 
+	TH1F* hSBshape  = new TH1F("SBshape",  ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBshape->SetLineWidth(2);  hSBshape->SetLineColor(kRed+1);  hSBshape->SetLineStyle(2); 
+	TH1F* hSBrange  = new TH1F("SBrange",  ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBrange->SetLineWidth(2);  hSBrange->SetLineColor(kRed+1);  hSBrange->SetLineStyle(3); 
+	TH1F* hSBcutoff = new TH1F("SBcutoff", ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hSBcutoff->SetLineWidth(2); hSBcutoff->SetLineColor(kRed+1); hSBcutoff->SetLineStyle(5); 
 	
-	TH1F* hBDTshape  = new TH1F("BDTshape",  SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTshape->SetLineWidth(2);  hBDTshape->SetLineColor(kAzure+1);  hBDTshape->SetLineStyle(2);  
-	TH1F* hBDTrange  = new TH1F("BDTrange",  SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTrange->SetLineWidth(2);  hBDTrange->SetLineColor(kAzure+1);  hBDTrange->SetLineStyle(3);  
-	TH1F* hBDTcutoff = new TH1F("BDTcutoff", SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTcutoff->SetLineWidth(2); hBDTcutoff->SetLineColor(kAzure+1); hBDTcutoff->SetLineStyle(5); 
+	TH1F* hBDTshape  = new TH1F("BDTshape",  ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTshape->SetLineWidth(2);  hBDTshape->SetLineColor(kAzure+1);  hBDTshape->SetLineStyle(2);  
+	TH1F* hBDTrange  = new TH1F("BDTrange",  ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTrange->SetLineWidth(2);  hBDTrange->SetLineColor(kAzure+1);  hBDTrange->SetLineStyle(3);  
+	TH1F* hBDTcutoff = new TH1F("BDTcutoff", ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hBDTcutoff->SetLineWidth(2); hBDTcutoff->SetLineColor(kAzure+1); hBDTcutoff->SetLineStyle(5); 
 
-	TH1F* hStat = new TH1F("Stat", SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hStat->SetLineWidth(2); hStat->SetLineColor(kGreen+1); hStat->SetLineStyle(1); 
-	TH1F* hQuad = new TH1F("Quad", SRname+";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hQuad->SetLineWidth(2); hQuad->SetLineColor(kBlack); hQuad->SetLineStyle(1); 
+	TH1F* hStat = new TH1F("Stat", ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hStat->SetLineWidth(2); hStat->SetLineColor(kGreen+1); hStat->SetLineStyle(1); 
+	TH1F* hQuad = new TH1F("Quad", ";BDT score cut;Relative uncertainty [\%]",hNbins,hXmin,hXmax); hQuad->SetLineWidth(2); hQuad->SetLineColor(kBlack); hQuad->SetLineStyle(1); 
 	
-	TH1F* hCorrection = new TH1F("Correction", SRname+";BDT score cut;Correction factor",hNbins,hXmin,hXmax); hCorrection->SetLineWidth(2); hCorrection->SetLineColor(kBlack); hCorrection->SetLineStyle(1); 
+	TH1F* hCorrection = new TH1F("Correction", ";BDT score cut;Correction factor",hNbins,hXmin,hXmax); hCorrection->SetLineWidth(2); hCorrection->SetLineColor(kBlack); hCorrection->SetLineStyle(1); 
 	
 	leg->Clear();
 	leg->AddEntry(hQuad,     "Systematic (total)","l");
@@ -158,8 +175,10 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv = new TCanvas("","",600,400);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
+	// cnv->SetGridy();
+	// cnv->SetLogy();
 	hQuad->SetMinimum(0);
-	hQuad->SetMaximum(80);
+	hQuad->SetMaximum(100);
 	hQuad->Draw();
 	hBDTshape->Draw("same");
 	hBDTrange->Draw("same");
@@ -168,7 +187,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	hSBrange->Draw("same");
 	hSBcutoff->Draw("same");
 	hStat->Draw("same");
-	ptxt->Draw("same");
+	ptxtR->Draw("same");
 	leg->Draw("same");
 	cnv->Update();
 	cnv->SaveAs("figures/nSR1fitSyst.png");
@@ -211,30 +230,37 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	Double_t m3bodyBinSize = mBinSize;
 	Int_t nm3bodybins = (Int_t)((m3bodyMax-m3bodyMin)/m3bodyBinSize);
 	TH1* hBDT  = new TH1F("hBDT",";BDT score",nBDTbins,minBDTcut,+1); hBDT->SetLineColor(kBlack); hBDT->SetLineWidth(1); hBDT->SetMarkerColor(kBlack); hBDT->SetMarkerStyle(20); hBDT->SetMarkerSize(0.8); hBDT->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdBDT = new TH1F("hdBDT",";BDT score",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kSpring); hdBDT->SetFillColor(kSpring);
+	TH1* hdBDT = new TH1F("hdBDT",";BDT score",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kGray+1); hdBDT->SetFillColor(kGray+1);
 	TH1* hSB   = new TH1F("hSB",";#it{m}_{3body} [MeV]",nm3bodybins,m3bodyMin,m3bodyMax); hSB->SetLineColor(kBlack); hSB->SetLineWidth(1); hSB->SetMarkerColor(kBlack); hSB->SetMarkerStyle(20); hSB->SetMarkerSize(0.8); hSB->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV]",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kSpring); hdSB->SetFillColor(kSpring);
+	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV]",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kGray+1); hdSB->SetFillColor(kGray+1);
 	
 	tD->Draw("score>>hBDT",loose_cuts_bkg);
 	tD->Draw("m3body>>hSB",loose_cuts_bkg);
 	getEnvelopes(hdBDT,hdSB,hBDT,hSB,false);
 	
-	TH1* hlBDT = (TH1*)hdBDT->Clone("lBDT"); hlBDT->SetLineColor(kBlue); hlBDT->SetLineWidth(2); hlBDT->SetFillColor(0); hlBDT->Smooth();
-	TH1* hlSB = (TH1*)hdSB->Clone("lSB");    hlSB->SetLineColor(kBlue);  hlSB->SetLineWidth(2);  hlSB->SetFillColor(0);  hlSB->Smooth();
+	TH1* hlBDT = (TH1*)hdBDT->Clone("lBDT"); hlBDT->SetLineColor(kBlack); hlBDT->SetLineWidth(2); hlBDT->SetFillColor(0); hlBDT->Smooth();
+	TH1* hlSB = (TH1*)hdSB->Clone("lSB");    hlSB->SetLineColor(kBlack);  hlSB->SetLineWidth(2);  hlSB->SetFillColor(0);  hlSB->Smooth();
+	
+	
 	
 	// for(Int_t b=1 ; b<=hBDT->GetNbinsX() ; ++b) { if(hBDT->GetBinContent(b)<1) { hBDTzro->SetBinContent(b,0); hBDTzro->SetBinError(b,0); } else { hBDTzro->SetBinContent(b,-1); hBDTzro->SetBinError(b,0); } }
 	// for(Int_t b=1 ; b<=hSB->GetNbinsX() ; ++b)  { if(hSB->GetBinContent(b)<1)  { hSBzro->SetBinContent(b,0);  hSBzro->SetBinError(b,0);  } else { hSBzro->SetBinContent(b,-1);  hSBzro->SetBinError(b,0);  } }
 	
+	legR->Clear();
+	legR->AddEntry(hBDT,"SB data (Loose+x>x_{0})","lpe");
+	legR->AddEntry(hlBDT,"Nominal fit","l");
+	legR->AddEntry(hdBDT,"Fit uncertainty","f");
 	if(cnv) delete cnv;
 	cnv = new TCanvas("","",600,400);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdBDT->SetMinimum(0);
-	hdBDT->SetMaximum(20);
+	hdBDT->SetMaximum(15);
 	hdBDT->Draw("e2");
 	hlBDT->Draw("hist same");
 	hBDT->Draw("p0 e same");
 	ptxt->Draw("same");
+	legR->Draw("same");
 	cnv->Update();
 	cnv->RedrawAxis();
 	cnv->SaveAs("figures/BDTenvelope.pdf");
@@ -242,16 +268,21 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->SaveAs("figures/BDTenvelope.eps");
 	cnv->SaveAs("figures/nSR1fitSyst.pdf");
 	
+	legR->Clear();
+	legR->AddEntry(hSB,"SB data (Loose+x>x_{0})","lpe");
+	legR->AddEntry(hlSB,"Nominal fit","l");
+	legR->AddEntry(hdSB,"Fit uncertainty","f");
 	if(cnv) delete cnv;
 	cnv = new TCanvas("","",600,400);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdSB->SetMinimum(0);
-	hdSB->SetMaximum(20);
+	hdSB->SetMaximum(15);
 	hdSB->Draw("e2");
 	hlSB->Draw("hist same");
 	hSB->Draw("p0 e same");
 	ptxt->Draw("same");
+	legR->Draw("same");
 	cnv->Update();
 	cnv->RedrawAxis();
 	cnv->SaveAs("figures/SBenvelope.pdf");
