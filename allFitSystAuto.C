@@ -229,10 +229,10 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	Double_t m3bodyMax = mSideBandRightUpperMeVGlob;
 	Double_t m3bodyBinSize = mBinSize;
 	Int_t nm3bodybins = (Int_t)((m3bodyMax-m3bodyMin)/m3bodyBinSize);
-	TH1* hBDT  = new TH1F("hBDT",";BDT score",nBDTbins,minBDTcut,+1); hBDT->SetLineColor(kBlack); hBDT->SetLineWidth(1); hBDT->SetMarkerColor(kBlack); hBDT->SetMarkerStyle(20); hBDT->SetMarkerSize(0.8); hBDT->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdBDT = new TH1F("hdBDT",";BDT score",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kGray+1); hdBDT->SetFillColor(kGray+1);
-	TH1* hSB   = new TH1F("hSB",";#it{m}_{3body} [MeV]",nm3bodybins,m3bodyMin,m3bodyMax); hSB->SetLineColor(kBlack); hSB->SetLineWidth(1); hSB->SetMarkerColor(kBlack); hSB->SetMarkerStyle(20); hSB->SetMarkerSize(0.8); hSB->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV]",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kGray+1); hdSB->SetFillColor(kGray+1);
+	TH1* hBDT  = new TH1F("hBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hBDT->SetLineColor(kBlack); hBDT->SetLineWidth(1); hBDT->SetMarkerColor(kBlack); hBDT->SetMarkerStyle(20); hBDT->SetMarkerSize(0.8); hBDT->SetBinErrorOption(TH1::kPoisson);
+	TH1* hdBDT = new TH1F("hdBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kGray+1); hdBDT->SetFillColor(kGray+1);
+	TH1* hSB   = new TH1F("hSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hSB->SetLineColor(kBlack); hSB->SetLineWidth(1); hSB->SetMarkerColor(kBlack); hSB->SetMarkerStyle(20); hSB->SetMarkerSize(0.8); hSB->SetBinErrorOption(TH1::kPoisson);
+	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kGray+1); hdSB->SetFillColor(kGray+1);
 	
 	tD->Draw("score>>hBDT",loose_cuts_bkg);
 	tD->Draw("m3body>>hSB",loose_cuts_bkg);
@@ -255,7 +255,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdBDT->SetMinimum(0);
-	hdBDT->SetMaximum(15);
+	hdBDT->SetMaximum(12);
 	hdBDT->Draw("e2");
 	hlBDT->Draw("hist same");
 	hBDT->Draw("p0 e same");
@@ -277,7 +277,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdSB->SetMinimum(0);
-	hdSB->SetMaximum(15);
+	hdSB->SetMaximum(12);
 	hdSB->Draw("e2");
 	hlSB->Draw("hist same");
 	hSB->Draw("p0 e same");

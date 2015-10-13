@@ -9,7 +9,7 @@
 #include <cstdlib>
 
 bool isBlinded = true;
-bool resonVeto = false;
+bool resonVeto = true;
 
 enum twoBody
 {
@@ -678,10 +678,12 @@ int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 			hname = channel+"_trksfitprob"+rangeOS;  histos1[hname]->Fill(trkprob->at(0));    histos2["bdt_vs_"+hname]->Fill(trkprob->at(0),score->at(0));    histos2["m3body_vs_"+hname]->Fill(trkprob->at(0),mass->at(0));     profiles["prof_bdt_"+hname]->Fill(trkprob->at(0),score->at(0));    profiles["prof_m3body_"+hname]->Fill(trkprob->at(0),mass->at(0));
 			hname = channel+"_maxpbalsig"+rangeOS;   histos1[hname]->Fill(maxpbalsig->at(0)); histos2["bdt_vs_"+hname]->Fill(maxpbalsig->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(maxpbalsig->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(maxpbalsig->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(maxpbalsig->at(0),mass->at(0));
 			hname = channel+"_pvalue"+rangeOS;       histos1[hname]->Fill(pvalue->at(0));     histos2["bdt_vs_"+hname]->Fill(pvalue->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(pvalue->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(pvalue->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(pvalue->at(0),mass->at(0));
+			hname = channel+"_pvalue_zoom"+rangeOS;  histos1[hname]->Fill(pvalue->at(0));     histos2["bdt_vs_"+hname]->Fill(pvalue->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(pvalue->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(pvalue->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(pvalue->at(0),mass->at(0));
 			
 			hname = channel+"_Lxy"+rangeOS;        histos1[hname]->Fill(lxy->at(0));      histos2["bdt_vs_"+hname]->Fill(lxy->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(lxy->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(lxy->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(lxy->at(0),mass->at(0));
 			hname = channel+"_dLxy"+rangeOS;       histos1[hname]->Fill(dlxy->at(0));     histos2["bdt_vs_"+hname]->Fill(dlxy->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(dlxy->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(dlxy->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(dlxy->at(0),mass->at(0));
 			hname = channel+"_SLxy"+rangeOS;       histos1[hname]->Fill(lxySig->at(0));   histos2["bdt_vs_"+hname]->Fill(lxySig->at(0),score->at(0));   histos2["m3body_vs_"+hname]->Fill(lxySig->at(0),mass->at(0));    profiles["prof_bdt_"+hname]->Fill(lxySig->at(0),score->at(0));   profiles["prof_m3body_"+hname]->Fill(lxySig->at(0),mass->at(0));
+			hname = channel+"_SLxy_zoom"+rangeOS;  histos1[hname]->Fill(lxySig->at(0));   histos2["bdt_vs_"+hname]->Fill(lxySig->at(0),score->at(0));   histos2["m3body_vs_"+hname]->Fill(lxySig->at(0),mass->at(0));    profiles["prof_bdt_"+hname]->Fill(lxySig->at(0),score->at(0));   profiles["prof_m3body_"+hname]->Fill(lxySig->at(0),mass->at(0));
 			hname = channel+"_a0xy"+rangeOS;       histos1[hname]->Fill(a0xy->at(0));     histos2["bdt_vs_"+hname]->Fill(a0xy->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(a0xy->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(a0xy->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(a0xy->at(0),mass->at(0));
 			hname = channel+"_da0xy"+rangeOS;      histos1[hname]->Fill(da0xy->at(0));    histos2["bdt_vs_"+hname]->Fill(da0xy->at(0),score->at(0));    histos2["m3body_vs_"+hname]->Fill(da0xy->at(0),mass->at(0));     profiles["prof_bdt_"+hname]->Fill(da0xy->at(0),score->at(0));    profiles["prof_m3body_"+hname]->Fill(da0xy->at(0),mass->at(0));
 			hname = channel+"_Sa0xy"+rangeOS;      histos1[hname]->Fill(a0xySig->at(0));  histos2["bdt_vs_"+hname]->Fill(a0xySig->at(0),score->at(0));  histos2["m3body_vs_"+hname]->Fill(a0xySig->at(0),mass->at(0));   profiles["prof_bdt_"+hname]->Fill(a0xySig->at(0),score->at(0));  profiles["prof_m3body_"+hname]->Fill(a0xySig->at(0),mass->at(0));
@@ -937,10 +939,12 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 				addHist(histos1,histos2,profiles,channel,rangeOS,"maxpbalsig",   ";#it{#sigma}_{#it{p}-balance}^{max};Arbitrary units", 70,-3.,+4.);
 				                       
 				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (three-body vertex);Arbitrary units", 50,0.,1.);		
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (three-body vertex);Arbitrary units", 100,0.,0.5);		
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Lxy",          ";#it{L}_{xy} [#mum];Arbitrary units", 52,-1.,+12.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}_{0}^{xy} [#mum];Arbitrary units", 50,0.,0.1);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"dLxy",         ";#Delta#it{L}_{xy} [#mum];Arbitrary units", 50,0.,+1.5);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Arbitrary units", 60,-20.,+40.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Arbitrary units", 50,-10.,+40.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy_zoom",    ";#it{S}(#it{L}_{xy});Arbitrary units", 60,-10.,+20.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}_{0}^{xy} [#mum];Arbitrary units", 50,0.,+0.05);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}_{0}^{xy});Arbitrary units", 50,0.,25.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}_{0}^{xy});Arbitrary units", 50,0.,3.);
@@ -1075,9 +1079,11 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 		plot(pdffilename,"trksfitprob", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"maxpbalsig", histos1, histos2,profiles, rescales, legTL,rangeOS);
 		plot(pdffilename,"pvalue", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"pvalue_zoom", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"Lxy", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"dLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"SLxy", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"SLxy_zoom", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"a0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"da0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"Sa0xy", histos1, histos2,profiles, rescales, legR,rangeOS);
