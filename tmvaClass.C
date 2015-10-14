@@ -78,12 +78,11 @@ void tmvaClass( TString mMinSBleft, TString mMaxSBleft, TString mMinSBright, TSt
 	// gROOT->SetMacroPath(tmva_dir + "/test/:" + gROOT->GetMacroPath() );
 	// gROOT->ProcessLine(".L TMVAGui.C");
 	
-	// TString rootpath = "/Users/hod/root/root-v5-34-00-patches";
-	TString rootpath = "/opt/local/libexec/root5/share/root/tutorial";
+	TString rootpath = "/Applications/root_v5.34.34";
 	TString tmva_dir(rootpath+"/tmva");
 	// if(gSystem->Getenv("TMVASYS")) tmva_dir = TString(gSystem->Getenv("TMVASYS"));
 	// gROOT->SetMacroPath(tmva_dir + "/test/:" + gROOT->GetMacroPath() );
-	gROOT->SetMacroPath(tmva_dir + "/:" + gROOT->GetMacroPath() );
+	gROOT->SetMacroPath(tmva_dir + "/test/:" + gROOT->GetMacroPath() );
 	gROOT->ProcessLine(".L TMVAGui.C");
 	
 	

@@ -22,5 +22,6 @@ typedef map<TString, TH2*>             TMapTSP2TH2;
 typedef map<TString, TProfile*>        TMapTSP2TProfile;
 typedef map<TString, TFile*>           TMapTSP2TFILE;
 typedef map<TString, TTree*>           TMapTSP2TTREE;
+typedef map<TString, TGraph*>          TMapTSP2TGRAPH;
 
 #endif

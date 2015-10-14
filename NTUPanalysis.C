@@ -316,44 +316,52 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 				TString jointword = (mode==ALL_UNCALIB) ? "_uncalib" : jetmetword+trkmetword;
 				_INF(vis,"jetmetword="<<jetmetword<<", trkmetword="<<trkmetword);
 			
-			    pSum          = getPsum(vtx,vfloats,1,jetmetword);
-				ngoodjets     = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV);
-				ngoodbjets    = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w1"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w2"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w3"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w4"+jetmetword]->at(vtx)>bTagCut);
-				dphiHTMETref  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_reffinal_phi"+jetmetword]));
-				dphiHTMETmu   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_muons_phi"+jetmetword]));
-				dphiHTMETtrk  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_track_phi"+trkmetword]));
-				dphiHT3body   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-p3body.Phi()));
-				dRHT3body     = fabs(pSum.DeltaR(p3body));
-				mtHT          = sqrt(2*pSum.Pt()*floats["met_"+metType+"_et"+jetmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_"+metType+"_phi"+jetmetword])));
-				mtHTtrk       = sqrt(2*pSum.Pt()*floats["met_track_et"+trkmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_track_phi"+trkmetword])));
-				METsig        = floats["met_"+metType+"_et"+jetmetword]/sqrt(pSum.Pt());
-				metsDphi      = fabs(TVector2::Phi_mpi_pi(floats["met_"+metType+"_phi"+jetmetword]-floats["met_track_phi"+trkmetword]));
-				metsdpTrel    = (vfloats["vtx_pt"]->at(vtx)-(floats["met_"+metType+"_et"+jetmetword]+floats["met_track_et"+trkmetword])/2.)/vfloats["vtx_pt"]->at(vtx);
-				metsdpTrelTrk = vfloats["vtx_pt"]->at(vtx)/floats["met_track_et"+trkmetword]-1.;
-				metsdpTrelCal = vfloats["vtx_pt"]->at(vtx)/floats["met_"+metType+"_et"+jetmetword]-1.;
-				metsdHTrelTrk = pSum.Pt()/floats["met_track_et"+trkmetword]-1.;
-				metsdHTrelCal = pSum.Pt()/floats["met_"+metType+"_et"+jetmetword]-1.;
+			    if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") pSum          = getPsum(vtx,vfloats,1,jetmetword);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") ngoodjets     = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") ngoodbjets    = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w1"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w2"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w3"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w4"+jetmetword]->at(vtx)>bTagCut);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHTMETref  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_reffinal_phi"+jetmetword]));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHTMETmu   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_muons_phi"+jetmetword]));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHT3body   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-p3body.Phi()));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dRHT3body     = fabs(pSum.DeltaR(p3body));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") mtHT          = sqrt(2*pSum.Pt()*floats["met_"+metType+"_et"+jetmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_"+metType+"_phi"+jetmetword])));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") METsig        = floats["met_"+metType+"_et"+jetmetword]/sqrt(pSum.Pt());
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") metsdpTrelCal = vfloats["vtx_pt"]->at(vtx)/floats["met_"+metType+"_et"+jetmetword]-1.;
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") metsdHTrelCal = pSum.Pt()/floats["met_"+metType+"_et"+jetmetword]-1.;
+
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || trkmetword!="") dphiHTMETtrk  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_track_phi"+trkmetword]));
+				
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  mtHTtrk       = sqrt(2*pSum.Pt()*floats["met_track_et"+trkmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_track_phi"+trkmetword])));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsDphi      = fabs(TVector2::Phi_mpi_pi(floats["met_"+metType+"_phi"+jetmetword]-floats["met_track_phi"+trkmetword]));
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdpTrel    = (vfloats["vtx_pt"]->at(vtx)-(floats["met_"+metType+"_et"+jetmetword]+floats["met_track_et"+trkmetword])/2.)/vfloats["vtx_pt"]->at(vtx);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdpTrelTrk = vfloats["vtx_pt"]->at(vtx)/floats["met_track_et"+trkmetword]-1.;
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdHTrelTrk = pSum.Pt()/floats["met_track_et"+trkmetword]-1.;
 			
-				vints_decorations["jets_n"+jetmetword]->push_back(ngoodjets);
-				vints_decorations["jets_b"+jetmetword]->push_back(ngoodbjets);
-				vfloats_decorations["ht_pt"+jetmetword]->push_back(pSum.Pt());
-				vfloats_decorations["ht_mT"+jetmetword]->push_back(mtHT);
-				vfloats_decorations["ht_mT_mettrk"+trkmetword]->push_back(mtHTtrk);
-				vfloats_decorations["ht_metsig"+jetmetword]->push_back(METsig);
-				vfloats_decorations["ht_dphimet_reffinal"+jetmetword]->push_back(dphiHTMETref);
-				vfloats_decorations["ht_dphimet_muons"+jetmetword]->push_back(dphiHTMETmu);
-				vfloats_decorations["ht_dphimet_track"+jointword]->push_back(dphiHTMETtrk);
-				vfloats_decorations["ht_dr3body"+jetmetword]->push_back(dRHT3body);
-				vfloats_decorations["ht_dphi3body"+jetmetword]->push_back(dphiHT3body);
-				vfloats_decorations["mets_dphi"+jointword]->push_back(metsDphi);
-				vfloats_decorations["mets_dptrelavg"+jointword]->push_back(metsdpTrel);
-				vfloats_decorations["mets_dptreltrk"+trkmetword]->push_back(metsdpTrelTrk);
-				vfloats_decorations["mets_dptrelcal"+jetmetword]->push_back(metsdpTrelCal);
-				vfloats_decorations["mets_dhtreltrk"+trkmetword]->push_back(metsdHTrelTrk);
-				vfloats_decorations["mets_dhtrelcal"+jetmetword]->push_back(metsdHTrelCal);
+				////////////////////////
+				////////////////////////
+			
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vints_decorations["jets_n"+jetmetword]->push_back(ngoodjets);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vints_decorations["jets_b"+jetmetword]->push_back(ngoodbjets);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_pt"+jetmetword]->push_back(pSum.Pt());
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_mT"+jetmetword]->push_back(mtHT);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_metsig"+jetmetword]->push_back(METsig);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_dphimet_reffinal"+jetmetword]->push_back(dphiHTMETref);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_dphimet_muons"+jetmetword]->push_back(dphiHTMETmu);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_dr3body"+jetmetword]->push_back(dRHT3body);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["ht_dphi3body"+jetmetword]->push_back(dphiHT3body);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["mets_dptrelcal"+jetmetword]->push_back(metsdpTrelCal);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations["mets_dhtrelcal"+jetmetword]->push_back(metsdHTrelCal);
+
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || trkmetword!="") vfloats_decorations["mets_dptreltrk"+trkmetword]->push_back(metsdpTrelTrk);
+
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations["ht_mT_mettrk"+jointword]->push_back(mtHTtrk);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations["ht_dphimet_track"+jointword]->push_back(dphiHTMETtrk);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations["mets_dphi"+jointword]->push_back(metsDphi);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations["mets_dptrelavg"+jointword]->push_back(metsdpTrel);
+				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations["mets_dhtreltrk"+jointword]->push_back(metsdHTrelTrk);
 			}
 			pSum = getPsum(vtx,vfloats,1,""); // just to make sure the "calibrated" is taken elsewhere (blanc suffix)
 			_INF(vis,"");
+			
 			
 			//////////////////////////////////////////////////////////////////
 			//// initialize the flag with 0 and fill it later with 1 if passes
@@ -1071,25 +1079,29 @@ void NTUPanalysis(TString channel, TString master, TString method, TString jetMo
 		TString jointword = (mode==ALL_UNCALIB) ? "_uncalib" : jetmetword+trkmetword;
 		_INF(vis,"jetmetword="<<jetmetword<<", trkmetword="<<trkmetword);
 		
-		vints_decorations.insert(make_pair("jets_n"+jetmetword,                new vector<int>));
-		vints_decorations.insert(make_pair("jets_b"+jetmetword,                new vector<int>));
-		vfloats_decorations.insert(make_pair("ht_pt"+jetmetword,               new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_mT"+jetmetword,               new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_mT_mettrk"+trkmetword,        new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_metsig"+jetmetword,           new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_dphimet_reffinal"+jetmetword, new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_dphimet_muons"+jetmetword,    new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_dphimet_track"+jointword,     new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_dr3body"+jetmetword,          new vector<float>));
-		vfloats_decorations.insert(make_pair("ht_dphi3body"+jetmetword,        new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dphi"+jointword,            new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dptrelavg"+jointword,       new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dptreltrk"+trkmetword,      new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dptrelcal"+jetmetword,      new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dhtreltrk"+trkmetword,      new vector<float>));
-		vfloats_decorations.insert(make_pair("mets_dhtrelcal"+jetmetword,      new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vints_decorations.insert(make_pair("jets_n"+jetmetword,                new vector<int>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vints_decorations.insert(make_pair("jets_b"+jetmetword,                new vector<int>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_pt"+jetmetword,               new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_mT"+jetmetword,               new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_metsig"+jetmetword,           new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_dphimet_reffinal"+jetmetword, new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_dphimet_muons"+jetmetword,    new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_dr3body"+jetmetword,          new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("ht_dphi3body"+jetmetword,        new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("mets_dptrelcal"+jetmetword,      new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") vfloats_decorations.insert(make_pair("mets_dhtrelcal"+jetmetword,      new vector<float>));
+		
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || trkmetword!="") vfloats_decorations.insert(make_pair("mets_dptreltrk"+trkmetword,      new vector<float>));
+
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations.insert(make_pair("ht_dphimet_track"+jointword,     new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations.insert(make_pair("mets_dphi"+jointword,            new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations.insert(make_pair("mets_dptrelavg"+jointword,       new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations.insert(make_pair("mets_dhtreltrk"+jointword,       new vector<float>));
+		if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  vfloats_decorations.insert(make_pair("ht_mT_mettrk"+jointword,         new vector<float>));
 	}
 	_INF(vis,"");
+	
+	
 	
 	
 	////////////////
