@@ -65,7 +65,7 @@ float maxdistance(vector<float>& v, float reference, bool print=false)
 float quadrature(vector<float>& v, float reference, bool print=false)
 {
 	float quad = 0;
-	for(unsigned int i=0 ; i<v.size() ; ++i) quad += pow(fabs(v[i]-reference)/reference,2);
+	for(unsigned int i=0 ; i<v.size() ; ++i) quad += (v[i]-reference)*(v[i]-reference);
 	quad = sqrt(quad);
 	if(print) cout << "quadrature=" << quad <<endl;
 	return quad;
@@ -227,7 +227,7 @@ Double_t getMaxErr(TH1* h)
 	return max;
 }
 
-void plot(TMapTSP2TH1& histos1, TString name, TString title, unsigned int rangestart, unsigned int rangeend)
+void plot(TMapTSP2TH1& histos1, TString name, TString title, unsigned int rangestart, unsigned int rangeend, bool doQuad=true)
 {
 	for(Int_t b=1 ; b<histos1[name]->GetNbinsX() ; ++b) 
 	{	
@@ -239,10 +239,10 @@ void plot(TMapTSP2TH1& histos1, TString name, TString title, unsigned int ranges
 			TString word = getTrkJetMETword(mode);
 			if(mode>=rangestart && mode<=rangeend) values.push_back(histos1[name+word]->GetBinContent(b));
 		}
-		// float maxdistbin = maxdistance(values,histos1[name]->GetBinContent(b));
-		// histos1[name]->SetBinError(b,maxdistbin);
-		float quadbin = quadrature(values,histos1[name]->GetBinContent(b));
-		histos1[name]->SetBinError(b,quadbin);
+		float maxdistbin = maxdistance(values,histos1[name]->GetBinContent(b));
+		float quadbin    = quadrature(values,histos1[name]->GetBinContent(b));
+		float binerror = (doQuad) ? quadbin : maxdistbin;
+		histos1[name]->SetBinError(b,binerror);
 	}
 	
 	TH1* hLine;
@@ -391,33 +391,75 @@ void getJetMETsyst()
 		
 		TString cuts_sig_noBDT = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","sig", "","", false,false,"preTraining",ntuple,jetmetword,trkmetword);
 
-		tS->Draw("jet_pt1"+jetmetword+">>hJet1"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("ht_pt"+jetmetword+">>hHT"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("met_muons_et"+jetmetword+">>hMETcal"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("met_muons_mT"+jetmetword+">>hMTcal"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("met_muons_dPhi3mu"+jetmetword+">>hDphical"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("ht_dphimet_muons"+jetmetword+">>hDphiHTcal"+jetmetword, cuts_sig_noBDT);
-		tS->Draw("mets_dptrelcal"+jetmetword+">>hDpTcal"+jetmetword, cuts_sig_noBDT);
-		
-		tS->Draw("met_track_et"+trkmetword+">>hMETtrk"+trkmetword, cuts_sig_noBDT);
-		tS->Draw("met_track_mT"+trkmetword+">>hMTtrk"+trkmetword, cuts_sig_noBDT);
-		tS->Draw("met_track_dPhi3mu"+trkmetword+">>hDphitrk"+trkmetword, cuts_sig_noBDT);
-		tS->Draw("mets_dptreltrk"+trkmetword+">>hDpTtrk"+trkmetword, cuts_sig_noBDT);
-		
-		if(mode<=ALL_JERDWN) tS->Draw("ht_dphimet_track"+jetmetword+">>hDphiHTtrk"+jetmetword, cuts_sig_noBDT);
-		else                 tS->Draw("ht_dphimet_track"+trkmetword+">>hDphiHTtrk"+trkmetword, cuts_sig_noBDT);
-		if(mode<=ALL_JERDWN) tS->Draw("mets_dphi"+jetmetword+">>hDphicaltrk"+jetmetword, cuts_sig_noBDT);
-		else                 tS->Draw("mets_dphi"+trkmetword+">>hDphicaltrk"+trkmetword, cuts_sig_noBDT);
+
+		if(mode==ALL_CALIB)
+		{
+			tS->Draw("jet_pt1>>hJet1", cuts_sig_noBDT);
+			tS->Draw("ht_pt>>hHT", cuts_sig_noBDT);
+			tS->Draw("met_muons_et>>hMETcal", cuts_sig_noBDT);
+			tS->Draw("met_muons_mT>>hMTcal", cuts_sig_noBDT);
+			tS->Draw("met_muons_dPhi3mu>>hDphical", cuts_sig_noBDT);
+			tS->Draw("ht_dphimet_muons>>hDphiHTcal", cuts_sig_noBDT);
+			tS->Draw("mets_dptrelcal>>hDpTcal", cuts_sig_noBDT);
+			
+			tS->Draw("met_track_et>>hMETtrk", cuts_sig_noBDT);
+			tS->Draw("met_track_mT>>hMTtrk", cuts_sig_noBDT);
+			tS->Draw("met_track_dPhi3mu>>hDphitrk", cuts_sig_noBDT);
+			tS->Draw("mets_dptreltrk>>hDpTtrk", cuts_sig_noBDT);
+			
+			tS->Draw("ht_dphimet_track>>hDphiHTtrk", cuts_sig_noBDT);
+			tS->Draw("mets_dphi>>hDphicaltrk", cuts_sig_noBDT);
+		}
+		else if(mode==ALL_UNCALIB)
+		{
+			tS->Draw("jet_pt1_uncalib>>hJet1_uncalib", cuts_sig_noBDT);
+			tS->Draw("ht_pt_uncalib>>hHT_uncalib", cuts_sig_noBDT);
+			tS->Draw("met_muons_et_uncalib>>hMETcal_uncalib", cuts_sig_noBDT);
+			tS->Draw("met_muons_mT_uncalib>>hMTcal_uncalib", cuts_sig_noBDT);
+			tS->Draw("met_muons_dPhi3mu_uncalib>>hDphical_uncalib", cuts_sig_noBDT);
+			tS->Draw("ht_dphimet_muons_uncalib>>hDphiHTcal_uncalib", cuts_sig_noBDT);
+			tS->Draw("mets_dptrelcal_uncalib>>hDpTcal_uncalib", cuts_sig_noBDT);
+			
+			tS->Draw("met_track_et_uncalib>>hMETtrk_uncalib", cuts_sig_noBDT);
+			tS->Draw("met_track_mT_uncalib>>hMTtrk_uncalib", cuts_sig_noBDT);
+			tS->Draw("met_track_dPhi3mu_uncalib>>hDphitrk_uncalib", cuts_sig_noBDT);
+			tS->Draw("mets_dptreltrk_uncalib>>hDpTtrk_uncalib", cuts_sig_noBDT);
+			
+			tS->Draw("ht_dphimet_track_uncalib>>hDphiHTtrk_uncalib", cuts_sig_noBDT);
+			tS->Draw("mets_dphi_uncalib>>hDphicaltrk_uncalib", cuts_sig_noBDT);
+		}
+		else if(mode<=ALL_JERDWN)
+		{
+			tS->Draw("jet_pt1"+jetmetword+">>hJet1"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("ht_pt"+jetmetword+">>hHT"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("met_muons_et"+jetmetword+">>hMETcal"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("met_muons_mT"+jetmetword+">>hMTcal"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("met_muons_dPhi3mu"+jetmetword+">>hDphical"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("ht_dphimet_muons"+jetmetword+">>hDphiHTcal"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("mets_dptrelcal"+jetmetword+">>hDpTcal"+jetmetword, cuts_sig_noBDT);
+			
+			tS->Draw("ht_dphimet_track"+jetmetword+">>hDphiHTtrk"+jetmetword, cuts_sig_noBDT);
+			tS->Draw("mets_dphi"+jetmetword+">>hDphicaltrk"+jetmetword, cuts_sig_noBDT);
+		}
+		else
+		{
+			tS->Draw("met_track_et"+trkmetword+">>hMETtrk"+trkmetword, cuts_sig_noBDT);
+			tS->Draw("met_track_mT"+trkmetword+">>hMTtrk"+trkmetword, cuts_sig_noBDT);
+			tS->Draw("met_track_dPhi3mu"+trkmetword+">>hDphitrk"+trkmetword, cuts_sig_noBDT);
+			tS->Draw("mets_dptreltrk"+trkmetword+">>hDpTtrk"+trkmetword, cuts_sig_noBDT);
+			
+			tS->Draw("ht_dphimet_track"+trkmetword+">>hDphiHTtrk"+trkmetword, cuts_sig_noBDT);
+			tS->Draw("mets_dphi"+trkmetword+">>hDphicaltrk"+trkmetword, cuts_sig_noBDT);
+		}
 
 		if     (mode==ALL_UNCALIB) continue;
 		else if(mode==ALL_CALIB)   acceffNom = AccEffSig;
 		else                       vacceff.push_back(AccEffSig);
 	}
-	// float maxdist = maxdistance(vacceff,acceffNom);
+	float maxdist = maxdistance(vacceff,acceffNom);
 	float quad = quadrature(vacceff,acceffNom);
 	cout << "-------------------------------------------------" << endl;
-	// cout << "Uncertainty on Acc*Eff at x=x1 is " << maxdist/acceffNom*100 << "\%" << endl;
-	cout << "Uncertainty on Acc*Eff at x=x1 is " << quad*100 << "\%" << endl;
+	cout << "Uncertainty on Acc*Eff at x=x1 is quad:" << quad/acceffNom*100 << "\%, and maxdist: " << maxdist/acceffNom*100 << "\%"  << endl;
 	cout << endl;
 	
 	TCanvas* cnv = new TCanvas("cnv","",600,400); cnv->Draw(); cnv->SaveAs("figures/JetMetTrk.syst.pdf(");

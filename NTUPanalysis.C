@@ -316,25 +316,25 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 				TString jointword = (mode==ALL_UNCALIB) ? "_uncalib" : jetmetword+trkmetword;
 				_INF(vis,"jetmetword="<<jetmetword<<", trkmetword="<<trkmetword);
 			
-			    if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") pSum          = getPsum(vtx,vfloats,1,jetmetword);
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") ngoodjets     = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV);
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") ngoodbjets    = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w1"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w2"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w3"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w4"+jetmetword]->at(vtx)>bTagCut);
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHTMETref  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_reffinal_phi"+jetmetword]));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHTMETmu   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_muons_phi"+jetmetword]));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dphiHT3body   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-p3body.Phi()));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") dRHT3body     = fabs(pSum.DeltaR(p3body));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") mtHT          = sqrt(2*pSum.Pt()*floats["met_"+metType+"_et"+jetmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_"+metType+"_phi"+jetmetword])));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") METsig        = floats["met_"+metType+"_et"+jetmetword]/sqrt(pSum.Pt());
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") metsdpTrelCal = vfloats["vtx_pt"]->at(vtx)/floats["met_"+metType+"_et"+jetmetword]-1.;
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jetmetword!="") metsdHTrelCal = pSum.Pt()/floats["met_"+metType+"_et"+jetmetword]-1.;
-
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || trkmetword!="") dphiHTMETtrk  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_track_phi"+trkmetword]));
+				pSum          = getPsum(vtx,vfloats,1,jetmetword);
+				ngoodjets     = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV);
+				ngoodbjets    = (vfloats["jet_pt1"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w1"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt2"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w2"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt3"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w3"+jetmetword]->at(vtx)>bTagCut)+(vfloats["jet_pt4"+jetmetword]->at(vtx)>minJetPtGeV*GeV2MeV && vfloats["jet_MV1w4"+jetmetword]->at(vtx)>bTagCut);
+				dphiHTMETref  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_reffinal_phi"+jetmetword]));
+				dphiHTMETmu   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_muons_phi"+jetmetword]));
+				dphiHT3body   = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-p3body.Phi()));
+				dRHT3body     = fabs(pSum.DeltaR(p3body));
+				mtHT          = sqrt(2*pSum.Pt()*floats["met_"+metType+"_et"+jetmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_"+metType+"_phi"+jetmetword])));
+				METsig        = floats["met_"+metType+"_et"+jetmetword]/sqrt(pSum.Pt());
+				metsdpTrelCal = vfloats["vtx_pt"]->at(vtx)/floats["met_"+metType+"_et"+jetmetword]-1.;
+				metsdHTrelCal = pSum.Pt()/floats["met_"+metType+"_et"+jetmetword]-1.;
+                
+				dphiHTMETtrk  = fabs(TVector2::Phi_mpi_pi(pSum.Phi()-floats["met_track_phi"+trkmetword]));
 				
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  mtHTtrk       = sqrt(2*pSum.Pt()*floats["met_track_et"+trkmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_track_phi"+trkmetword])));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsDphi      = fabs(TVector2::Phi_mpi_pi(floats["met_"+metType+"_phi"+jetmetword]-floats["met_track_phi"+trkmetword]));
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdpTrel    = (vfloats["vtx_pt"]->at(vtx)-(floats["met_"+metType+"_et"+jetmetword]+floats["met_track_et"+trkmetword])/2.)/vfloats["vtx_pt"]->at(vtx);
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdpTrelTrk = vfloats["vtx_pt"]->at(vtx)/floats["met_track_et"+trkmetword]-1.;
-				if(mode==ALL_UNCALIB || mode==ALL_CALIB || jointword!="")  metsdHTrelTrk = pSum.Pt()/floats["met_track_et"+trkmetword]-1.;
+				mtHTtrk       = sqrt(2*pSum.Pt()*floats["met_track_et"+trkmetword]*(1-TMath::Cos(pSum.Phi()-floats["met_track_phi"+trkmetword])));
+				metsDphi      = fabs(TVector2::Phi_mpi_pi(floats["met_"+metType+"_phi"+jetmetword]-floats["met_track_phi"+trkmetword]));
+				metsdpTrel    = (vfloats["vtx_pt"]->at(vtx)-(floats["met_"+metType+"_et"+jetmetword]+floats["met_track_et"+trkmetword])/2.)/vfloats["vtx_pt"]->at(vtx);
+				metsdpTrelTrk = vfloats["vtx_pt"]->at(vtx)/floats["met_track_et"+trkmetword]-1.;
+				metsdHTrelTrk = pSum.Pt()/floats["met_track_et"+trkmetword]-1.;
 			
 				////////////////////////
 				////////////////////////
