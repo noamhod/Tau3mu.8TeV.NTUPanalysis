@@ -52,7 +52,7 @@ void makeLegend()
 	}
 }
 
-int readData(/*vector<float>& vm3body, vector<float>& vBDTscore*/TMapTSP2vf& v, TTree* t, TString channel, float xFullMin,float xBlindMin,float xBlindMax,float xFullMax, TString mode, float xBDTmax=1)
+int readData(TMapTSP2vf& v, TTree* t, TString channel, float xFullMin,float xBlindMin,float xBlindMax,float xFullMax, TString mode, float xBDTmax=1)
 {
 	vector<int>*   loose           = 0;
 	vector<int>*   tight           = 0;
@@ -211,6 +211,7 @@ int readData(/*vector<float>& vm3body, vector<float>& vBDTscore*/TMapTSP2vf& v, 
 		v["mSS"]->push_back(mSS->at(0));
 		v["mOS1"]->push_back(mOS1->at(0));
 		v["mOS2"]->push_back(mOS2->at(0));
+		v["PVNtrk"]->push_back(pvntrk->at(0));
 		
 		ncandidates++;
 	}
@@ -232,6 +233,13 @@ TGraph* getGraph(TString type, TMapTSP2vf& v, TString vnamex, TString vnamey, TS
 	TString gname = "graph_"+type+"_"+vnamey+"_vs_"+vnamex;
 	g->SetName(gname.Data());
 	return g;
+}
+
+Double_t getGraphCorr(TMapTSP2vf& v, TString vnamex, TString vnamey, Int_t inpassed)
+{
+	TGraph g(inpassed);
+	for(Int_t i=1 ; i<=inpassed ; ++i) g.SetPoint(g.GetN(),v[vnamex]->at(i-1),v[vnamey]->at(i-1));
+	return g.GetCorrelationFactor();
 }
 
 void BDTbias(TString selection)
@@ -279,6 +287,8 @@ void BDTbias(TString selection)
 	gStyle->SetTitleW(0.5); //title width 
 	gStyle->SetTitleH(0.05); //title height
 	gStyle->SetTitleBorderSize(0);
+	
+	gStyle->SetPaintTextFormat("4.2f");
 	
 	makeAtlasLabel();
 	makeLegend();
@@ -329,31 +339,35 @@ void BDTbias(TString selection)
 	boxBlind->SetFillColor(kWhite);
 	
 	TMapTSP2vf vS, vD;
-	TString vname = "";
-	vname = "score";      vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mass";       vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); 
-	vname = "pt";         vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "SLxy";       vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "Sa0xy";      vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "pvalue";     vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "iso020";     vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "iso030";     vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mettrk";     vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "metcal";     vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mttrk";      vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mtcal";      vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dphimetcal"; vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dphimettrk"; vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dphimets";   vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dptrelcal";  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dptreltrk";  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "ht";         vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dphihtcal";  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "dphihttrk";  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "trkspval";   vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mSS";        vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mOS1";       vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
-	vname = "mOS2";       vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>));
+	TMapTSTS vTitles;
+	TMapTSi  vorder;
+	TString vname = "";    
+	
+	vname = "score";      vorder.insert(make_pair(vname,1));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"BDT score"));
+	vname = "mass";       vorder.insert(make_pair(vname,2));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{3body}")); 
+	vname = "pt";         vorder.insert(make_pair(vname,3));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{p}_{T}^{3body}"));
+	vname = "SLxy";       vorder.insert(make_pair(vname,4));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{S}(#it{L}_{xy})"));
+	vname = "Sa0xy";      vorder.insert(make_pair(vname,5));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{S}(#it{a}_{0}^{xy})"));
+	vname = "pvalue";     vorder.insert(make_pair(vname,6));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{p}-value"));
+	vname = "iso020";     vorder.insert(make_pair(vname,7));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"Isolation20"));
+	vname = "iso030";     vorder.insert(make_pair(vname,8));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"Isolation30"));
+	vname = "mettrk";     vorder.insert(make_pair(vname,9));  vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{E}_{T,trk}^{miss}"));
+	vname = "metcal";     vorder.insert(make_pair(vname,10)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{E}_{T,cal}^{miss}"));
+	vname = "mttrk";      vorder.insert(make_pair(vname,11)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{T}^{trk}"));
+	vname = "mtcal";      vorder.insert(make_pair(vname,12)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{T}^{cal}"));
+	vname = "dphimetcal"; vorder.insert(make_pair(vname,13)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#Delta#it{#phi}_{3body}^{cal}"));
+	vname = "dphimettrk"; vorder.insert(make_pair(vname,14)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#Delta#it{#phi}_{3body}^{trk}"));
+	vname = "dphimets";   vorder.insert(make_pair(vname,15)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#Delta#it{#phi}_{trk}^{cal}"));
+	vname = "dptrelcal";  vorder.insert(make_pair(vname,16)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"p_{T}^{3body}/#it{E}_{T,cal}^{miss}-1"));
+	vname = "dptreltrk";  vorder.insert(make_pair(vname,17)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"p_{T}^{3body}/#it{E}_{T,trk}^{miss}-1"));
+	vname = "ht";         vorder.insert(make_pair(vname,18)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{H}_{T}"));
+	vname = "dphihtcal";  vorder.insert(make_pair(vname,19)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#Delta#it{#phi}_{#it{H}_{T}}^{cal}"));
+	vname = "dphihttrk";  vorder.insert(make_pair(vname,20)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#Delta#it{#phi}_{#it{H}_{T}}^{trk}"));
+	vname = "trkspval";   vorder.insert(make_pair(vname,21)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{P}_{trks}"));
+	vname = "mSS";        vorder.insert(make_pair(vname,22)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{SS}"));
+	vname = "mOS1";       vorder.insert(make_pair(vname,23)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{OS1}"));
+	vname = "mOS2";       vorder.insert(make_pair(vname,24)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{m}_{OS2}"));
+	vname = "PVNtrk";     vorder.insert(make_pair(vname,25)); vS.insert(make_pair(vname,new vector<float>)); vD.insert(make_pair(vname,new vector<float>)); vTitles.insert(make_pair(vname,"#it{N}_{trk}^{PV}"));
 	
 	Int_t inpassedS = (Int_t)readData(vS, tSclone,"Wtaunu_3mu",mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob,mode);
 	Int_t inpassedD = (Int_t)readData(vD, tDclone,"Data",      mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob,mode,xBDTblindMax);
@@ -532,7 +546,71 @@ void BDTbias(TString selection)
 	cnv->SaveAs("figures/BDTbiasGraph.iso020_vs_mass."+selection+".png");
 	cnv->SaveAs("figures/BDTbiasGraph.iso020_vs_mass."+selection+".eps");
 	
+	
+	cout << endl;
+	
+	Int_t ncorrbins = vS.size();
+	TH2* hCorrS = new TH2F("hCorrS","",ncorrbins,0,ncorrbins, ncorrbins,0,ncorrbins);
+	TH2* hCorrD = new TH2F("hCorrD","",ncorrbins,0,ncorrbins, ncorrbins,0,ncorrbins);
 
+	for(TMapTSP2vf::iterator itx=vS.begin() ; itx!=vS.end() ; ++itx)
+	{
+		TString vtitle = vTitles[itx->first];
+		int b = vorder[itx->first];
+		hCorrS->GetXaxis()->SetBinLabel(b,vtitle); hCorrS->GetYaxis()->SetBinLabel(b,vtitle);
+		hCorrD->GetXaxis()->SetBinLabel(b,vtitle); hCorrD->GetYaxis()->SetBinLabel(b,vtitle);
+	}
+	for(TMapTSP2vf::iterator itx=vS.begin() ; itx!=vS.end() ; ++itx)
+	{
+		TString vnamex = itx->first;
+		int bx = vorder[vnamex];
+		for(TMapTSP2vf::iterator ity=vS.begin() ; ity!=vS.end() ; ++ity)
+		{
+			TString vnamey = ity->first;
+			int by = vorder[vnamey];
+			Double_t correlation = getGraphCorr(vS,vnamex,vnamey,inpassedS);
+			hCorrS->SetBinContent(bx,by,correlation);
+		}
+	}
+	for(TMapTSP2vf::iterator itx=vD.begin() ; itx!=vD.end() ; ++itx)
+	{
+		TString vnamex = itx->first;
+		int bx = vorder[vnamex];
+		for(TMapTSP2vf::iterator ity=vD.begin() ; ity!=vD.end() ; ++ity)
+		{
+			TString vnamey = ity->first;
+			int by = vorder[vnamey];
+			Double_t correlation = getGraphCorr(vD,vnamex,vnamey,inpassedD);
+			hCorrD->SetBinContent(bx,by,correlation);
+		}
+	}
+	
+	cnv = new TCanvas("cnv","",1400,800);
+	cnv->Draw(); //cnv->SetLeftMargin(0.13); 
+	cnv->cd();
+	cnv->SetTicks(1,1);
+	hCorrS->Draw("col text45");
+	//ptxt->Draw("same");
+	cnv->RedrawAxis();
+	cnv->Update();
+	cnv->SaveAs("figures/BDTbiasAll."+selection+".pdf");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixS."+selection+".pdf");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixS."+selection+".png");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixS."+selection+".eps");
+	
+	cnv = new TCanvas("cnv","",1400,800);
+	cnv->Draw(); //cnv->SetLeftMargin(0.13); 
+	cnv->cd();
+	cnv->SetTicks(1,1);
+	hCorrD->Draw("col text45");
+	//ptxt->Draw("same");
+	cnv->RedrawAxis();
+	cnv->Update();
+	cnv->SaveAs("figures/BDTbiasAll."+selection+".pdf");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixD."+selection+".pdf");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixD."+selection+".png");
+	cnv->SaveAs("figures/BDTbiasGraph.corrMatrixD."+selection+".eps");
+	
 	
 	
 	cout << endl;

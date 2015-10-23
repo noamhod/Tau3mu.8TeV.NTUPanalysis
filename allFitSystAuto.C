@@ -135,11 +135,11 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	leg->Clear();
 	leg->AddEntry(hQuad,     "Systematic (total)","l");
 	leg->AddEntry(hStat,     "Statistic","l");
-	leg->AddEntry(hBDTshape, "BDT shape #Deltaf_{01}","l");
+	leg->AddEntry(hBDTshape, "BDT shape #Delta#it{R}","l");
 	leg->AddEntry(hSBshape,  "SB shape #DeltaN_{SR0}","l");
-	leg->AddEntry(hBDTrange, "SB range #Deltaf_{01}","l");
+	leg->AddEntry(hBDTrange, "SB range #Delta#it{R}","l");
 	leg->AddEntry(hSBrange,  "SB range #DeltaN_{SR0}","l");
-	leg->AddEntry(hBDTcutoff,"BDT cutoff #Deltaf_{01}","l");
+	leg->AddEntry(hBDTcutoff,"BDT cutoff #Delta#it{R}","l");
 	leg->AddEntry(hSBcutoff, "BDT cutoff #DeltaN_{SR0}","l");
 	
 	

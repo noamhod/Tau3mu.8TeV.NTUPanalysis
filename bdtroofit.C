@@ -519,8 +519,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	//// This is relevant for the SB fit only and lot for the BDT fit.
 	//// For the final estimation this has to be called agin later with xbdtmaxuser instead of xbdtmax !
 	
-	TString mytitle = "Events / "+tstr((m3bodyMax-m3bodyMin)/nm3bodybins,0)+" MeV";
-	TString sytitle = "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,3);
+	TString mytitle = "Events"; // "Events / "+tstr((m3bodyMax-m3bodyMin)/nm3bodybins,0)+" MeV";
+	TString sytitle = "Events"; // "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,3);
 	
 	TH1* hScoreSig  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreSig->Sumw2();
 	TH1* hM3bodySig = new TH1F("m",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodySig->Sumw2();
@@ -542,8 +542,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 											m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "bkg","CR0", false, hScoreBkg_noblind, hM3bodyBkg_noblind);
 	Int_t ncandidatesDoptNoBlind = readData(tD,score,m3body,UnbinnedDataSet_score_noblind_opt,UnbinnedDataSet_m3body_noblind_opt,
 										m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtopt,xbdtmax, "bkg","CR0", false, hScoreBkg_noblind_opt, hM3bodyBkg_noblind_opt);
-	hScoreSig->Scale(1./150.); hScoreSig->SetMaximum(30);
-	hM3bodySig->Scale(1./50.); hM3bodySig->SetMinimum(1e-5); hM3bodySig->SetMaximum(50); // hM3bodySig->SetMaximum(120);
+	hScoreSig->Scale(1./200.); hScoreSig->SetMaximum(30);
+	hM3bodySig->Scale(1./115.); hM3bodySig->SetMinimum(1e-5); hM3bodySig->SetMaximum(30); // hM3bodySig->SetMaximum(120);
 	
 	scoreS->setBins(nbdtbins);
 	
@@ -730,14 +730,14 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	bkgBDTpdfNominal0->plotOn(scoreFrameS,Name("Nominal"),LineWidth(2),LineColor(kBlue),NormRange("range_score"));
 	
 	// delete leg;
-	leg = new TLegend(0.15,0.74,0.45,0.92,NULL,"brNDC");
+	leg = new TLegend(0.15,0.74,0.55,0.92,NULL,"brNDC");
 	leg->SetFillStyle(4000); //will be transparent
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
-	leg->AddEntry(scoreFrameS->findObject("BDT score background"),"Sidebands data","ple");
+	leg->AddEntry(scoreFrameS->findObject("BDT score background"),"Sidebands data (tight+x>x_{0})","ple");
 	leg->AddEntry(scoreFrameS->findObject("Nominal"),"Fit to the data","l");
-	leg->AddEntry(hScoreSig,"Signal (Scaled)","f");
+	leg->AddEntry(hScoreSig,"Signal (tight+x>x_{0})","f");
 	
 	// // cnv->SetLeftMargin(0.2);
 	cnv->SetTicks(1,1);
@@ -1096,16 +1096,16 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	
 	delete leg;
-	leg = new TLegend(0.15,0.70,0.45,0.92,NULL,"brNDC");
+	leg = new TLegend(0.15,0.70,0.55,0.92,NULL,"brNDC");
 	leg->SetFillStyle(4000); //will be transparent
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
-	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"Data (before BDT cut)","ple");
-	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"Data (after BDT cut)","ple");
+	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"Sidebands data (tight+x>x_{0})","ple");
+	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"Sidebands data (tight+x>x_{1})","ple");
 	leg->AddEntry(m3bodyFrameS->findObject("Nominal_left"),"Sidebands fit","l");
 	leg->AddEntry(m3bodyFrameS->findObject("Nominal_blinded"),"Interpolation","l");
-	leg->AddEntry(hM3bodySig,"Signal (Scaled)","f");
+	leg->AddEntry(hM3bodySig,"Signal (tight+x>x_{0})","f");
 	
 	// cnv->SetLeftMargin(0.2);
 	cnv->SetTicks(1,1);

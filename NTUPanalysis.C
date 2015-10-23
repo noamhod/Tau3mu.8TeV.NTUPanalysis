@@ -495,36 +495,21 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			_INF(vis,"");
 			
 			
-			bool trksProbLoose = (vfloats_decorations["trks_fitprob"]->at(vtx)>1.e-9); // (1e-9)^(1/3) = 0.001
-			if(isCounter("nPassing_3body_trksprobLoose") && !trksProbLoose) continue;
-			incrementCounter("nPassing_3body_trksprobLoose",wgt);
-			_INF(vis,"");
+			// bool pvalueLoose = (vfloats["vtx_pval"]->at(vtx)>1.e-7);
+			// if(isCounter("nPassing_3body_pvalueLoose") && !pvalueLoose) continue;
+			// incrementCounter("nPassing_3body_pvalueLoose",wgt);
+			// _INF(vis,"");
+			// 
+			// 
+			// //bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>-1. &&  vfloats["vtx_lxy"]->at(vtx)<12.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.1);
+			// // bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>-5. &&  vfloats["vtx_lxy"]->at(vtx)<15.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.5);
+			// bool vtxclean  = (vfloats_decorations["geo_lxySig"]->at(vtx)>-10 && vfloats_decorations["geo_lxySig"]->at(vtx)<50 && vfloats_decorations["geo_a0xySig"]->at(vtx)<25);
+			// if(isCounter("nPassing_3body_vtxcleanLoose") && !vtxclean) continue;
+			// incrementCounter("nPassing_3body_vtxcleanLoose",wgt);
+			// _INF(vis,"");
 			
 			
-			bool pvalueLoose = (vfloats["vtx_pval"]->at(vtx)>1.e-7);
-			if(isCounter("nPassing_3body_pvalueLoose") && !pvalueLoose) continue;
-			incrementCounter("nPassing_3body_pvalueLoose",wgt);
-			_INF(vis,"");
-			
-			
-			//bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>-1. &&  vfloats["vtx_lxy"]->at(vtx)<12.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.1);
-			// bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>-5. &&  vfloats["vtx_lxy"]->at(vtx)<15.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.5);
-			bool vtxclean  = (vfloats_decorations["geo_lxySig"]->at(vtx)>-10 && vfloats_decorations["geo_lxySig"]->at(vtx)<50 && vfloats_decorations["geo_a0xySig"]->at(vtx)<25);
-			if(isCounter("nPassing_3body_vtxcleanLoose") && !vtxclean) continue;
-			incrementCounter("nPassing_3body_vtxcleanLoose",wgt);
-			_INF(vis,"");
-			
-			
-			bool massLoose = (vfloats["vtx_mass"]->at(vtx)<4.*GeV2MeV);
-			if(isCounter("nPassing_3body_m") && !massLoose) continue;
-			incrementCounter("nPassing_3body_m",wgt);
-			_INF(vis,"");
-			
-			
-			bool ptLoose = (vfloats["vtx_pt"]->at(vtx)>10.*GeV2MeV);
-			if(isCounter("nPassing_3body_ptLoose") && !ptLoose) continue;
-			incrementCounter("nPassing_3body_ptLoose",wgt);
-			_INF(vis,"");
+
 			
 			
 			bool charge = (fabs(vfloats["vtx_charge"]->at(vtx))==1);
@@ -532,56 +517,75 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			incrementCounter("nPassing_3body_charge",wgt);
 			_INF(vis,"");
 			
-			
-			bool passm2body = (vfloats["vtx_mOS1"]->at(vtx)>220 && vfloats["vtx_mOS2"]->at(vtx)>220 && vfloats["vtx_mSS"]->at(vtx)>220);
-			if(isCounter("nPassing_3body_m2body") && !passm2body) continue;
-			incrementCounter("nPassing_3body_m2body",wgt);
+			bool massLoose = (vfloats["vtx_mass"]->at(vtx)<5.*GeV2MeV);
+			if(isCounter("nPassing_3body_mass") && !massLoose) continue;
+			incrementCounter("nPassing_3body_mass",wgt);
 			_INF(vis,"");
 			
+			//////////////////////////////
+			//////////////////////////////
+			//////////////////////////////
 
-			float m2SS = vfloats["vtx_mSS"]->at(vtx)*vfloats["vtx_mSS"]->at(vtx);
-			float m2OS1 = vfloats["vtx_mOS1"]->at(vtx)*vfloats["vtx_mOS1"]->at(vtx);
-			float m2OS2 = vfloats["vtx_mOS2"]->at(vtx)*vfloats["vtx_mOS2"]->at(vtx);
-			bool allFound = (m2SS>0. && m2OS1>0. && m2OS2>0.);
-			bool mSSOSDalitzLow1  = ((m2SS+m2OS1)<500.e3);
-			bool mSSOSDalitzLow2  = ((m2SS+m2OS2)<500.e3);
-			bool mSSOSDalitzHigh1 = ((m2SS+m2OS1)>7300.e3);
-			bool mSSOSDalitzHigh2 = ((m2SS+m2OS2)>7300.e3);
-			bool mOSOSDalitzLow   = ((m2OS2+m2OS1)<500.e3);
-			bool mOSOSDalitzHigh  = ((m2OS2+m2OS1)>7300.e3);
-			bool failDalitz  = (allFound && (mSSOSDalitzHigh1 || mSSOSDalitzHigh2 || mSSOSDalitzLow1 || mSSOSDalitzLow2 || mOSOSDalitzLow || mOSOSDalitzHigh));
-			if(isCounter("nPassing_3body_dalitz") && failDalitz) continue;
-			incrementCounter("nPassing_3body_dalitz",wgt);
+			bool isTrainingInc = (name.Contains("Data")) ? (vfloats["vtx_mass"]->at(vtx)>750 && vfloats["vtx_mass"]->at(vtx)<2500) : 1;
+			if(isCounter("nPassing_loose_TrainingInc") && !isTrainingInc) continue;
+			incrementCounter("nPassing_loose_TrainingInc",wgt);
+			_INF(vis,"");
+
+			bool m2bodyLoose = (vfloats["vtx_mOS1"]->at(vtx)>220 && vfloats["vtx_mOS2"]->at(vtx)>220 && vfloats["vtx_mSS"]->at(vtx)>220);
+			if(isCounter("nPassing_loose_m2body") && !m2bodyLoose) continue;
+			incrementCounter("nPassing_loose_m2body",wgt);
+			_INF(vis,"");
+
+			bool trksProbLoose = (vfloats_decorations["trks_fitprob"]->at(vtx)>1e-9); // (1e-9)^(1/3) = 0.001
+			if(isCounter("nPassing_loose_Ptrks") && !trksProbLoose) continue;
+			incrementCounter("nPassing_loose_Ptrks",wgt);
+			_INF(vis,"");
+
+			bool SLxyLoose  = (vfloats_decorations["geo_lxySig"]->at(vtx)>-10 && vfloats_decorations["geo_lxySig"]->at(vtx)<50);
+			if(isCounter("nPassing_loose_SLxy") && !SLxyLoose) continue;
+			incrementCounter("nPassing_loose_SLxy",wgt);
 			_INF(vis,"");
 			
-
-			// // float range = SigmaRhoOmegaPhiMeV;
-			// // bool onPhi   = (fabs(vfloats["vtx_mOS1"]->at(vtx)-1020.)<range || fabs(vfloats["vtx_mOS2"]->at(vtx)-1020.)<range); // || fabs(vfloats["vtx_mSS"]->at(vtx)-1020.)<range);
-			// // bool onOmega = (fabs(vfloats["vtx_mOS1"]->at(vtx)-782.)<range  || fabs(vfloats["vtx_mOS2"]->at(vtx)-782.)<range ); // || fabs(vfloats["vtx_mSS"]->at(vtx)-782.)<range);
-			// // bool onRho   = (fabs(vfloats["vtx_mOS1"]->at(vtx)-770.)<range  || fabs(vfloats["vtx_mOS2"]->at(vtx)-770.)<range  || fabs(vfloats["vtx_mSS"]->at(vtx)-770.)<range);
-			// // bool failRhoOmegaPhi = (onPhi||onOmega||onRho);
-			// // bool failRhoOmegaPhi = (onPhi||onOmega);
-			// // if(isCounter("nPassing_3body_rhoomegaphi") && failRhoOmegaPhi) continue;
-			// // bool failmasses     = (vfloats["vtx_mOS1"]->at(vtx)<=250 || vfloats["vtx_mOS2"]->at(vtx)<=250 || vfloats["vtx_mSS"]->at(vtx)<=250  ||  vfloats["vtx_mOS1"]->at(vtx)>=1600 || vfloats["vtx_mOS2"]->at(vtx)>=1600 || vfloats["vtx_mSS"]->at(vtx)>=1600);
-			// bool failmasses     = (vfloats["vtx_mOS1"]->at(vtx)<=220 || vfloats["vtx_mOS2"]->at(vtx)<=220 || vfloats["vtx_mSS"]->at(vtx)<=220);
-			// bool faildistances  = (vfloats["geo_lxySig"]->at(vtx)<=-10 || vfloats["geo_lxySig"]->at(vtx)>=50 || vfloats["geo_a0xySig"]->at(vtx)>=25);
-			// bool failpvalues    = (vfloats_decorations["trks_fitprob"]->at(vtx)<=1e-9);
-			// bool failkinematics = (vfloats["vtx_pt"]->at(vtx)<=10000 || (floats["met_"+metType+"_et"]<=10000 || floats["met_"+metType+"_et"]>=200000) || (floats["met_track_et"]<=10000 || floats["met_track_et"]>=200000) || vfloats["met_"+metType+"_mT"]->at(vtx)<=20000 || vfloats["met_track_mT"]->at(vtx)<=20000);
-			// bool failisol       = (vfloats["vtx_isolation020"]->at(vtx)>=0.3 || vfloats["vtx_isolation003"]->at(vtx)>=0.1);
-			// bool failHT         = (vfloats_decorations["ht_pt"]->at(vtx)<=20000 || vfloats_decorations["ht_dphimet_track"]->at(vtx)<=2);
-			// bool failonecand    = (vfloats["vtx_mass"]->size()!=1);
-			// // if(isCounter("nPassing_3body_rhoomegaphi") && (failRhoOmegaPhi || failmasses || faildistances || failpvalues || failkinematics || failisol || failonecand)) continue;
-			// if(isCounter("nPassing_3body_rhoomegaphi") && (failpvalues || failonecand || failisol || failmasses || failkinematics || failHT)) continue;
-			// incrementCounter("nPassing_3body_rhoomegaphi",wgt);
-			// _INF(vis,"");
-			
-
-			float maxJpT = 30.*GeV2MeV;
-			int nj = (vfloats["jet_pt1"]->at(vtx)>maxJpT)+(vfloats["jet_pt2"]->at(vtx)>maxJpT)+(vfloats["jet_pt3"]->at(vtx)>maxJpT)+(vfloats["jet_pt4"]->at(vtx)>maxJpT);
-			bool failJets = (nj>0);
-			if(isCounter("nPassing_3body_njets") && failJets) continue;
-			incrementCounter("nPassing_3body_njets",wgt);
+			bool Sa0xyLoose  = (vfloats_decorations["geo_a0xySig"]->at(vtx)<25);
+			if(isCounter("nPassing_loose_Sa0xy") && !Sa0xyLoose) continue;
+			incrementCounter("nPassing_loose_Sa0xy",wgt);
 			_INF(vis,"");
+
+			bool ptLoose = (vfloats["vtx_pt"]->at(vtx)>10*GeV2MeV);
+			if(isCounter("nPassing_loose_pT") && !ptLoose) continue;
+			incrementCounter("nPassing_loose_pT",wgt);
+			_INF(vis,"");
+			
+			bool metCalLoose = (floats["met_"+metType+"_et"]>10*GeV2MeV && floats["met_"+metType+"_et"]<250*GeV2MeV);
+			if(isCounter("nPassing_loose_metcal") && !metCalLoose) continue;
+			incrementCounter("nPassing_loose_metcal",wgt);
+			_INF(vis,"");
+			
+			bool metTrkLoose = (floats["met_track_et"]>10*GeV2MeV && floats["met_track_et"]<250*GeV2MeV);
+			if(isCounter("nPassing_loose_mettrk") && !metTrkLoose) continue;
+			incrementCounter("nPassing_loose_mettrk",wgt);
+			_INF(vis,"");
+			
+			bool mtCalLoose = (vfloats["met_"+metType+"_mT"]->at(vtx)>20*GeV2MeV);
+			if(isCounter("nPassing_loose_mtcal") && !mtCalLoose) continue;
+			incrementCounter("nPassing_loose_mtcal",wgt);
+			_INF(vis,"");
+			
+			bool mtTrkLoose = (vfloats["met_track_mT"]->at(vtx)>20*GeV2MeV);
+			if(isCounter("nPassing_loose_mttrk") && !mtTrkLoose) continue;
+			incrementCounter("nPassing_loose_mttrk",wgt);
+			_INF(vis,"");
+			
+			bool iso20Loose = (vfloats["vtx_isolation020"]->at(vtx)<0.3);
+			if(isCounter("nPassing_loose_iso20") && !iso20Loose) continue;
+			incrementCounter("nPassing_loose_iso20",wgt);
+			_INF(vis,"");
+
+			bool iso30Loose = (vfloats["vtx_isolation030"]->at(vtx)<1);
+			if(isCounter("nPassing_loose_iso30") && !iso30Loose) continue;
+			incrementCounter("nPassing_loose_iso30",wgt);
+			_INF(vis,"");
+			
 			
 			
 			fillCategories(category,name,"tripletCategories_after_triplet");
@@ -593,24 +597,12 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			fillObjectHistos(vtx,name,"_after_triplet",vints,vfloats,wgt);
 			_INF(vis,"");
 			
-			
-
-			
-			
-			
-			
+	
 			fillIsolationHistos(vtx,name,vfloats,wgt); // only before applying the loose isolation cut
 			fillPVHistos(vtx,name,"_before_isolation",vints,wgt);
 			_INF(vis,"");
-		
-			
-			// bool isolationLoose = (vfloats["vtx_isolation003"]->at(vtx)<0.1 && vfloats["vtx_isolation020"]->at(vtx)<0.3);
-			bool isolationLoose = (vfloats["vtx_isolation020"]->at(vtx)<0.3 && vfloats["vtx_isolation030"]->at(vtx)<1);
-			if(isCounter("nPassing_3body_isolationLoose") && !isolationLoose) continue;
-			incrementCounter("nPassing_3body_isolationLoose",wgt);
-			_INF(vis,"");
-			
-			
+					
+
 			fillPVHistos(vtx,name,"_after_isolation",vints,wgt);
 			fillCategories(category,name,"tripletCategories_after_hadclean");
 			fillCategories(category,name,"tripletCategories_norm_after_hadclean");
@@ -621,17 +613,6 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			fillObjectHistos(vtx,name,"_after_hadclean",vints,vfloats,wgt);
 			fillRhoOmegaPhiHistos(vtx,name,"_beforeWcuts",floats,vfloats,metType,wgt);
 			_INF(vis,"");
-
-			
-			
-			
-			if(isCounter("nPassing_met_metLoose") && !passMET(floats,metType,"loose")) continue;
-			incrementCounter("nPassing_met_metLoose",wgt);
-			_INF(vis,"");
-
-			if(isCounter("nPassing_met_mTLoose") && !passMT(vtx,vfloats,metType,"loose")) continue;
-			incrementCounter("nPassing_met_mTLoose",wgt);
-			_INF(vis,"");
 			
 	
 			fillCategories(category,name,"tripletCategories_after_met");
@@ -641,12 +622,6 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			fillJetHistos(vtx,name,"_after_met",vfloats,floats,minJetPtGeV*GeV2MeV,metType,wgt);
 			fillJetCalibrationHistos(vtx,name,"_after_met",floats,vfloats,metType,wgt);
 			fillObjectHistos(vtx,name,"_after_met",vints,vfloats,wgt);
-			_INF(vis,"");
-			
-			
-
-			if(isCounter("nPassing_ht_mhTLoose") && !passMHT(vtx,vfloats_decorations,"loose")) continue;
-			incrementCounter("nPassing_ht_mhTLoose",wgt);
 			_INF(vis,"");
 			
 
@@ -725,23 +700,88 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			int category = vints["vtx_code"]->at(vtx);
 			_INF(vis,"");
 			
+			if(isBlinded)
+			{
+				bool isSBleft  = (vfloats["vtx_mass"]->at(vtx)>1450 && vfloats["vtx_mass"]->at(vtx)<1690);
+				bool isSBright = (vfloats["vtx_mass"]->at(vtx)>1870 && vfloats["vtx_mass"]->at(vtx)<2110);
+				bool isSB = (name.Contains("Data")) ? (isSBleft || isSBright) : 1;
+				if(isCounter("nPassing_tight_SB") && !isSB) continue;
+				incrementCounter("nPassing_tight_SB",wgt);
+				_INF(vis,"");
+			}
+			else
+			{
+				bool isSBInc = (name.Contains("Data")) ? (vfloats["vtx_mass"]->at(vtx)>1450 && vfloats["vtx_mass"]->at(vtx)<2110) : 1;
+				if(isCounter("nPassing_tight_SB") && !isSBInc) continue;
+				incrementCounter("nPassing_tight_SB",wgt);
+				_INF(vis,"");
+			}
+			
+			bool m2bodyTight = (vfloats["vtx_mOS1"]->at(vtx)>300 && vfloats["vtx_mOS2"]->at(vtx)>300 && vfloats["vtx_mSS"]->at(vtx)>300);
+			if(isCounter("nPassing_tight_m2body") && !m2bodyTight) continue;
+			incrementCounter("nPassing_tight_m2body",wgt);
+			_INF(vis,"");
+
+			bool trksProbTight = (vfloats_decorations["trks_fitprob"]->at(vtx)>8e-9); // (8e-9)^(1/3) = 0.002
+			if(isCounter("nPassing_tight_Ptrks") && !trksProbTight) continue;
+			incrementCounter("nPassing_tight_Ptrks",wgt);
+			_INF(vis,"");
+
+			bool SLxyTight  = (vfloats_decorations["geo_lxySig"]->at(vtx)>1 && vfloats_decorations["geo_lxySig"]->at(vtx)<50);
+			if(isCounter("nPassing_tight_SLxy") && !SLxyTight) continue;
+			incrementCounter("nPassing_tight_SLxy",wgt);
+			_INF(vis,"");
+
+			bool mtCalTight = (vfloats["met_"+metType+"_mT"]->at(vtx)>45*GeV2MeV);
+			if(isCounter("nPassing_tight_mtcal") && !mtCalTight) continue;
+			incrementCounter("nPassing_tight_mtcal",wgt);
+			_INF(vis,"");
+			
+			bool mtTrkTight = (vfloats["met_track_mT"]->at(vtx)>45*GeV2MeV);
+			if(isCounter("nPassing_tight_mttrk") && !mtTrkTight) continue;
+			incrementCounter("nPassing_tight_mttrk",wgt);
+			_INF(vis,"");
+			
+			bool pvalTight = (vfloats["vtx_pval"]->at(vtx)>0.2);
+			if(isCounter("nPassing_tight_pvalue") && !pvalTight) continue;
+			incrementCounter("nPassing_tight_pvalue",wgt);
+			_INF(vis,"");
+			
+			bool dphiHTcalTight = (vfloats_decorations["ht_dphimet_"+metType]->at(vtx)>2);
+			if(isCounter("nPassing_tight_dphiHTcal") && !dphiHTcalTight) continue;
+			incrementCounter("nPassing_tight_dphiHTcal",wgt);
+			_INF(vis,"");
+			
+			bool dphiHTtrkTight = (vfloats_decorations["ht_dphimet_track"]->at(vtx)>2);
+			if(isCounter("nPassing_tight_dphiHTtrk") && !dphiHTtrkTight) continue;
+			incrementCounter("nPassing_tight_dphiHTtrk",wgt);
+			_INF(vis,"");
+			
+			bool onRhoOmegaPhi1   = (fabs(vfloats["vtx_mOS1"]->at(vtx)-782)<50 || fabs(vfloats["vtx_mOS1"]->at(vtx)-1020)<50);
+			bool onRhoOmegaPhi2   = (fabs(vfloats["vtx_mOS2"]->at(vtx)-782)<50 || fabs(vfloats["vtx_mOS2"]->at(vtx)-1020)<50);
+			bool lowPtMET         = (vfloats["vtx_pt"]->at(vtx)<35*GeV2MeV || floats["met_"+metType+"_et"]<35*GeV2MeV || floats["met_track_et"]<35*GeV2MeV);
+			bool rhoomegaphiTight = (lowPtMET && (onRhoOmegaPhi1 || onRhoOmegaPhi2));
+			if(isCounter("nPassing_tight_rhoomegaphi") && rhoomegaphiTight) continue;
+			incrementCounter("nPassing_tight_rhoomegaphi",wgt);
+			_INF(vis,"");
+
+			bool onPhi = (fabs(vfloats["vtx_mOS1"]->at(vtx)-1020)<50 || fabs(vfloats["vtx_mOS2"]->at(vtx)-1020)<50);
+			bool onDs  = (fabs(vfloats["vtx_mass"]->at(vtx)-1968)<100);
+			bool DsubS = (onPhi && onDs);
+			if(isCounter("nPassing_tight_Ds") && DsubS) continue;
+			incrementCounter("nPassing_tight_Ds",wgt);
+			_INF(vis,"");
+			
+			bool isSR = (name.Contains("_3mu")) ? (vfloats["vtx_mass"]->at(vtx)>1713 && vfloats["vtx_mass"]->at(vtx)<1841) : 1;
+			if(isCounter("nPassing_tight_SR") && !isSR) continue;
+			incrementCounter("nPassing_tight_SR",wgt);
+			_INF(vis,"");
+			
 			
 			if(doMVA)
 			{
-				// setMVAvars(vtx,ints,floats,vints,vfloats,vints_decorations,vfloats_decorations,minJetPtGeV*GeV2MeV);
-				// setMVAspect(vtx,ints,floats,vints,vfloats);
-				// float score = getMVAscore();
-				// fillMVAHistos(vtx,name,vfloats,score,wgt);
-				// _INF(vis,"");
-				// 
-				// 
-				// /////////////////////
-				// //// fill decorations
-				// vfloats_decorations["mva_score"]->at(vtx) = score;
-				// _INF(vis,"");
 				float score = vfloats_decorations["mva_score"]->at(vtx);
-				_INF(vis,"");
-				
+				_INF(vis,"");	
 				
 				if(doMVAout)
 				{
@@ -762,11 +802,16 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 					if(score>+0.95) fillMVAevoHistos(vtx,name,"_pos_verytight",floats,vfloats,vints_decorations,vfloats_decorations,metType,score,wgt);
 					
 					
-					//// do not cut on the MVA score since
-					//// we want to write all candidates
-					bool failMVA = (score<optBDTcut);
-					if(isCounter("nPassing_optMVA") && failMVA) continue;
-					incrementCounter("nPassing_optMVA",wgt);
+					
+					bool passx0 = (score>minBDTcut);
+					if(isCounter("nPassing_BDT_x0") && !passx0) continue;
+					incrementCounter("nPassing_BDT_x0",wgt);
+					_INF(vis,"");
+					
+					
+					bool passx1 = (score>optBDTcut);
+					if(isCounter("nPassing_BDT_x1") && !passx1) continue;
+					incrementCounter("nPassing_BDT_x1",wgt);
 					_INF(vis,"");
 				}
 				
@@ -803,22 +848,22 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 				_INF(vis,"");
 				
 				
-				bool ptTight = (vfloats["vtx_pt"]->at(vtx)>25.*GeV2MeV);
-				if(isCounter("nPassing_3body_pt") && !ptTight) continue;
-				incrementCounter("nPassing_3body_pt",wgt);
-				_INF(vis,"");
-				
-				
-				bool pvalueTight = (vfloats["vtx_pval"]->at(vtx)>0.1);
-				if(isCounter("nPassing_3body_pvalue") && !pvalueTight) continue;
-				incrementCounter("nPassing_3body_pvalue",wgt);
-				_INF(vis,"");
-				
-				
-				bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>0.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.05);
-				if(isCounter("nPassing_3body_vtxclean") && !vtxclean) continue;
-				incrementCounter("nPassing_3body_vtxclean",wgt);
-				_INF(vis,"");
+				// bool ptTight = (vfloats["vtx_pt"]->at(vtx)>25.*GeV2MeV);
+				// if(isCounter("nPassing_3body_pt") && !ptTight) continue;
+				// incrementCounter("nPassing_3body_pt",wgt);
+				// _INF(vis,"");
+				// 
+				// 
+				// bool pvalueTight = (vfloats["vtx_pval"]->at(vtx)>0.1);
+				// if(isCounter("nPassing_3body_pvalue") && !pvalueTight) continue;
+				// incrementCounter("nPassing_3body_pvalue",wgt);
+				// _INF(vis,"");
+				// 
+				// 
+				// bool vtxclean = (vfloats["vtx_lxy"]->at(vtx)>0.  &&  fabs(vfloats["vtx_a0xy"]->at(vtx))<0.05);
+				// if(isCounter("nPassing_3body_vtxclean") && !vtxclean) continue;
+				// incrementCounter("nPassing_3body_vtxclean",wgt);
+				// _INF(vis,"");
 				
 				
 				fillCategories(category,name,"tripletCategories_after_tripletTight");
@@ -826,10 +871,10 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 				_INF(vis,"");
 				
 				
-				bool isolation = (vfloats["vtx_isolation003"]->at(vtx)<=0.08);
-				if(isCounter("nPassing_3body_isolation") && !isolation) continue;
-				incrementCounter("nPassing_3body_isolation",wgt);
-				_INF(vis,"");
+				// bool isolation = (vfloats["vtx_isolation003"]->at(vtx)<=0.08);
+				// if(isCounter("nPassing_3body_isolation") && !isolation) continue;
+				// incrementCounter("nPassing_3body_isolation",wgt);
+				// _INF(vis,"");
 				
 				
 				fillCategories(category,name,"tripletCategories_after_isolation");
@@ -838,39 +883,39 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 				
 				
 
-				if(isCounter("nPassing_met_MET") && !passMET(floats,metType,"tight")) continue;
-				incrementCounter("nPassing_met_MET",wgt);
-				_INF(vis,"");
+				// if(isCounter("nPassing_met_MET") && !passMET(floats,metType,"tight")) continue;
+				// incrementCounter("nPassing_met_MET",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_met_dphi3bodyMET") && !passDphi3bodyMET(vtx,vfloats,metType,"tight")) continue;
+				// incrementCounter("nPassing_met_dphi3bodyMET",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_met_mT") && !passMT(vtx,vfloats,metType,"tight")) continue;
+				// incrementCounter("nPassing_met_mT",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_met_dphiCalTrk") && !passDphiMETs(vtx,vfloats_decorations,"tight")) continue;
+				// incrementCounter("nPassing_met_dphiCalTrk",wgt);
+				// _INF(vis,"");
 				
-				if(isCounter("nPassing_met_dphi3bodyMET") && !passDphi3bodyMET(vtx,vfloats,metType,"tight")) continue;
-				incrementCounter("nPassing_met_dphi3bodyMET",wgt);
-				_INF(vis,"");
-				
-				if(isCounter("nPassing_met_mT") && !passMT(vtx,vfloats,metType,"tight")) continue;
-				incrementCounter("nPassing_met_mT",wgt);
-				_INF(vis,"");
-				
-				if(isCounter("nPassing_met_dphiCalTrk") && !passDphiMETs(vtx,vfloats_decorations,"tight")) continue;
-				incrementCounter("nPassing_met_dphiCalTrk",wgt);
-				_INF(vis,"");
 				
 				
-				
-				if(isCounter("nPassing_ht_ht") && !passHT(vtx,vfloats_decorations,"tight")) continue;
-				incrementCounter("nPassing_ht_ht",wgt);
-				_INF(vis,"");
-				
-				if(isCounter("nPassing_ht_dphihtMET") && !passDphihtMET(vtx,vfloats_decorations,metType,"tight")) continue;
-				incrementCounter("nPassing_ht_dphihtMET",wgt);
-				_INF(vis,"");
-
-				if(isCounter("nPassing_ht_mhT") && !passMHT(vtx,vfloats_decorations,"tight")) continue;
-				incrementCounter("nPassing_ht_mhT",wgt);
-				_INF(vis,"");
-				
-				if(isCounter("nPassing_ht_dr3body") && !passDrht3body(vtx,vfloats_decorations,"tight")) continue;
-				incrementCounter("nPassing_ht_dr3body",wgt);
-				_INF(vis,"");
+				// if(isCounter("nPassing_ht_ht") && !passHT(vtx,vfloats_decorations,"tight")) continue;
+				// incrementCounter("nPassing_ht_ht",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_ht_dphihtMET") && !passDphihtMET(vtx,vfloats_decorations,metType,"tight")) continue;
+				// incrementCounter("nPassing_ht_dphihtMET",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_ht_mhT") && !passMHT(vtx,vfloats_decorations,"tight")) continue;
+				// incrementCounter("nPassing_ht_mhT",wgt);
+				// _INF(vis,"");
+				// 
+				// if(isCounter("nPassing_ht_dr3body") && !passDrht3body(vtx,vfloats_decorations,"tight")) continue;
+				// incrementCounter("nPassing_ht_dr3body",wgt);
+				// _INF(vis,"");
 				
 				
 				
@@ -882,56 +927,56 @@ void loop(TFile* ifile, TFile* ofile_loose, TFile* ofile_tight, TString name, TS
 			
 			
 			
-			//// everything should be in the sidebands
-			bool inmasssidebands = (vfloats["vtx_mass"]->at(vtx)>mSideBandLeftLowerMeVGlob && vfloats["vtx_mass"]->at(vtx)<mSideBandRightUpperMeVGlob);
-			if(isCounter("nPassing_3body_sidebands") && !inmasssidebands) continue;
-			incrementCounter("nPassing_3body_sidebands",wgt);
-			_INF(vis,"");
+			// //// everything should be in the sidebands
+			// bool inmasssidebands = (vfloats["vtx_mass"]->at(vtx)>mSideBandLeftLowerMeVGlob && vfloats["vtx_mass"]->at(vtx)<mSideBandRightUpperMeVGlob);
+			// if(isCounter("nPassing_3body_sidebands") && !inmasssidebands) continue;
+			// incrementCounter("nPassing_3body_sidebands",wgt);
+			// _INF(vis,"");
+			// 
+			// 
+			// //// everything should be blinded except for the MC'S
+			// // bool inblindregion = (!name.Contains("_3mu") && (vfloats["vtx_mass"]->at(vtx)>mBlindMinGlob && vfloats["vtx_mass"]->at(vtx)<mBlindMaxGlob));
+			// bool inblindregion = (name.Contains("Data") && (vfloats["vtx_mass"]->at(vtx)>mBlindMinGlob && vfloats["vtx_mass"]->at(vtx)<mBlindMaxGlob));
+			// if(isCounter("nPassing_3body_blinded") && inblindregion) continue;
+			// incrementCounter("nPassing_3body_blinded",wgt);
+			// _INF(vis,"");
 			
 			
-			//// everything should be blinded except for the MC'S
-			// bool inblindregion = (!name.Contains("_3mu") && (vfloats["vtx_mass"]->at(vtx)>mBlindMinGlob && vfloats["vtx_mass"]->at(vtx)<mBlindMaxGlob));
-			bool inblindregion = (name.Contains("Data") && (vfloats["vtx_mass"]->at(vtx)>mBlindMinGlob && vfloats["vtx_mass"]->at(vtx)<mBlindMaxGlob));
-			if(isCounter("nPassing_3body_blinded") && inblindregion) continue;
-			incrementCounter("nPassing_3body_blinded",wgt);
-			_INF(vis,"");
-			
-			vector<float>* metcal = new vector<float>; metcal->push_back(floats["met_"+metType+"_et"]);
-			vector<float>* mettrk = new vector<float>; mettrk->push_back(floats["met_track_et"]);
-			TMapTSP2vi vi;
-			TMapTSP2vf vf;
-			vi.insert(make_pair("pass_loose", vints_decorations["pass_loose"]));
-			vi.insert(make_pair("njets"     , vints_decorations["jets_n"]));
-			vf.insert(make_pair("pt3body"   , vfloats["vtx_pt"]));
-			vf.insert(make_pair("m3body"    , vfloats["vtx_mass"]));
-			vf.insert(make_pair("mSS"       , vfloats["vtx_mSS"]));
-			vf.insert(make_pair("mOS1"      , vfloats["vtx_mOS1"]));
-			vf.insert(make_pair("mOS2"      , vfloats["vtx_mOS2"]));
-			vf.insert(make_pair("score"     , vfloats_decorations["mva_score"]));
-			vf.insert(make_pair("pval"      , vfloats["vtx_pval"]));
-			vf.insert(make_pair("iso003"    , vfloats["vtx_isolation003"]));
-			vf.insert(make_pair("iso020"    , vfloats["vtx_isolation020"]));
-			vf.insert(make_pair("iso030"    , vfloats["vtx_isolation030"]));
-			vf.insert(make_pair("trkspval"  , vfloats_decorations["trks_fitprob"]));
-			vf.insert(make_pair("lxysig"    , vfloats_decorations["geo_lxySig"]));
-			vf.insert(make_pair("a0xysig"   , vfloats_decorations["geo_a0xySig"]));
-			vf.insert(make_pair("mettrk"    , mettrk));
-			vf.insert(make_pair("metcal"    , metcal));
-			vf.insert(make_pair("mttrk"     , vfloats["met_track_mT"]));
-			vf.insert(make_pair("mtcal"     , vfloats["met_"+metType+"_mT"]));
-			vf.insert(make_pair("dphihttrk" , vfloats_decorations["ht_dphimet_track"]));
-			vf.insert(make_pair("dphihtcal" , vfloats_decorations["ht_dphimet_muons"]));
-			TString chan = (name.EndsWith("_3mu")) ? "sig" : "bkg";
-			bool passPostTraining = passPostBDTcut(vtx,vf,vi,mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob, minBDTcut,optBDTcut, chan, mSRminMeVGlob,mSRmaxMeVGlob,isBlinded);			
-			delete metcal;
-			delete mettrk;
-			// bool passRes = passPostBDTcut(vfloats["vtx_mass"]->at(vtx),-1,vfloats["vtx_mOS1"]->at(vtx),vfloats["vtx_mOS2"]->at(vtx),vfloats["vtx_mSS"]->at(vtx), vints_decorations["jets_n"]->at(vtx), vfloats_decorations["ht_pt"]->at(vtx), vfloats_decorations["ht_dr3body"]->at(vtx),
-			// 							  mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob,
-			// 							  -1.,-1.,SigmaRhoOmegaPhiMeV,chan,"CR1",isBlinded);
-			if(isCounter("nPassing_evt_rhoomegaphi") && !passPostTraining) continue;
-			incrementCounter("nPassing_evt_rhoomegaphi",wgt);
-			_INF(vis,"");
-			
+			// vector<float>* metcal = new vector<float>; metcal->push_back(floats["met_"+metType+"_et"]);
+			// vector<float>* mettrk = new vector<float>; mettrk->push_back(floats["met_track_et"]);
+			// TMapTSP2vi vi;
+			// TMapTSP2vf vf;
+			// vi.insert(make_pair("pass_loose", vints_decorations["pass_loose"]));
+			// vi.insert(make_pair("njets"     , vints_decorations["jets_n"]));
+			// vf.insert(make_pair("pt3body"   , vfloats["vtx_pt"]));
+			// vf.insert(make_pair("m3body"    , vfloats["vtx_mass"]));
+			// vf.insert(make_pair("mSS"       , vfloats["vtx_mSS"]));
+			// vf.insert(make_pair("mOS1"      , vfloats["vtx_mOS1"]));
+			// vf.insert(make_pair("mOS2"      , vfloats["vtx_mOS2"]));
+			// vf.insert(make_pair("score"     , vfloats_decorations["mva_score"]));
+			// vf.insert(make_pair("pval"      , vfloats["vtx_pval"]));
+			// vf.insert(make_pair("iso003"    , vfloats["vtx_isolation003"]));
+			// vf.insert(make_pair("iso020"    , vfloats["vtx_isolation020"]));
+			// vf.insert(make_pair("iso030"    , vfloats["vtx_isolation030"]));
+			// vf.insert(make_pair("trkspval"  , vfloats_decorations["trks_fitprob"]));
+			// vf.insert(make_pair("lxysig"    , vfloats_decorations["geo_lxySig"]));
+			// vf.insert(make_pair("a0xysig"   , vfloats_decorations["geo_a0xySig"]));
+			// vf.insert(make_pair("mettrk"    , mettrk));
+			// vf.insert(make_pair("metcal"    , metcal));
+			// vf.insert(make_pair("mttrk"     , vfloats["met_track_mT"]));
+			// vf.insert(make_pair("mtcal"     , vfloats["met_"+metType+"_mT"]));
+			// vf.insert(make_pair("dphihttrk" , vfloats_decorations["ht_dphimet_track"]));
+			// vf.insert(make_pair("dphihtcal" , vfloats_decorations["ht_dphimet_muons"]));
+			// TString chan = (name.EndsWith("_3mu")) ? "sig" : "bkg";
+			// bool passPostTraining = passPostBDTcut(vtx,vf,vi,mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob, minBDTcut,optBDTcut, chan, mSRminMeVGlob,mSRmaxMeVGlob,isBlinded);			
+			// delete metcal;
+			// delete mettrk;
+			// // bool passRes = passPostBDTcut(vfloats["vtx_mass"]->at(vtx),-1,vfloats["vtx_mOS1"]->at(vtx),vfloats["vtx_mOS2"]->at(vtx),vfloats["vtx_mSS"]->at(vtx), vints_decorations["jets_n"]->at(vtx), vfloats_decorations["ht_pt"]->at(vtx), vfloats_decorations["ht_dr3body"]->at(vtx),
+			// // 							  mSideBandLeftLowerMeVGlob,mBlindMinGlob,mBlindMaxGlob,mSideBandRightUpperMeVGlob,
+			// // 							  -1.,-1.,SigmaRhoOmegaPhiMeV,chan,"CR1",isBlinded);
+			// if(isCounter("nPassing_evt_rhoomegaphi") && !passPostTraining) continue;
+			// incrementCounter("nPassing_evt_rhoomegaphi",wgt);
+			// _INF(vis,"");
 			
 			fillCategories(category,name,"tripletCategories_after_lowmassres");
 			fillCategories(category,name,"tripletCategories_norm_after_lowmassres");
@@ -1116,6 +1161,7 @@ void NTUPanalysis(TString channel, TString master, TString method, TString jetMo
 	//// Output files 
 	TString ofname_loose = ifname;
 	if(!doMVAout) ofname_loose.ReplaceAll(".root",".loose.root");
+	if(doLocalCuts)      ofname_loose.ReplaceAll("loose","loose.cutflow");
 	if(method=="mva")    ofname_loose.ReplaceAll("cuts","mva");
 	if(method=="mvaout") ofname_loose.ReplaceAll("cuts","mvaout");
 	if(channel!="all")   ofname_loose.ReplaceAll("periodall+MC",channel);

@@ -3,9 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>run2projplots/test2d.C</string>
+	<string>copyPaperFigs.sh</string>
 	<key>documents</key>
 	<array>
+		<dict>
+			<key>filename</key>
+			<string>std.h</string>
+			<key>lastUsed</key>
+			<date>2015-10-17T12:29:30Z</date>
+		</dict>
 		<dict>
 			<key>filename</key>
 			<string>const.h</string>
@@ -16,13 +22,13 @@
 			<key>filename</key>
 			<string>count.h</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T20:54:13Z</date>
+			<date>2015-10-17T12:28:50Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>type.h</string>
 			<key>lastUsed</key>
-			<date>2015-09-26T07:30:14Z</date>
+			<date>2015-10-17T12:32:17Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -52,13 +58,13 @@
 			<key>filename</key>
 			<string>postBDTcuts.h</string>
 			<key>lastUsed</key>
-			<date>2015-10-11T15:59:59Z</date>
+			<date>2015-10-17T10:42:45Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>tmvaClass.C</string>
 			<key>lastUsed</key>
-			<date>2015-09-29T20:48:24Z</date>
+			<date>2015-10-16T13:03:14Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -76,13 +82,13 @@
 			<key>filename</key>
 			<string>replotBDTvars.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T20:32:14Z</date>
+			<date>2015-10-21T22:01:57Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>bdtroofit.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-01T16:08:25Z</date>
+			<date>2015-10-21T08:56:29Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -106,13 +112,13 @@
 			<key>filename</key>
 			<string>allFitSystAuto.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T08:53:51Z</date>
+			<date>2015-10-21T21:46:48Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>optimization2D.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T08:55:12Z</date>
+			<date>2015-10-21T11:40:07Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -124,33 +130,45 @@
 			<key>filename</key>
 			<string>syst.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-10T08:16:09Z</date>
+			<date>2015-10-17T12:27:47Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>getJetMETsyst.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T20:55:52Z</date>
+			<date>2015-10-17T10:42:55Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>BDTbias.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-12T20:50:15Z</date>
+			<date>2015-10-17T18:52:55Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>run2projplots/test2d.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-13T07:39:34Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2015-10-16T13:03:09Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>forOlya.C</string>
 			<key>lastUsed</key>
 			<date>2015-10-13T07:39:34Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>cutflow.C</string>
+			<key>lastUsed</key>
+			<date>2015-10-21T22:01:58Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>copyPaperFigs.sh</string>
+			<key>lastUsed</key>
+			<date>2015-10-21T22:01:58Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -162,14 +180,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>20</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>7</integer>
+				<integer>6</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>412</integer>
+			<integer>0</integer>
 		</dict>
 		<key>NTUPanalysis.C</key>
 		<dict>
@@ -206,14 +224,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>20</integer>
+				<integer>50</integer>
 				<key>line</key>
-				<integer>279</integer>
+				<integer>141</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>270</integer>
+			<integer>118</integer>
 		</dict>
 		<key>allFitSystAuto.h</key>
 		<dict>
@@ -234,14 +252,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>68</integer>
+				<integer>53</integer>
 				<key>line</key>
-				<integer>116</integer>
+				<integer>1</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>83</integer>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>5</integer>
+				<key>line</key>
+				<integer>1</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>53</integer>
+				<key>line</key>
+				<integer>1</integer>
+			</dict>
 		</dict>
 		<key>const.h</key>
 		<dict>
@@ -273,19 +307,79 @@
 				<integer>15</integer>
 			</dict>
 		</dict>
+		<key>copyPaperFigs.sh</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>118</integer>
+				<key>line</key>
+				<integer>3</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>3</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>118</integer>
+				<key>line</key>
+				<integer>3</integer>
+			</dict>
+		</dict>
 		<key>count.h</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>105</integer>
+				<integer>14</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+		</dict>
+		<key>cutflow.C</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>314</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>91</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>314</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>314</integer>
+			</dict>
 		</dict>
 		<key>forOlya.C</key>
 		<dict>
@@ -315,11 +409,11 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>430</integer>
+			<integer>2</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>45</integer>
+				<integer>38</integer>
 				<key>line</key>
 				<integer>454</integer>
 			</dict>
@@ -415,7 +509,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>105</integer>
+			<integer>40</integer>
 		</dict>
 		<key>readmvaout.C</key>
 		<dict>
@@ -452,28 +546,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>21</integer>
+				<integer>99</integer>
 				<key>line</key>
-				<integer>10</integer>
+				<integer>923</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>911</integer>
 		</dict>
 		<key>run2projplots/test2d.C</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>90</integer>
+				<integer>35</integer>
 				<key>line</key>
-				<integer>178</integer>
+				<integer>23</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>156</integer>
+			<integer>5</integer>
 		</dict>
 		<key>select.h</key>
 		<dict>
@@ -517,6 +611,20 @@
 			<key>firstVisibleLine</key>
 			<integer>54</integer>
 		</dict>
+		<key>std.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
+				<integer>38</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>34</integer>
+		</dict>
 		<key>syst.C</key>
 		<dict>
 			<key>caret</key>
@@ -529,14 +637,14 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>246</integer>
 		</dict>
 		<key>tmvaClass.C</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>43</integer>
+				<integer>0</integer>
 				<key>line</key>
 				<integer>369</integer>
 			</dict>
@@ -556,7 +664,7 @@
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>43</integer>
+				<integer>0</integer>
 				<key>line</key>
 				<integer>369</integer>
 			</dict>
@@ -582,7 +690,7 @@
 				<key>column</key>
 				<integer>51</integer>
 				<key>line</key>
-				<integer>20</integer>
+				<integer>19</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -598,6 +706,7 @@
 		<string>getJetMETsyst.C</string>
 		<string>forOlya.C</string>
 		<string>count.h</string>
+		<string>std.h</string>
 		<string>BDTbias.C</string>
 		<string>jets.h</string>
 		<string>allFitSystAuto.h</string>
@@ -605,6 +714,7 @@
 		<string>optimization2D.C</string>
 		<string>run2projplots/test2d.C</string>
 		<string>syst.C</string>
+		<string>cutflow.C</string>
 		<string>sidebandsBias.C</string>
 		<string>const.h</string>
 		<string>tmvaClass.C</string>
@@ -613,6 +723,7 @@
 		<string>NTUPanalysis.C</string>
 		<string>postBDTcuts.h</string>
 		<string>replotBDTvars.C</string>
+		<string>copyPaperFigs.sh</string>
 		<string>type.h</string>
 		<string>select.h</string>
 		<string>sidebandsDef.C</string>

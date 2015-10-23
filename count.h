@@ -5,6 +5,8 @@
 #include "std.h"
 #include "type.h"
 
+static const bool doLocalCuts = true;
+
 TMapTSui counters;
 TMapTSTS counters_label;
 TMapTSf  counters_weighted;
@@ -48,7 +50,6 @@ void initCounters(bool doMVA, bool doMVAout, bool isBlinded)
 	*/
 	
 	
-	
 	//// event preselection
 	addCounter("nPassing_evt_all",           0, "All - after skim2");
 	addCounter("nPassing_evt_trigger",       1, "Trigger - after skim2");
@@ -65,45 +66,54 @@ void initCounters(bool doMVA, bool doMVAout, bool isBlinded)
 	addCounter("nPassing_mu_trkquality", 26, "\\tpa track-fit $\\pvalue>0.01$|LINE");
 	
 	//// triplet cuts
-//	addCounter("nPassing_3body_trksprobLoose",     50, "3body track fit probability poduct $\\mathcal{P}>10^{-9}$ (loose)");
-	//////addCounter("nPassing_3body_pvalueLoose", 51, "3body vertex fit $\\pvalue>10^{-6}$ (loose)");
-//  addCounter("nPassing_3body_vtxcleanLoose",     52, "3body vertex geometry (loose)");
-	//////addCounter("nPassing_3body_m",           53, "$\\mthreebody<4$~GeV");
-//	addCounter("nPassing_3body_ptLoose",           54, "$\\pTthreebody>10$~GeV (loose)");
-	addCounter("nPassing_3body_charge",            55, "$|\\Sigma Q_{3{\\rm body}}|=1$");
-//	addCounter("nPassing_3body_m2body",            56, "$m_{2{\\rm body}}>220$~MeV|LINE");
-	//////addCounter("nPassing_3body_dalitz",      57, "Peripheral Dalitz cut ($\\mSS^{2}$ vs $\\mOS^{2}$)|LINE");
+	addCounter("nPassing_3body_charge", 50, "$|\\Sigma Q_{3{\\rm body}}|=1|LINE$");
+	addCounter("nPassing_3body_mass",   51, "$\\mthreebody<5$~GeV");
 
-	//// W-oriented cuts
-//	addCounter("nPassing_3body_isolationLoose",   70, "3body track isolation (loose)");
-//	addCounter("nPassing_met_metLoose",           71, "$\\etmis>10$~GeV (loose)");
-//	addCounter("nPassing_met_mTLoose",            72, "$\\mT>20$~GeV (loose)|LINE");
-	//////addCounter("nPassing_ht_htLoose",       73);
-	//////addCounter("nPassing_ht_mhTLoose",      74, "$\\mhT>20$~GeV (loose)|LINE");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_TrainingInc", 60, "Training+SB+Blinded: \\TrainingRegion~MeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_m2body",      61, "$\\mOSa>220$~MeV, $\\mOSb>220$~MeV and $\\mSS>220$~MeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_Ptrks",       62, "$\\ptrks>10^{-9}$");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_SLxy",        63, "$-10<\\SLxy<50$");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_Sa0xy",       64, "$\\Sazeroxy<25$");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_pT",          65, "$\\pTthreebody>10$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_metcal",      66, "$10<\\calomet<250$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_mettrk",      67, "$10<\\trackmet<250$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_mtcal",       68, "$\\mTcalo>20$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_mttrk",       69, "$\\mTtrack>20$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_iso20",       70, "$\\isoTwenty<0.3$");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_loose_iso30",       71, "$\\isoThirty<1$|LINE");
 	
-	//// cuts mode ?
-	// if(!doMVA) addCounter("nPassing_jets_bjetveto_std", 100);
-	// if(!doMVA) addCounter("nPassing_jets_coljetveto",   101, "Collinear jet veto (tight)");
-	if(!doMVA) addCounter("nPassing_3body_pt",          102, "$p_T^{3{\\rm body}}>25$~GeV (tight)");
-	if(!doMVA) addCounter("nPassing_3body_pvalue",      103, "3body vertex fit $\\pvalue>0.1$ (tight)");
-	if(!doMVA) addCounter("nPassing_3body_vtxclean",    104, "3body vertex geometry wrt PV (tight)");
-	if(!doMVA) addCounter("nPassing_3body_isolation",   105, "3body track isolation (tight)");
-	if(!doMVA) addCounter("nPassing_met_MET",           106, "Calo \\& Track $\\etmis>15$~GeV (tight)");
-	if(!doMVA) addCounter("nPassing_met_dphi3bodyMET",  107, "Calo \\& Track $\\dphithreebodymet>2$");
-	if(!doMVA) addCounter("nPassing_met_mT",            108, "Calo \\& Track $\\mT>60$~GeV (tight)");
-	if(!doMVA) addCounter("nPassing_met_dphiCalTrk",    109, "$\\dphimets<1.5$");
-	if(!doMVA) addCounter("nPassing_ht_ht",             110, "$\\HT>25$~GeV");
-	if(!doMVA) addCounter("nPassing_ht_dphihtMET",      111, "Calo \\& Track $\\Delta\\phi(\\HT,\\etmis)>2$");
-	if(!doMVA) addCounter("nPassing_ht_mhT",            112, "Calo \\& Track $\\mhT>60$~GeV (tight)");
-	if(!doMVA) addCounter("nPassing_ht_dr3body",        113, "$\\dRHThreeBody<1.5$|LINE");
+	if(doLocalCuts && doMVA && !doMVAout && isBlinded)  addCounter("nPassing_tight_SB",          81, "SB: \\SidebandLeftBrackets+\\SidebandRightBrackets~MeV");
+	if(doLocalCuts && doMVA && !doMVAout && !isBlinded) addCounter("nPassing_tight_SB",          81, "SB: \\SidebandsRegion~MeV");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_m2body",      82, "$\\mOSa>300$~MeV, $\\mOSb>300$~MeV and $\\mSS>300$~MeV");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_Ptrks",       83, "$\\ptrks>8\\times 10^{-9}$");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_SLxy",        84, "$1<\\SLxy<50$");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_mtcal",       85, "$\\mTcalo>45$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_mttrk",       86, "$\\mTtrack>45$~GeV");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_pvalue",      87, "$\\pvalue>0.2$");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_dphiHTcal",   88, "$\\dphiHmetcalo>2$");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_dphiHTtrk",   89, "$\\dphiHmettrack>2$");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_rhoomegaphi", 90, "\\rhoomega and $\\phi$ veto");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_Ds",          91, "\\Ds veto|LINE");
+	if(doLocalCuts && doMVA && !doMVAout)               addCounter("nPassing_tight_SR",          92, "SR: \\SignalRegion~MeV|LINE");
+	                                                   
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_BDT_x0",            200, "BDT score $x>\\xzrovalue$|LINE");
+	if(doLocalCuts && doMVA && !doMVAout) addCounter("nPassing_BDT_x1",            201, "BDT score $x>\\xoptvalue$|LINE");
 	
-	if(doMVA && !doMVAout) addCounter("nPassing_optMVA",  300, "MVA score $>\\optimalscorecut$|LINE");
+	// //// cuts mode ?
+	// if(!doMVA) addCounter("nPassing_3body_pt",          102, "$p_T^{3{\\rm body}}>25$~GeV (tight)");
+	// if(!doMVA) addCounter("nPassing_3body_pvalue",      103, "3body vertex fit $\\pvalue>0.1$ (tight)");
+	// if(!doMVA) addCounter("nPassing_3body_vtxclean",    104, "3body vertex geometry wrt PV (tight)");
+	// if(!doMVA) addCounter("nPassing_3body_isolation",   105, "3body track isolation (tight)");
+	// if(!doMVA) addCounter("nPassing_met_MET",           106, "Calo \\& Track $\\etmis>15$~GeV (tight)");
+	// if(!doMVA) addCounter("nPassing_met_dphi3bodyMET",  107, "Calo \\& Track $\\dphithreebodymet>2$");
+	// if(!doMVA) addCounter("nPassing_met_mT",            108, "Calo \\& Track $\\mT>60$~GeV (tight)");
+	// if(!doMVA) addCounter("nPassing_met_dphiCalTrk",    109, "$\\dphimets<1.5$");
+	// if(!doMVA) addCounter("nPassing_ht_ht",             110, "$\\HT>25$~GeV");
+	// if(!doMVA) addCounter("nPassing_ht_dphihtMET",      111, "Calo \\& Track $\\Delta\\phi(\\HT,\\etmis)>2$");
+	// if(!doMVA) addCounter("nPassing_ht_mhT",            112, "Calo \\& Track $\\mhT>60$~GeV (tight)");
+	// if(!doMVA) addCounter("nPassing_ht_dr3body",        113, "$\\dRHThreeBody<1.5$|LINE");
 	
-	//// Everything eventually need to have only one candidate at the end of the selsction
-	if(!doMVAout)              addCounter("nPassing_3body_sidebands",   400, "Sidebands: \\mthreebody in \\SidebandsRegion~MeV");
-	if(!doMVAout && isBlinded) addCounter("nPassing_3body_blinded",     401, "Blinded: \\mthreebody in \\BlindedRegion~MeV");
-	// if(!doMVAout)              addCounter("nPassing_evt_rhoomegaphi",   402, "$\\rhoomega,\\phi$ removal: $\\left|\\mOS-m_{\\rho/\\omega/\\phi}\\right|<30$~MeV");
-	// if(!doMVAout)              addCounter("nPassing_evt_onecandidate",  403, "Exactly one candidate per event|LINE");
+
 
 	/////////////////////////////////////
 	/// other counters (have order<0) ///
