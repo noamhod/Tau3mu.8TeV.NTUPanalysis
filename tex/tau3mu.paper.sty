@@ -1,0 +1,192 @@
+\ProvidesPackage{tau3mu.paper}[07/06/2015]
+\RequirePackage{xspace}
+% \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\def\vrb#1{\texttt{\detokenize{#1}}}
+%%%
+\newcommand{\Sec}[3]{\section{\texorpdfstring{#1}{#2}}\label{#3}}
+\newcommand{\Subsec}[3]{\subsection{\texorpdfstring{#1}{#2}}\label{#3}}
+\newcommand{\Subsubsec}[3]{\subsubsection{\texorpdfstring{#1}{#2}}\label{#3}}
+%%%
+\def\ifb{fb\ensuremath{^{-1}}\xspace}
+\def\ipb{pb\ensuremath{^{-1}}\xspace}
+\def\inb{nb\ensuremath{^{-1}}\xspace}
+%%%
+\newcommand{\lumiXifb}[1]{#1~\ifb}
+%%%
+\def\runii{Run~{\rm II}\xspace}
+\def\runi{Run~{\rm I}\xspace}
+%%%
+\def\signalscale{500\xspace}
+%%%
+\def\mm{\ensuremath{2\mu}\xspace}
+\def\mmm{\ensuremath{3\mu}\xspace}
+\def\tpa{\ensuremath{{\rm TPa}}\xspace}
+\def\tmmm{\ensuremath{\tau\to 3\mu}\xspace}
+\def\tmmmb{\ensuremath{\boldsymbol{\tau\to 3\mu}}\xspace}
+\def\tmmmlong{\ensuremath{\tau\longrightarrow 3\mu}\xspace}
+\def\tmmmblong{\ensuremath{\boldsymbol{\tau\longrightarrow 3\mu}}\xspace}
+\def\BRtmmm{\ensuremath{{\rm Br}(\tmmm)}\xspace}
+\def\Wtn{\ensuremath{W\to\tau\nu}\xspace}
+\def\Wtnmmm{\ensuremath{W\to\tau\nu\to 3\mu\nu}\xspace}
+\def\Wtnlong{\ensuremath{W\longrightarrow\tau\nu}\xspace}
+
+\def\Wmn{\ensuremath{W\to\mu\nu}\xspace}
+\def\Wmnlong{\ensuremath{W\longrightarrow\mu\nu}\xspace}
+\def\Zmm{\ensuremath{Z\to\mu\mu}\xspace}
+\def\Zmmlong{\ensuremath{Z\longrightarrow\mu\mu}\xspace}
+\def\ttbar{\ensuremath{t\bar t}\xspace}
+
+
+\def\HFxt{\ensuremath{{\rm HF}\to X\tau}\xspace}
+\def\HFxtmmm{\ensuremath{{\rm HF}\to X\tau\to 3\mu}\xspace}
+\def\HFxtmmmlong{\ensuremath{{\rm HF}\longrightarrow X\tau\longrightarrow 3\mu}\xspace}
+%%%
+\def\acc{\ensuremath{\mathcal{A}_{\rm s}}\xspace}
+\def\eff{\ensuremath{\epsilon_{\rm s}}\xspace}
+\def\acceff{\ensuremath{\mathcal{A}_{\rm s}\times\epsilon_{\rm s}}\xspace}
+%%%
+\def\mtwobody{\ensuremath{m_{\rm 2body}}\xspace}
+\def\mOS{\ensuremath{m_{\rm OS}}\xspace}
+\def\mOSsq{\ensuremath{m_{\rm OS}^2}\xspace}
+\def\mOSa{\ensuremath{m_{\rm OS1}}\xspace}
+\def\mOSasq{\ensuremath{m_{\rm OS1}^2}\xspace}
+\def\mOSb{\ensuremath{m_{\rm OS2}}\xspace}
+\def\mOSbsq{\ensuremath{m_{\rm OS2}^2}\xspace}
+\def\mOSi{\ensuremath{m_{\rm OSi}}\xspace}
+\def\mOSisq{\ensuremath{m_{\rm OSi}^2}\xspace}
+\def\mSS{\ensuremath{m_{\rm SS}}\xspace}
+\def\mSSsq{\ensuremath{m_{\rm SS}^2}\xspace}
+\def\qthreebody{\ensuremath{Q_{\rm 3body}}\xspace}
+\def\mthreebody{\ensuremath{m_{\rm 3body}}\xspace}
+\def\pTthreebody{\ensuremath{p_{\rm T}^{\rm 3body}}\xspace}
+\def\mT{\ensuremath{m_{\rm T}(\pTthreebody,\etmis)}\xspace}
+% \def\mTcalo{\ensuremath{m_{\rm T}(\pTthreebody,\caloetmis)}\xspace}
+\def\mTcalo{\ensuremath{m_{\rm T}^{\rm cal}}\xspace}
+% \def\mTtrack{\ensuremath{m_{\rm T}(\pTthreebody,\tracketmis)}\xspace}
+\def\mTtrack{\ensuremath{m_{\rm T}^{\rm trk}}\xspace}
+\def\dphithreebodymet{\ensuremath{\Delta\phi({\rm 3body},\etmis)}\xspace}
+% \def\dphithreebodymetcalo{\ensuremath{\Delta\phi({\rm 3body}, \caloetmis)}\xspace}
+\def\dphithreebodymetcalo{\ensuremath{\Delta\phi_{\rm 3body}^{\rm cal}}\xspace}
+% \def\dphithreebodymettrack{\ensuremath{\Delta\phi({\rm 3body}, \tracketmis)}\xspace}
+\def\dphithreebodymettrack{\ensuremath{\Delta\phi_{\rm 3body}^{\rm trk}}\xspace}
+\def\dRmax{\ensuremath{\Delta R^{\rm 3body}_{\rm max}}\xspace}
+\def\dRmin{\ensuremath{\Delta R^{\rm 3body}_{\rm min}}\xspace}
+\def\dR{\ensuremath{\Delta R}\xspace}
+\def\effTOT{\ensuremath{\epsilon_{\text{TOT}}}\xspace}
+\def\effITK{\ensuremath{\epsilon_{\text{ITK}}}\xspace}
+\def\effMS{\ensuremath{\epsilon_{\text{MS}}}\xspace}
+%%%
+\def\pTmu{\ensuremath{p_{\rm T}^\mu}\xspace}
+\def\njets{\ensuremath{N_{\rm jets}}\xspace}
+\def\pTjet{\ensuremath{p_{\rm T}^{\rm jet}}\xspace}
+%%%
+\def\vThreeBody{\ensuremath{\vec{p}_{\rm 3body}}\xspace}
+\def\vH{\ensuremath{\vec{H}}\xspace}
+\def\HT{\ensuremath{H_{\rm T}}\xspace}
+\def\mhT{\ensuremath{m_{\rm T}(\HT,\etmis)}\xspace}
+% \def\mhTcalo{\ensuremath{m_T(\HT,\caloetmis)}\xspace}
+\def\mhTcalo{\ensuremath{m_{\HT}^{\rm cal}}\xspace}
+% \def\mhTtrack{\ensuremath{m_T(\HT,\tracketmis)}\xspace}
+\def\mhTtrack{\ensuremath{m_{\HT}^{\rm trk}}\xspace}
+\def\dphiHmet{\ensuremath{\Delta\phi(\HT,\etmis)}\xspace}
+% \def\dphiHmetcalo{\ensuremath{\Delta\phi(\HT, \caloetmis)}\xspace}
+\def\dphiHmetcalo{\ensuremath{\Delta\phi_{\HT}^{\rm cal}}\xspace}
+% \def\dphiHmettrack{\ensuremath{\Delta\phi(\HT, \tracketmis)}\xspace}
+\def\dphiHmettrack{\ensuremath{\Delta\phi_{\HT}^{\rm trk}}\xspace}
+% \def\dphimets{\ensuremath{\Delta\phi(\caloetmis, \tracketmis)}\xspace}
+\def\dphimets{\ensuremath{\Delta\phi_{\rm trk}^{\rm cal}}\xspace}
+\def\dRHThreeBody{\ensuremath{\Delta R(\vec{H}, \vec{p}_{\rm 3body})}\xspace}
+%%%
+\def\isomarginsused{\ensuremath{0.03}\xspace}
+\def\isoconeused{\ensuremath{{\rm Cone}_{\isomarginsused}}\xspace}
+\def\isolationused{\ensuremath{{\rm Isolation}\left(\isoconeused\right)}\xspace}
+\def\maxpbalsig{\ensuremath{\sigma_{p{\rm -balance}}^{\rm max}}\xspace}
+\def\isoTwenty{\ensuremath{\Sigma p_T^{\rm trk}(\dRmax+0.20)/\pTthreebody}\xspace}
+\def\isoThirty{\ensuremath{\Sigma p_T^{\rm trk}(\dRmax+0.30)/\pTthreebody}\xspace}
+%%%
+\def\mus{\ensuremath{\mu_{\rm s}}\xspace}
+\def\musUL{\ensuremath{\mu_{\rm s}^{\rm UL}}\xspace}
+\def\Nsig{\ensuremath{N_{\rm s}}\xspace}
+\def\NsUL{\ensuremath{N_{\rm s}^{\rm UL}}\xspace}
+\def\Nbkg{\ensuremath{N_{\rm b}}\xspace}
+\def\NbkgZero{\ensuremath{N_{\rm b}(x_0)}\xspace}
+\def\NbkgOne{\ensuremath{N_{\rm b}(x_1)}\xspace}
+\def\NbkgOpt{\ensuremath{N_{\rm b}(x_{\rm opt})}\xspace}
+\def\Nobs{\ensuremath{N_{\rm o}}\xspace}
+\def\NsbZero{\ensuremath{N_{\rm SB}(x_0)}\xspace}
+\def\NsbOne{\ensuremath{N_{\rm SB}(x_1)}\xspace}
+\def\CF{\ensuremath{C_{\rm F}}\xspace}
+\def\RF{\ensuremath{\mathcal{R}}\xspace}
+%%%
+\def\NWtn{\ensuremath{N_{\Wtn}}\xspace}
+\def\Nt{\ensuremath{N_{\tau}}\xspace}
+\def\Nm{\ensuremath{N_{\mu}}\xspace}
+%%%
+\def\pt{\ensuremath{p_{\rm T}}\xspace}
+\def\pT{\ensuremath{p_{\rm T}}\xspace}
+\def\et{\ensuremath{E_{\rm T}}\xspace}
+\def\eT{\ensuremath{E_{\rm T}}\xspace}
+\def\etmis{\ensuremath{E_{\rm T}^{\rm miss}}\xspace}
+\def\etmiss{\ensuremath{E_{\rm T}^{\rm miss}}\xspace}
+% \def\caloetmis{\ensuremath{{\rm Calo}\etmis}\xspace}
+% \def\caloetmis{\ensuremath{E_{\rm T}^{\rm miss,cal}}\xspace}
+\def\caloetmis{\ensuremath{E_{\rm T,cal}^{\rm miss}}\xspace}
+% \def\tracketmis{\ensuremath{{\rm Track}\etmis}\xspace}
+% \def\tracketmis{\ensuremath{E_{\rm T}^{\rm miss,trk}}\xspace}
+\def\tracketmis{\ensuremath{E_{\rm T,trk}^{\rm miss}}\xspace}
+\def\caloetmiss{\ensuremath{\caloetmis}\xspace}
+\def\tracketmiss{\ensuremath{\tracketmis}\xspace}
+\def\met{\ensuremath{\etmis}\xspace}
+\def\calomet{\ensuremath{\caloetmis}\xspace}
+\def\trackmet{\ensuremath{\tracketmis}\xspace}
+%%%
+\def\Ds{\ensuremath{D_{\rm s}}\xspace}
+\def\mDs{\ensuremath{m_{D_{\rm s}}}\xspace}
+\def\Jpsi{\ensuremath{J/\psi}\xspace}
+\def\mJpsi{\ensuremath{m_{J/\psi}}\xspace}
+\def\rhoomega{\ensuremath{\rho/\omega}\xspace}
+\def\mrho{\ensuremath{m_\rho}\xspace}
+\def\momega{\ensuremath{m_\omega}\xspace}
+\def\mrhoomega{\ensuremath{m_{\rho/\omega}}\xspace}
+\def\mphi{\ensuremath{m_\phi}\xspace}
+%%%
+\def\pythia{{\sc Pythia8}\xspace}
+%%%
+\def\Lxy{\ensuremath{L_{xy}}\xspace}
+\def\dLxy{\ensuremath{\Delta L_{xy}}\xspace}
+\def\SLxy{\ensuremath{S(L_{xy})}\xspace}
+\def\azeroxy{\ensuremath{a^{0}_{xy}}\xspace}
+\def\dazeroxy{\ensuremath{\Delta a^{0}_{xy}}\xspace}
+\def\Sazeroxy{\ensuremath{S(a^{0}_{xy})}\xspace}
+\def\costhetaxy{\ensuremath{\cos\theta_{xy}}\xspace}
+\def\dcosthetaxy{\ensuremath{\Delta\cos\theta_{xy}}\xspace}
+\def\pvalue{\ensuremath{p}{\rm -value}\xspace}
+\def\pvalues{\ensuremath{p}{\rm -values}\xspace}
+\def\pvaluenull{\ensuremath{p_0}{\rm -value}\xspace}
+\def\chisq{\ensuremath{\chi^2}\xspace}
+\def\ndof{\ensuremath{N_{\rm DOF}}\xspace}
+\def\chisqdof{\ensuremath{\chi^2/N_{\rm DOF}}\xspace}
+%%%
+\def\pvntrk{\ensuremath{N_{\rm trk}^{\rm PV}}\xspace}
+\def\ptrks{\ensuremath{\mathcal{P}_{\rm trks}}\xspace}
+%%%
+\DeclareRobustCommand{\SignalRegion}{\ensuremath{1713<\mthreebody<1841}\xspace}
+\DeclareRobustCommand{\BlindedRegion}{\ensuremath{1690<\mthreebody<1870}\xspace}
+\DeclareRobustCommand{\SidebandsRegion}{\ensuremath{1450<\mthreebody<2110}\xspace}
+\DeclareRobustCommand{\SidebandLeft}{\ensuremath{1450<\mthreebody<1690}\xspace}
+\DeclareRobustCommand{\SidebandRight}{\ensuremath{1870<\mthreebody<2110}\xspace}
+\DeclareRobustCommand{\TrainingRegion}{\ensuremath{750<\mthreebody<2500}\xspace}
+\DeclareRobustCommand{\TrainingLeft}{\ensuremath{750<\mthreebody<1450}\xspace}
+\DeclareRobustCommand{\TrainingRight}{\ensuremath{2110<\mthreebody<2500}\xspace}
+%%%
+\DeclareRobustCommand{\SignalRegionBrackets}{\ensuremath{[1713,1841]}\xspace}
+\DeclareRobustCommand{\BlindedRegionBrackets}{\ensuremath{[1690,1870]}\xspace}
+\DeclareRobustCommand{\SidebandsRegionBrackets}{\ensuremath{[1450,2110]}\xspace}
+\DeclareRobustCommand{\SidebandLeftBrackets}{\ensuremath{[1450,1690]}\xspace}
+\DeclareRobustCommand{\SidebandRightBrackets}{\ensuremath{[1870,2110]}\xspace}
+\DeclareRobustCommand{\TrainingRegionBrackets}{\ensuremath{[750,2500]}\xspace}
+\DeclareRobustCommand{\TrainingLeftBrackets}{\ensuremath{[750,1450]}\xspace}
+\DeclareRobustCommand{\TrainingRightBrackets}{\ensuremath{[2110,2500]}\xspace}
+%%%%
+\DeclareRobustCommand{\xzrovalue}{\ensuremath{-0.9}\xspace}
+\DeclareRobustCommand{\xoptvalue}{\ensuremath{0.933}\xspace}

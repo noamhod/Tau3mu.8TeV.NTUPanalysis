@@ -1,0 +1,241 @@
+\ProvidesPackage{tau3mu}[2014/09/09]
+\RequirePackage{xspace}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\def\vrb#1{\texttt{\detokenize{#1}}}
+
+\newcommand{\Sec}[3]{\section{\texorpdfstring{#1}{#2}}\label{#3}}
+\newcommand{\Subsec}[3]{\subsection{\texorpdfstring{#1}{#2}}\label{#3}}
+\newcommand{\Subsubsec}[3]{\subsubsection{\texorpdfstring{#1}{#2}}\label{#3}}
+%%%
+\def\ifb{fb\ensuremath{^{-1}}\xspace}
+\def\ipb{pb\ensuremath{^{-1}}\xspace}
+\def\inb{nb\ensuremath{^{-1}}\xspace}
+%%%
+\newcommand{\mahogany}[1]{{\color{Mahogany}#1}}
+\newcommand{\bmahogany}[1]{{\color{Mahogany}{\bf #1}}}
+\newcommand{\imahogany}[1]{{\color{Mahogany}{\it #1}}}
+\newcommand{\white}[1]{{\color{white}#1}}
+\newcommand{\bwhite}[1]{{\color{white}{\bf #1}}}
+\newcommand{\iwhite}[1]{{\color{white}{\it #1}}}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\bred}[1]{{\color{red}{\bf #1}}}
+\newcommand{\ired}[1]{{\color{red}{\it #1}}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\bblue}[1]{{\color{blue}{\bf #1}}}
+\newcommand{\iblue}[1]{{\color{blue}{\it #1}}}
+\newcommand{\gray}[1]{{\color{gray}#1}}
+\newcommand{\bgray}[1]{{\color{gray}{\bf #1}}}
+\newcommand{\igray}[1]{{\color{gray}{\it #1}}}
+\newcommand{\link}[1]{\href{#1}{#1}}
+\newcommand{\lumiXifb}[1]{#1~\ifb}
+%%%
+\def\jetcollection{\vrb{AntiKt4LCTopoJets}\xspace}
+\def\CaloMETCollection{\vrb{MET_RefFinal}\xspace}
+\def\TrackMETCollection{\vrb{MET_Track}\xspace}
+%%%
+\def\runii{Run~{\rm II}\xspace}
+\def\runi{Run~{\rm I}\xspace}
+\def\bphys{{\it B}-physics\xspace}
+\def\tp{{\rm TrackParticle}\xspace}
+\def\tps{{\rm TrackParticles}\xspace}
+\def\tpa{{\rm TPa}\xspace}
+\def\tpas{{\rm TPa's}\xspace}
+\def\tpb{{\rm TPb}\xspace}
+\def\tpbs{{\rm TPb's}\xspace}
+\def\calo{{\rm CaloMu}\xspace}
+\def\calos{{\rm CaloMuons}\xspace}
+%%%
+\def\signalscale{500\xspace}
+%%%
+\def\mm{\ensuremath{2\mu}\xspace}
+\def\mmm{\ensuremath{3\mu}\xspace}
+\def\tmmm{\ensuremath{\tau\to 3\mu}\xspace}
+\def\tmmmlong{\ensuremath{\tau\longrightarrow 3\mu}\xspace}
+\def\BRtmmm{\ensuremath{{\rm Br}(\tmmm)}\xspace}
+\def\Wnt{\ensuremath{W\to\nu\tau}\xspace}
+\def\Wtn{\ensuremath{W\to\tau\nu}\xspace}
+\def\Wntmmm{\ensuremath{W\to\nu\tau\to 3\mu}\xspace}
+\def\Wntlong{\ensuremath{W\longrightarrow\nu\tau}\xspace}
+\def\HFxt{\ensuremath{{\rm HF}\to X\tau}\xspace}
+\def\HFxtmmm{\ensuremath{{\rm HF}\to X\tau\to 3\mu}\xspace}
+\def\HFxtmmmlong{\ensuremath{{\rm HF}\longrightarrow X\tau\longrightarrow 3\mu}\xspace}
+\def\bbxt{\ensuremath{bb\to X\tau}\xspace}
+\def\bbxtmmm{\ensuremath{bb\to X\tau\to 3\mu}\xspace}
+\def\bbxtmmmlong{\ensuremath{bb\longrightarrow X\tau\longrightarrow 3\mu}\xspace}
+\def\ccxt{\ensuremath{cc\to X\tau}\xspace}
+\def\ccxtmmm{\ensuremath{cc\to X\tau\to 3\mu}\xspace}
+\def\ccxtmmmlong{\ensuremath{cc\longrightarrow X\tau\longrightarrow 3\mu}\xspace}
+\def\bbxm{\ensuremath{bb\to X\mu}\xspace}
+\def\ccxm{\ensuremath{cc\to X\mu}\xspace}
+%%%
+\def\bbxmmpt{\ensuremath{bb\to X\mu 4\mu4}\xspace}
+\def\bbxmpt{\ensuremath{bb\to X\mu 15}\xspace}
+\def\ccxmpt{\ensuremath{cc\to X\mu 15}\xspace}
+\def\jpsimm{\ensuremath{bb\to J/\psi\to \mu 4\mu 4}\xspace}
+\def\dijetx{\ensuremath{jj\to X}\xspace}
+\def\Wntjets{\ensuremath{W\to \nu\tau +jets}\xspace}
+\def\Wnmjets{\ensuremath{W\to \nu\mu +jets}\xspace}
+\def\Zmmjets{\ensuremath{Z\to \mu\mu +jets}\xspace}
+\def\Wnm{\ensuremath{W\to \nu\mu}\xspace}
+%%%
+\def\acc{\ensuremath{\mathcal{A}_{\rm s}}\xspace}
+\def\eff{\ensuremath{\epsilon_{\rm s}}\xspace}
+\def\acceff{\ensuremath{\mathcal{A}_{\rm s}\times\epsilon_{\rm s}}\xspace}
+\def\kf{\ensuremath{k_{\rm F}}\xspace}
+\def\kfactor{\ensuremath{k}-factor\xspace}
+%%%
+\def\mtwobody{\ensuremath{m_{\rm 2body}}\xspace}
+\def\mOS{\ensuremath{m_{\rm OS}}\xspace}
+\def\mOSsq{\ensuremath{m_{\rm OS}^2}\xspace}
+\def\mOSa{\ensuremath{m_{\rm OS1}}\xspace}
+\def\mOSasq{\ensuremath{m_{\rm OS1}^2}\xspace}
+\def\mOSb{\ensuremath{m_{\rm OS2}}\xspace}
+\def\mOSbsq{\ensuremath{m_{\rm OS2}^2}\xspace}
+\def\mSS{\ensuremath{m_{\rm SS}}\xspace}
+\def\mSSsq{\ensuremath{m_{\rm SS}^2}\xspace}
+\def\qthreebody{\ensuremath{Q_{\rm 3body}}\xspace}
+\def\mthreebody{\ensuremath{m_{\rm 3body}}\xspace}
+\def\pTthreebody{\ensuremath{p_T^{\rm 3body}}\xspace}
+\def\mT{\ensuremath{m_T({\rm 3body},\etmis)}\xspace}
+\def\mTcalo{\ensuremath{m_T({\rm 3body},{\rm Calo} \etmis)}\xspace}
+\def\mTtrack{\ensuremath{m_T({\rm 3body},{\rm Track} \etmis)}\xspace}
+\def\dphithreebodymet{\ensuremath{\Delta\phi({\rm 3body}, E_T^{\rm miss})}\xspace}
+\def\dphithreebodymetcalo{\ensuremath{\Delta\phi({\rm 3body}, {\rm Calo} E_T^{\rm miss})}\xspace}
+\def\dphithreebodymettrack{\ensuremath{\Delta\phi({\rm 3body}, {\rm Track} E_T^{\rm miss})}\xspace}
+\def\dRmax{\ensuremath{\Delta R^{\rm 3body}_{\rm max}}\xspace}
+\def\dRmin{\ensuremath{\Delta R^{\rm 3body}_{\rm min}}\xspace}
+\def\dR{\ensuremath{\Delta R}\xspace}
+\def\effTOT{\ensuremath{\epsilon_{\text{TOT}}}\xspace}
+\def\effITK{\ensuremath{\epsilon_{\text{ITK}}}\xspace}
+\def\effMS{\ensuremath{\epsilon_{\text{MS}}}\xspace}
+%%%
+\def\pTmu{\ensuremath{p_T^\mu}\xspace}
+\def\pTjet{\ensuremath{p_T^{\rm jet}}\xspace}
+\def\pTbjet{\ensuremath{p_T^{b{\rm -jet}}}\xspace}
+\def\pTjetone{\ensuremath{p_T({\rm jet}_1)}\xspace}
+\def\pTjettwo{\ensuremath{p_T({\rm jet}_2)}\xspace}
+\def\mjet{\ensuremath{m_{\rm jet}}\xspace}
+\def\mjetone{\ensuremath{m({\rm jet}_1)}\xspace}
+\def\mjettwo{\ensuremath{m({\rm jet}_2)}\xspace}
+\def\mvone{\ensuremath{{\rm MV1}}\xspace}
+\def\dphithreebodyjet{\ensuremath{\Delta\phi({\rm 3body},{\rm jet}_1)}\xspace}
+\def\dphidijet{\ensuremath{\Delta\phi({\rm jet}_1,{\rm jet}_2)}\xspace}
+%%%
+\def\vThreBody{\ensuremath{\vec{p}_{\rm 3body}}\xspace}
+\def\vH{\ensuremath{\vec{H}}\xspace}
+\def\HT{\ensuremath{H_T}\xspace}
+\def\mhT{\ensuremath{m_T(H, E_T^{\rm miss})}\xspace}
+\def\mhTcalo{\ensuremath{m_T(H,{\rm Calo} E_T^{\rm miss})}\xspace}
+\def\mhTtrack{\ensuremath{m_T(H,{\rm Track} E_T^{\rm miss})}\xspace}
+\def\dphiHmet{\ensuremath{\Delta\phi(H, E_T^{\rm miss})}\xspace}
+\def\dphiHmetcalo{\ensuremath{\Delta\phi(H, {\rm Calo} E_T^{\rm miss})}\xspace}
+\def\dphiHmettrack{\ensuremath{\Delta\phi(H, {\rm Track} E_T^{\rm miss})}\xspace}
+\def\dphimets{\ensuremath{\Delta\phi({\rm Calo} E_T^{\rm miss}, {\rm Track} E_T^{\rm miss})}\xspace}
+\def\dRHThreeBody{\ensuremath{\Delta R(H, {\rm 3body})}\xspace}
+%%%
+\def\isomarginsused{\ensuremath{0.03}\xspace}
+\def\isoconeused{\ensuremath{{\rm Cone}_{\isomarginsused}}\xspace}
+\def\isolationused{\ensuremath{{\rm Isolation}\left(\isoconeused\right)}\xspace}
+%%%
+\def\mus{\ensuremath{\mu_{\rm s}}\xspace}
+\def\musStat{\ensuremath{\Delta\mu_{\rm s}(stat.)}\xspace}
+\def\musSyst{\ensuremath{\Delta\mu_{\rm s}(syst.)}\xspace}
+\def\musUL{\ensuremath{\mu_{\rm s}^{\rm UL}}\xspace}
+\def\Ns{\ensuremath{N_{\rm s}}\xspace}
+\def\NsUL{\ensuremath{N_{\rm s}^{\rm UL}}\xspace}
+\def\NbExp{\ensuremath{N_{\rm b}^{\rm exp}}\xspace}
+\def\NbExpStat{\ensuremath{\Delta N_{\rm b}^{\rm exp}(stat.)}\xspace}
+\def\NbExpSyst{\ensuremath{\Delta N_{\rm b}^{\rm exp}(syst.)}\xspace}
+\def\NsMed{\ensuremath{N_{\rm s}^{\rm med}}\xspace}
+\def\NsMedOneSigma{\ensuremath{N_{\rm s}^{{\rm med}\pm 1\sigma}}\xspace}
+\def\NsMedTowSigma{\ensuremath{N_{\rm s}^{{\rm med}\pm 2\sigma}}\xspace}
+\def\Nobs{\ensuremath{N_{\rm obs}}\xspace}
+\def\NobsSR{\ensuremath{N_{\rm SR}^{\rm obs}}\xspace}
+\def\NobsSB{\ensuremath{N_{\rm SB}^{\rm obs}}\xspace}
+%%%
+\def\NWnt{\ensuremath{N_{\Wnt}}\xspace}
+\def\Nt{\ensuremath{N_{\tau}}\xspace}
+\def\Nm{\ensuremath{N_{\mu}}\xspace}
+%%%
+\def\pt{\ensuremath{p_T}\xspace}
+\def\pT{\ensuremath{p_T}\xspace}
+\def\et{\ensuremath{E_T}\xspace}
+\def\eT{\ensuremath{E_T}\xspace}
+\def\etmiss{\ensuremath{E_T^{\rm miss}}\xspace}
+\def\caloetmiss{\ensuremath{{\rm Calo} E_T^{\rm miss}}\xspace}
+\def\tracketmiss{\ensuremath{{\rm Track} E_T^{\rm miss}}\xspace}
+\def\etmis{\ensuremath{E_T^{\rm miss}}\xspace}
+\def\caloetmis{\ensuremath{{\rm Calo} E_T^{\rm miss}}\xspace}
+\def\tracketmis{\ensuremath{\rm Track} {E_T^{\rm miss}}\xspace}
+\def\met{\ensuremath{E_T^{\rm miss}}\xspace}
+\def\calomet{\ensuremath{{\rm Calo} E_T^{\rm miss}}\xspace}
+\def\trackmet{\ensuremath{{\rm Track} E_T^{\rm miss}}\xspace}
+%%%
+\def\Jpsi{\ensuremath{J/\psi}\xspace}
+\def\mJpsi{\ensuremath{m_{J/\psi}}\xspace}
+\def\rhoomega{\ensuremath{\rho/\omega}\xspace}
+\def\mrho{\ensuremath{m_\rho}\xspace}
+\def\momega{\ensuremath{m_\omega}\xspace}
+\def\mrhoomega{\ensuremath{m_{\rho/\omega}}\xspace}
+\def\mphi{\ensuremath{m_\phi}\xspace}
+%%%
+\def\pythia{{\sc Pythia8}\xspace}
+\def\pythiab{{\sc Pythia8B}\xspace}
+\def\alpgen{{\sc Alpgen}\xspace}
+\def\jimmy{{\sc Jimmy}\xspace}
+\def\alpgenjimmy{{\sc Alpgen+Jimmy}\xspace}
+%%%
+\def\Lxy{\ensuremath{L_{xy}}\xspace}
+\def\dLxy{\ensuremath{\Delta L_{xy}}\xspace}
+\def\azeroxy{\ensuremath{a^{0}_{xy}}\xspace}
+\def\dazeroxy{\ensuremath{\Delta a^{0}_{xy}}\xspace}
+\def\costhetaxy{\ensuremath{\cos\theta_{xy}}\xspace}
+\def\dcosthetaxy{\ensuremath{\Delta\cos\theta_{xy}}\xspace}
+\def\pvalue{\ensuremath{p}-value\xspace}
+\def\pvalues{\ensuremath{p}-values\xspace}
+\def\pvaluenull{\ensuremath{p_0}-value\xspace}
+\def\chisq{\ensuremath{\chi^2}\xspace}
+\def\ndof{\ensuremath{N_{\rm DOF}}\xspace}
+\def\chisqdof{\ensuremath{\chi^2/N_{\rm DOF}}\xspace}
+%%%
+\def\bjet{\ensuremath{b}-jet\xspace}
+\def\bjets{\ensuremath{b}-jets\xspace}
+\def\tjet{\ensuremath{t}-jet\xspace}
+\def\njets{\ensuremath{N_{\rm jets}}\xspace}
+%%%
+\def\pvntrk{\ensuremath{N_{\rm trk}^{\rm PV}}\xspace}
+%%%
+
+\def\CF{\ensuremath{C_{\rm F}}\xspace}
+% \def\fzeroone{\ensuremath{\mathcal{F}_{01}}\xspace}
+\def\fzeroone{\ensuremath{\mathpzc{f}_{01}}\xspace}
+\def\CRzero{\ensuremath{{\rm CR}_0}\xspace}
+\def\CRone{\ensuremath{{\rm CR}_1}\xspace}
+\def\SBzero{\ensuremath{{\rm SB}_0}\xspace}
+\def\SBone{\ensuremath{{\rm SB}_1}\xspace}
+\def\SRzero{\ensuremath{{\rm SR}_0}\xspace}
+\def\SRone{\ensuremath{{\rm SR}_1}\xspace}
+\def\nSB{\ensuremath{N_{\rm SB}}\xspace}
+\def\nSBzero{\ensuremath{N_{\rm SB0}}\xspace}
+\def\dnSBzero{\ensuremath{\Delta N_{\rm SB0}}\xspace}
+\def\nSBone{\ensuremath{N_{\rm SB1}}\xspace}
+\def\dnSBone{\ensuremath{\Delta N_{\rm SB1}}\xspace}
+\def\nSR{\ensuremath{N_{\rm SR}}\xspace}
+\def\dnSR{\ensuremath{\Delta N_{\rm SR}}\xspace}
+\def\nSRzero{\ensuremath{N_{\rm SR0}}\xspace}
+\def\dnSRzero{\ensuremath{\Delta N_{\rm SR0}}\xspace}
+\def\nSRone{\ensuremath{N_{\rm SR1}}\xspace}
+\def\dnSRone{\ensuremath{\Delta N_{\rm SR1}}\xspace}
+%%%
+\def\bdtshape{\ensuremath{\mathcal{B}}\xspace}
+\def\bdtZero{\ensuremath{\int\mathcal{B}_0}\xspace}
+\def\bdtOne{\ensuremath{\int\mathcal{B}_1}\xspace}
+
+% Environment to itemize with single spacing.
+\newenvironment{myitemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}

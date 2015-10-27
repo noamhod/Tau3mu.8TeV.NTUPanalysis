@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////
-//// root -b -l -q cutflow.C++\(\"muons\",\"cuts\"\) /////
+//// root -b -l -q cutflow.C++\(\"muons\",\"mva\"\) /////
 //////////////////////////////////////////////////////////
 
 #include "count.h"
@@ -51,13 +51,14 @@ void texheader()
 	
 	add("\\documentclass[xcolor=dvipsnames,table,final]{beamer}");
 	
-	add("\\newcommand{\\Sec}[3]{\\section{\\texorpdfstring{#1}{#2}}\\label{#3}}");
-	add("\\newcommand{\\Subsec}[3]{\\subsection{\\texorpdfstring{#1}{#2}}\\label{#3}}");
+	// add("\\newcommand{\\Sec}[3]{\\section{\\texorpdfstring{#1}{#2}}\\label{#3}}");
+	// add("\\newcommand{\\Subsec}[3]{\\subsection{\\texorpdfstring{#1}{#2}}\\label{#3}}");
 	add("\\def\\vrb#1{\\texttt{\\detokenize{#1}}}");
 	
 	add("\\RequirePackage{pgfcore}");
 	// add("\\pgfplotsset{compat=1.3}");
 
+	add("\\usepackage{tau3mu.paper}");
 	add("\\usepackage{lmodern}");
 	add("\\usepackage{graphicx}");
 	add("\\usepackage{tikz}");
@@ -303,7 +304,7 @@ void texbody(TString master)
 	add("\\hspace*{+1.5cm}");
 	add("\\begin{columns}");
 	add("\\column{12cm}");
-	table(histos1["skim3_Wtaunu_3mu_cutflow_absolute"],histos1["skim3_Data_cutflow_absolute"],histos1["skim3_bb_mu4mu4_cutflow_absolute"],"0.4",false);
+	table(histos1["skim3_Wtaunu_3mu_cutflow_absolute"],histos1["skim3_Data_cutflow_absolute"],histos1["skim3_bb_mu4mu4_cutflow_absolute"],"0.35",false);
 	add("\\end{columns}");
 	add("\\end{frame}");
 }

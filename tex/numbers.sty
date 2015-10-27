@@ -1,0 +1,205 @@
+\ProvidesPackage{numbers}[2014/16/07]
+
+\DeclareRobustCommand{\EnegSeven}{\ensuremath{0.0000001}\xspace}
+\DeclareRobustCommand{\EposEight}{\ensuremath{100000000}\xspace}
+
+%%%% BDT training
+\DeclareRobustCommand{\NcandidatesLooseDataSample}{\ensuremath{4343}\xspace}
+\DeclareRobustCommand{\NcandidatesLooseSignalSample}{\ensuremath{7974}\xspace}
+\DeclareRobustCommand{\NcandidatesTrainingData}{\ensuremath{3500}\xspace}
+\DeclareRobustCommand{\NcandidatesTrainingSignal}{\ensuremath{6400}\xspace}
+\DeclareRobustCommand{\NcandidatesTrainingFraction}{\ensuremath{0.8}\xspace}
+\DeclareRobustCommand{\NcandidatesTrainingPercentage}{\ensuremath{80\%}\xspace}
+
+%%% ranges
+\DeclareRobustCommand{\LowMassResonancesGausSigma}{\ensuremath{30}\xspace}
+\DeclareRobustCommand{\SignalGausSigma}{\ensuremath{31.72}\xspace}
+\DeclareRobustCommand{\SignalGausSigmaErr}{\ensuremath{0.26}\xspace}
+\DeclareRobustCommand{\ThreeBodyMassBinSize}{\ensuremath{30}\xspace}
+\DeclareRobustCommand{\SignalRegion}{\ensuremath{1713-1841}\xspace}
+\DeclareRobustCommand{\BlindedRegion}{\ensuremath{1690-1870}\xspace}
+\DeclareRobustCommand{\SidebandsRegion}{\ensuremath{1450-2290}\xspace}
+\DeclareRobustCommand{\TrainingRegion}{\ensuremath{1300-2320}\xspace}
+
+
+%%%% cut values
+% \DeclareRobustCommand{\mThTcut}{\ensuremath{}\xspace}
+\DeclareRobustCommand{\minimalscorecut}{\ensuremath{-0.9}\xspace}
+\DeclareRobustCommand{\minimalscorecutsyst}{\ensuremath{-0.8}\xspace}
+\DeclareRobustCommand{\optimalscorecut}{\ensuremath{0.969}\xspace}
+\DeclareRobustCommand{\optimalscorecutFlatLower}{\ensuremath{0.9}\xspace}
+\DeclareRobustCommand{\nSBoneMVA}{\ensuremath{4}\xspace}
+\DeclareRobustCommand{\nSBoneCUT}{\ensuremath{25}\xspace}
+\DeclareRobustCommand{\nSBtotal}{\ensuremath{590}\xspace}
+
+%%%% MVA for optimal cut
+\DeclareRobustCommand{\optimaleff}{\ensuremath{5.20\%}\xspace}
+\DeclareRobustCommand{\nsidebands}{\ensuremath{12}\xspace}
+\DeclareRobustCommand{\nsigregionexp}{\ensuremath{1.8}\xspace}
+\DeclareRobustCommand{\nsigregionexperr}{\ensuremath{0.54}\xspace}
+\DeclareRobustCommand{\nsigregionmed}{\ensuremath{3.34}\xspace}
+\DeclareRobustCommand{\brulmed}{\ensuremath{3.28\times 10^{-7}}\xspace}
+%%%% MVA for optimal cut and final Nobs=X
+\DeclareRobustCommand{\nsigregionobsdwnflct}{\ensuremath{1}\xspace}
+\DeclareRobustCommand{\nsigregionuldwnflct}{\ensuremath{2.66}\xspace}
+\DeclareRobustCommand{\bruldwnflct}{\ensuremath{2.61\times 10^{-7}}\xspace}
+\DeclareRobustCommand{\nsigregionobsupflct}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\nsigregionulupflct}{\ensuremath{3.64}\xspace}
+\DeclareRobustCommand{\brulupflct}{\ensuremath{3.57\times 10^{-7}}\xspace}
+
+
+%%%% General (dynamic)
+\DeclareRobustCommand{\LumiEightTeVUsed}{\ensuremath{20.28}\xspace} %!!!!!!!!!!!!!!
+\DeclareRobustCommand{\LumiEightTeVUsedUncertainty}{\ensuremath{0.028\%}\xspace} %!!!!!!!!!!!!!!
+\DeclareRobustCommand{\PeriodsEightTeVUsed}{A,B,C,D,E,G,H,I,J and L\xspace} %!!!!!!!!!!!!!!
+\DeclareRobustCommand{\EventsAfterSkimOne}{\ensuremath{3191497}\xspace} %!!!!!!!!!!!!!!
+
+%%%% General (static...)
+\DeclareRobustCommand{\LumiEightTeVFull}{\ensuremath{20.28}\xspace}
+\DeclareRobustCommand{\LumiSevenTeVFull}{\ensuremath{5.0}\xspace}
+\DeclareRobustCommand{\SigmaSignalEightTeV}{\ensuremath{10272614}\xspace}
+\DeclareRobustCommand{\SigmaSignalSevenTeV}{\ensuremath{8750208}\xspace}
+\DeclareRobustCommand{\NSignalMCevtEightTeV}{\ensuremath{99900}\xspace}
+\DeclareRobustCommand{\EventsBeforeSkimOne}{\ensuremath{726383357}\xspace}
+\DeclareRobustCommand{\EtaCrack}{\ensuremath{0.1}\xspace}
+
+%%%% control regions for object quality
+\DeclareRobustCommand{\objQAjpsiCRlow}{\ensuremath{2850}\xspace}
+\DeclareRobustCommand{\objQAjpsiCRhigh}{\ensuremath{3350}\xspace}
+\DeclareRobustCommand{\objQAlowmassCRhigh}{\ensuremath{750}\xspace}
+
+
+
+
+%%%% b-tagging
+\DeclareRobustCommand{\BtagWorkingPointTight}{\ensuremath{0.311}\xspace}
+\DeclareRobustCommand{\BtagEfficiencyTight}{\ensuremath{80\%}\xspace}
+
+%%%% skim1 cut values
+\DeclareRobustCommand{\PtSkimOne}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\EtaSkimOne}{\ensuremath{2.7}\xspace}
+\DeclareRobustCommand{\ThreeBodyMassSkimOne}{\ensuremath{5}\xspace}
+\DeclareRobustCommand{\ThreeBodyMassSkimTwo}{\ensuremath{5}\xspace}
+\DeclareRobustCommand{\ThreeBodyPtSkimTwo}{\ensuremath{10}\xspace}
+\DeclareRobustCommand{\ThreeBodyMtSkimTwo}{\ensuremath{7}\xspace}
+\DeclareRobustCommand{\ETmissSkimTwo}{\ensuremath{7}\xspace}
+
+%%%% muon/TP cut values
+\DeclareRobustCommand{\EtaAll}{\ensuremath{2.5}\xspace}
+\DeclareRobustCommand{\FirstPt}{\ensuremath{5.5}\xspace}
+\DeclareRobustCommand{\SecondPt}{\ensuremath{3.5}\xspace}
+\DeclareRobustCommand{\ThirdPt}{\ensuremath{2.5}\xspace}
+\DeclareRobustCommand{\TPbMinPt}{\ensuremath{3}\xspace}
+\DeclareRobustCommand{\ScatteringAngleSig}{\ensuremath{4}\xspace}
+\DeclareRobustCommand{\ScatteringNeighbourSig}{\ensuremath{4}\xspace}
+\DeclareRobustCommand{\MomentumBalanceSigDwn}{\ensuremath{-3}\xspace}
+\DeclareRobustCommand{\MomentumBalanceSigUp}{\ensuremath{+4}\xspace}
+\DeclareRobustCommand{\TPaTrkFitPvalue}{\ensuremath{0.01}\xspace}
+\DeclareRobustCommand{\TPbTrkFitPvalue}{\ensuremath{0.1}\xspace}
+\DeclareRobustCommand{\TPaEtaNoiseUp}{\ensuremath{1.6}\xspace}
+\DeclareRobustCommand{\TPaEtaNoiseDown}{\ensuremath{1.05}\xspace}
+\DeclareRobustCommand{\TPaHighThresholdTRTHits}{\ensuremath{10}\xspace}
+\DeclareRobustCommand{\TPbHighThresholdTRTHits}{\ensuremath{5}\xspace}
+\DeclareRobustCommand{\MuonHighThresholdTRTHits}{\ensuremath{10}\xspace}
+\DeclareRobustCommand{\HighThresholdTRTHitsFraction}{\ensuremath{0.35}\xspace}
+\DeclareRobustCommand{\MuonsMinPrecisionHits}{\ensuremath{12}\xspace}
+\DeclareRobustCommand{\TPasMinPrecisionHits}{\ensuremath{13}\xspace}
+\DeclareRobustCommand{\MuonsMinEtaPhiLayers}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\TPasMinEtaPhiLayers}{\ensuremath{3}\xspace}
+
+%%%% triplet cut values
+\DeclareRobustCommand{\VertexFitPvalueLoose}{\ensuremath{10^{-4}}\xspace}
+\DeclareRobustCommand{\VertexFitPvalueTight}{\ensuremath{0.1}\xspace}
+\DeclareRobustCommand{\VertexLxyLowLoose}{\ensuremath{-1}\xspace}
+\DeclareRobustCommand{\VertexLxyHighLoose}{\ensuremath{12}\xspace}
+\DeclareRobustCommand{\VertexLxyLowTight}{\ensuremath{0}\xspace}
+\DeclareRobustCommand{\VertexLxyHighTight}{\ensuremath{12}\xspace}
+\DeclareRobustCommand{\VertexAzeroxyLoose}{\ensuremath{0.1}\xspace}
+\DeclareRobustCommand{\VertexAzeroxyTight}{\ensuremath{0.05}\xspace}
+\DeclareRobustCommand{\ThreeBodyMass}{\ensuremath{4.0}\xspace}
+\DeclareRobustCommand{\ThreeBodyPtLoose}{\ensuremath{20}\xspace}
+\DeclareRobustCommand{\ThreeBodyPtTight}{\ensuremath{25}\xspace}
+
+%%%% hadronic cleaning cut values
+\DeclareRobustCommand{\JetThreeBodyOverlapRemovaldR}{\ensuremath{0.2}\xspace}
+\DeclareRobustCommand{\AllJetsMinPt}{\ensuremath{30}\xspace}
+
+%%%% isolation
+\DeclareRobustCommand{\ThreeBodyTrackIsolationMargins}{\ensuremath{0.03}\xspace}
+\DeclareRobustCommand{\ThreeBodyTrackIsolationMinTrkPt}{\ensuremath{500}\xspace}
+\DeclareRobustCommand{\ThreeBodyTrackIsolationLoose}{\ensuremath{0.5}\xspace}
+\DeclareRobustCommand{\ThreeBodyTrackIsolationTight}{\ensuremath{0.08}\xspace}
+
+%%%% MET cuts
+\DeclareRobustCommand{\ETmissDphiCaloTrackLoose}{\ensuremath{1.5}\xspace}
+\DeclareRobustCommand{\ETmissDphiCaloTrackTight}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissDphiCaloLoose}{\ensuremath{1.5}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissDphiTrackLoose}{\ensuremath{1.5}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissDphiCaloTight}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissDphiTrackTight}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissMtCaloLoose}{\ensuremath{20}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissMtTrackLoose}{\ensuremath{30}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissMtCaloTight}{\ensuremath{60}\xspace}
+\DeclareRobustCommand{\ThreeBodyETmissMtTrackTight}{\ensuremath{60}\xspace}
+\DeclareRobustCommand{\EtmissCaloLoose}{\ensuremath{10}\xspace}
+\DeclareRobustCommand{\EtmissTrackLoose}{\ensuremath{10}\xspace}
+\DeclareRobustCommand{\EtmissCaloTight}{\ensuremath{20}\xspace}
+\DeclareRobustCommand{\EtmissTrackTight}{\ensuremath{20}\xspace}
+
+%%%% HT cuts
+\DeclareRobustCommand{\HTLoose}{\ensuremath{20}\xspace}
+\DeclareRobustCommand{\HTTight}{\ensuremath{25}\xspace}
+\DeclareRobustCommand{\HTETmissMhtCaloLoose}{\ensuremath{20}\xspace}
+\DeclareRobustCommand{\HTETmissMhtCaloTight}{\ensuremath{60}\xspace}
+\DeclareRobustCommand{\HTETmissMhtTrackLoose}{\ensuremath{30}\xspace}
+\DeclareRobustCommand{\HTETmissMhtTrackTight}{\ensuremath{60}\xspace}
+\DeclareRobustCommand{\HTETmissDphiCaloLoose}{\ensuremath{1.5}\xspace}
+\DeclareRobustCommand{\HTETmissDphiCaloTight}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\HTETmissDphiTrackLoose}{\ensuremath{1.5}\xspace}
+\DeclareRobustCommand{\HTETmissDphiTrackTight}{\ensuremath{2}\xspace}
+\DeclareRobustCommand{\dRThreeBodyHTLoose}{\ensuremath{3}\xspace}
+\DeclareRobustCommand{\dRThreeBodyHTTight}{\ensuremath{2.5}\xspace}
+
+
+%%%%% Acc*Eff, Ntau and BR + uncertainties
+\DeclareRobustCommand{\AccEffFinal}{\ensuremath{2.97\%}\xspace}
+\DeclareRobustCommand{\AccEffFinalAbs}{\ensuremath{0.0297}\xspace}
+\DeclareRobustCommand{\AccEffTriggerUncertainty}{\ensuremath{11\%}\xspace}
+\DeclareRobustCommand{\AccEffReconstructionUncertainty}{\ensuremath{8\%}\xspace}
+\DeclareRobustCommand{\AccEffJetETmisUncertainty}{\ensuremath{5\%}\xspace}
+\DeclareRobustCommand{\NtauFinal}{\ensuremath{2.41\times 10^{8}}\xspace}
+\DeclareRobustCommand{\NtauUncertainty}{\ensuremath{3.9\%}\xspace}
+
+\SQUAREfunction{0.11}{\trigeff}{\Dtrigeff}
+\SQUAREfunction{0.08}{\recoeff}{\Drecoeff}
+\SQUAREfunction{0.05}{\jetmet}{\Djetmet}
+\SQUAREfunction{0.039}{\ntauerr}{\Dntauerr}
+
+\ADD{\trigeff}{\recoeff}{\quadeff}
+\ADD{\jetmet}{\quadeff}{\quadeff}
+\SQRTfunction{\quadeff}{\accefferr}{\Dsquareroot}
+\MULTIPLY{0.0297}{\accefferr}{\quadeff}
+\DIVIDE{\quadeff}{0.0297}{\relaccefferr}
+\MULTIPLY{100}{\relaccefferr}{\relaccefferr}
+\ROUND[4]{\quadeff}{\quadeff}
+\ROUND[1]{\relaccefferr}{\relaccefferr}
+
+\ADD{\trigeff}{\recoeff}{\quadbr}
+\ADD{\quadbr}{\jetmet}{\quadbr}
+\ADD{\quadbr}{\ntauerr}{\quadbr}
+\SQRTfunction{\quadbr}{\quadbr}{\Dquadbr}
+\MULTIPLY{100}{\quadbr}{\quadbr}
+\ROUND[1]{\quadbr}{\quadbr}
+
+\DeclareRobustCommand{\AccEffFinalAbsErr}{\ensuremath{\quadeff}\xspace}
+\DeclareRobustCommand{\AccEffFinalRelErr}{\ensuremath{\relaccefferr\%}\xspace}
+\DeclareRobustCommand{\BRFinalRelErr}{\ensuremath{\quadbr\%}\xspace}
+
+\DeclareRobustCommand{\NsULFinalExp}{\ensuremath{1.77-4.03}\xspace}
+\DeclareRobustCommand{\BRFinalExp}{\ensuremath{2.5-5.6\times 10^{-7}}\xspace}
+\DeclareRobustCommand{\NsFinalExpMed}{\ensuremath{2.72}\xspace}
+\DeclareRobustCommand{\BRFinalExpMed}{\ensuremath{3.8\times 10^{-7}}\xspace}
+\DeclareRobustCommand{\BRFinalObs}{\ensuremath{5.6\times 10^{-7}}\xspace}
+
+
+% \FPeval\UpperLimitZeroObsNinetyCLs{\NevtUpperLimitZeroObsNinetyCLs / (\SidebandsSignalEventsMVA/\NSignalMCevtEightTeV) / (\SignalKfactorEightTeV * \SigmaSignalEightTeV * \LumiEightTeVUsed)}

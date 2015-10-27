@@ -1,0 +1,67 @@
+
+<!-- saved from url=(0107)http://ctan.mackichan.com/macros/latex/contrib/beamer-contrib/appendixnumberbeamer/appendixnumberbeamer.sty -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><style type="text/css"></style><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">% vim:ft=plaintex:
+%
+%  Written and (C) by J�r�me Lelong &lt;jerome.lelong@gmail.com&gt;
+%  2007 - 2012
+% 
+%  This program is free software; you can redistribute it and/or modify it
+%  under the terms of the GNU General Public License as published by the
+%  Free Software Foundation; either version 3 of the License, or (at your
+%  option) any later version.
+% 
+%  This program is distributed in the hope that it will be useful, but
+%  WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+%  General Public License for more details.
+% 
+%  You should have received a copy of the GNU General Public License along
+%  with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;. 
+% 
+%  This small piece of code fixes the frame numbering in beamer when using
+%  an appendix such  that the slides of the appendix are not counted in the
+%  total framenumber of the main part of the document. The total
+%  framenumber counter is reset to 0 and starts counting again when
+%  entering the appendix.
+% 
+%  Usage: \usepackage{appendixnumberbeamer}
+%  and declare the appendix as usual using the \appendix command.
+
+
+\makeatletter
+
+
+\let\appendixtotalframenumber\empty
+\def\mainend{-1}
+\let\appendixorig\appendix
+
+% Redefine the \appendix command:
+%   - it resets the framenumber counter 
+%   - freezes the total framenumber for this first part of the document
+\def\appendix{
+  \edef\mainend{\theframenumber}
+  \immediate\write\@auxout{\string\global\string\@namedef{mainendframenumber}{\mainend}}
+  \appendixorig
+  \def\inserttotalframenumber{\appendixtotalframenumber}%
+  \setcounter{framenumber}{0}
+}
+
+% To be called at the end of document to fix the total framenumber in the
+% main document and in the appendix.
+\def\pageatend{
+  \edef\appendixend{\theframenumber}
+  \ifnum\mainend&gt;0%
+  \immediate\write\@auxout{\string\global\string\@namedef{appendixtotalframenumber}{\appendixend}}%
+  \immediate\write\@auxout{\string\global\string\@namedef{inserttotalframenumber}{\mainend}}%
+  \immediate\write\@auxout{\string\@writefile{nav}{\noexpand \headcommand {%
+        \noexpand \def\noexpand \inserttotalframenumber{\mainend}}}}%
+  \immediate\write\@auxout{\string\@writefile{nav}{\noexpand \headcommand {%
+        \noexpand \def\noexpand \appendixtotalframenumber{\appendixend}}}}%
+  \else
+  \fi
+}
+
+
+\AtEndDocument{\pageatend}
+\makeatother
+</pre></body><link rel="stylesheet" type="text/css" href="data:text/css,"><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://ctan.mackichan.com/macros/latex/contrib/beamer-contrib/appendixnumberbeamer/appendixnumberbeamer.sty" location.hostname="ctan.mackichan.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.click2call.chrome.5.7.0"></object></html>
