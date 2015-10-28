@@ -8,7 +8,7 @@
 #include "postBDTcuts.h"
 #include "roofit.h"
 
-bool blinded = true;
+bool blinded = false;
 
 Double_t xbdtmin  = minBDTcut;
 Double_t xbdtmax  = +1.0;

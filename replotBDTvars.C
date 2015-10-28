@@ -474,7 +474,7 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos
 }
 
 
-void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1)
+void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1, bool doLogy=false)
 {
 	TCanvas* cnv = new TCanvas("cnv","",1200,900);
 	cnv->Divide(3,3);
@@ -484,13 +484,21 @@ void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 		TString varname = vars[pad];
 		cnv->cd(pad+1);
 		gPad->SetTicks(1,1);
-		gPad->SetLogy();
+		if(doLogy) gPad->SetLogy();
 	
-		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(1e-3);
-		histos1["Wtaunu_3mu_"+varname]->SetMinimum(1e-3);
-		histos1["Wtaunu_3mu_tight_"+varname]->SetMinimum(1e-3);
-		histos1["Data_"+varname]->SetMinimum(1e-3);
-		histos1["Data_tight_"+varname]->SetMinimum(1e-3);
+		Int_t maxbinSig = histos1["Wtaunu_3mu_"+varname]->GetMaximumBin();
+		Int_t maxbinDat = histos1["Data_"+varname]->GetMaximumBin();
+		float maxSig = histos1["Wtaunu_3mu_"+varname]->GetBinContent(maxbinSig)+histos1["Wtaunu_3mu_"+varname]->GetBinError(maxbinSig);
+		float maxDat = histos1["Data_"+varname]->GetBinContent(maxbinDat)+histos1["Data_"+varname]->GetBinError(maxbinDat);
+		float max = (maxSig>maxDat) ? maxSig : maxDat;
+		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+	
+	
+		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
+		histos1["Wtaunu_3mu_"+varname]->SetMinimum(5e-1);
+		histos1["Wtaunu_3mu_tight_"+varname]->SetMinimum(5e-1);
+		histos1["Data_"+varname]->SetMinimum(5e-1);
+		histos1["Data_tight_"+varname]->SetMinimum(5e-1);
 	
 		histos1["Wtaunu_3mu_"+varname+"_frame"]->Draw();
 		histos1["Wtaunu_3mu_"+varname]->Draw("hist same");
@@ -519,6 +527,61 @@ void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 	cnv->SaveAs("figures/"+prefix+".pdf");
 	delete cnv;
 }
+
+void plot2(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1, bool doLogy=false)
+{
+	TCanvas* cnv = new TCanvas("cnv","",800,600);
+	cnv->Divide(2,1);
+	
+	for(unsigned int pad=0 ; pad<vars.size() ; ++pad)
+	{
+		TString varname = vars[pad];
+		cnv->cd(pad+1);
+		gPad->SetTicks(1,1);
+		if(doLogy) gPad->SetLogy();
+	
+		Int_t maxbinSig = histos1["Wtaunu_3mu_"+varname]->GetMaximumBin();
+		Int_t maxbinDat = histos1["Data_"+varname]->GetMaximumBin();
+		float maxSig = histos1["Wtaunu_3mu_"+varname]->GetBinContent(maxbinSig)+histos1["Wtaunu_3mu_"+varname]->GetBinError(maxbinSig);
+		float maxDat = histos1["Data_"+varname]->GetBinContent(maxbinDat)+histos1["Data_"+varname]->GetBinError(maxbinDat);
+		float max = (maxSig>maxDat) ? maxSig : maxDat;
+		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+	
+	
+		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
+		histos1["Wtaunu_3mu_"+varname]->SetMinimum(5e-1);
+		histos1["Wtaunu_3mu_tight_"+varname]->SetMinimum(5e-1);
+		histos1["Data_"+varname]->SetMinimum(5e-1);
+		histos1["Data_tight_"+varname]->SetMinimum(5e-1);
+	
+		histos1["Wtaunu_3mu_"+varname+"_frame"]->Draw();
+		histos1["Wtaunu_3mu_"+varname]->Draw("hist same");
+		histos1["Wtaunu_3mu_tight_"+varname]->Draw("hist same");
+		histos1["Data_"+varname]->Draw("p1x1 same");
+		histos1["Data_tight_"+varname]->Draw("p1x1 same");	
+		
+		plotAtlasLabel();
+		
+		legs[pad]->Clear();
+		legs[pad]->AddEntry(histos1["Data_"+varname],"SB data (loose)","ple");
+		legs[pad]->AddEntry(histos1["Data_tight_"+varname],"SB data (tight+#it{x}>#it{x}_{0})","ple");
+		legs[pad]->AddEntry(histos1["Wtaunu_3mu_"+varname],"Signal (loose)","f");
+		legs[pad]->AddEntry(histos1["Wtaunu_3mu_tight_"+varname],"Signal (tight+#it{x}>#it{x}_{0})","f");
+		legs[pad]->Draw("same");
+		
+		gPad->Update();
+		gPad->RedrawAxis();
+	}
+	
+	cnv->Update();
+	cnv->RedrawAxis();
+	cnv->SaveAs("figures/"+prefix+"."+name+".png");
+	cnv->SaveAs("figures/"+prefix+"."+name+".eps");
+	cnv->SaveAs("figures/"+prefix+"."+name+".pdf");
+	cnv->SaveAs("figures/"+prefix+".pdf");
+	delete cnv;
+}
+
 
 int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProfile& profiles, TString channel, float xFullMin,float xBlindMin,float xBlindMax,float xFullMax, bool isTight=false)
 {
@@ -1091,6 +1154,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legL);
 	plot9(pdffilename,"BDTinputs01to09",vars,legs,histos1);
+	plot9(pdffilename,"BDTinputs01to09.logy",vars,legs,histos1,true);
 	
 	vars.clear(); legs.clear();
 	vars.push_back("pvalue");    vars.push_back("Sa0xy");   vars.push_back("trksfitprob");
@@ -1100,15 +1164,25 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
 	legs.push_back(legR);
 	plot9(pdffilename,"BDTinputs10to16",vars,legs,histos1);
+	plot9(pdffilename,"BDTinputs10to16.logy",vars,legs,histos1,true);
 	
 	vars.clear(); legs.clear();
 	vars.push_back("mSS");          vars.push_back("mOS1");            vars.push_back("mOS2");
 	vars.push_back("isolation030"); vars.push_back("ht_dphimet_calo"); vars.push_back("ht_dphimet_trk");
 	vars.push_back("dRmax");        vars.push_back("Lxy");             vars.push_back("a0xy");
 	legs.push_back(legTM); legs.push_back(legR); legs.push_back(legR);
-	legs.push_back(legR); legs.push_back(legL); legs.push_back(legL);
-	legs.push_back(legR); legs.push_back(legR); legs.push_back(legR);
+	legs.push_back(legR);  legs.push_back(legL); legs.push_back(legL);
+	legs.push_back(legR);  legs.push_back(legR); legs.push_back(legR);
 	plot9(pdffilename,"Others17to25",vars,legs,histos1);
+	plot9(pdffilename,"Others17to25.logy",vars,legs,histos1,true);
+	
+	vars.clear(); legs.clear();
+	vars.push_back("m3body");   vars.push_back("score");
+	legs.push_back(legR); legs.push_back(legTM);
+	plot2(pdffilename,"Others26to27",vars,legs,histos1);
+	plot2(pdffilename,"Others26to27.logy",vars,legs,histos1,true);
+	
+	
 	
 	
 	// delete cnv;

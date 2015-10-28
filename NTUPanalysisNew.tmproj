@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>copyPaperFigs.sh</string>
+	<string>oldSRevents.txt</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -82,13 +82,13 @@
 			<key>filename</key>
 			<string>replotBDTvars.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-21T22:01:57Z</date>
+			<date>2015-10-28T16:21:16Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>bdtroofit.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-21T08:56:29Z</date>
+			<date>2015-10-28T19:29:21Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -166,7 +166,13 @@
 			<key>filename</key>
 			<string>copyPaperFigs.sh</string>
 			<key>lastUsed</key>
-			<date>2015-10-21T22:01:58Z</date>
+			<date>2015-10-28T14:11:55Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>oldSRevents.txt</string>
+			<key>lastUsed</key>
+			<date>2015-10-28T19:29:21Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -252,29 +258,29 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>53</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>213</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>200</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>5</integer>
+				<integer>22</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>213</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>53</integer>
+				<integer>30</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>213</integer>
 			</dict>
 		</dict>
 		<key>const.h</key>
@@ -483,6 +489,20 @@
 				<integer>281</integer>
 			</dict>
 		</dict>
+		<key>oldSRevents.txt</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>31</integer>
+				<key>line</key>
+				<integer>11</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>optimization2D.C</key>
 		<dict>
 			<key>caret</key>
@@ -546,14 +566,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>99</integer>
+				<integer>38</integer>
 				<key>line</key>
-				<integer>923</integer>
+				<integer>532</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>911</integer>
+			<integer>520</integer>
 		</dict>
 		<key>run2projplots/test2d.C</key>
 		<dict>
@@ -701,6 +721,7 @@
 	<key>openDocuments</key>
 	<array>
 		<string>bdtroofit.C</string>
+		<string>oldSRevents.txt</string>
 		<string>mvaout.h</string>
 		<string>allFitSystAuto.C</string>
 		<string>getJetMETsyst.C</string>
