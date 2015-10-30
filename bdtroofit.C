@@ -43,6 +43,32 @@ TString tstr(float x, int prcn=-1)
 	return (TString)str;
 }
 
+TGraphErrors* inflate(TH1* h)
+{
+	TGraphErrors* g = new TGraphErrors(h);
+	Int_t nbins       = h->GetNbinsX();
+	Double_t xmin     = h->GetXaxis()->GetXmin();
+	Double_t xmax     = h->GetXaxis()->GetXmax();
+	Double_t binxerr  = h->GetBinWidth(1)/2;	
+	g->SetPoint(0,xmin,h->GetBinContent(1));
+	g->SetPointError(0,binxerr,h->GetBinError(1));
+	g->SetPoint(nbins,xmax,h->GetBinContent(nbins));
+	g->SetPointError(nbins,binxerr,h->GetBinError(nbins));
+	return g;
+}
+
+float Sum(TH1* h, bool addUunderFlow=false, bool addOverFlow=false)
+{
+	float I=0.;
+	for(int i=1 ; i<=h->GetNbinsX() ; i++)// without under- and over-flow
+	{
+		I += h->GetBinContent(i);
+	}
+	if(addUunderFlow) I+=h->GetBinContent(0);
+	if(addOverFlow)   I+=h->GetBinContent(h->GetNbinsX()+1);
+	return I;
+}
+
 TPaveText* ptxt;
 void makeAtlasLabel()
 {
@@ -325,9 +351,25 @@ int readData(TTree* t, RooRealVar* score, RooRealVar* m3body, RooAbsData* data_s
 			ncandidates++;
 			*score = bdtscore->at(0);
 			*m3body = mass->at(0);
-			data_score->add(RooArgSet(*score));
 			data_m3body->add(RooArgSet(*m3body));
-			if(hScore) hScore->Fill(bdtscore->at(0));
+			if(hScore)
+			{
+				if(type=="bkg")
+				{
+					// the BDT for the data should be always only in the SB, even if unblinded
+					if(!(mass->at(0)>xBlindMin && mass->at(0)<xBlindMax))
+					{
+						data_score->add(RooArgSet(*score));
+						hScore->Fill(bdtscore->at(0));
+					}
+				}
+				else
+				{
+					// the BDT for the signal should be always filled
+					data_score->add(RooArgSet(*score));
+					hScore->Fill(bdtscore->at(0));
+				}
+			}
 			if(hMass)  hMass->Fill(mass->at(0));
 		}
 	}
@@ -524,6 +566,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	TH1* hScoreSig  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreSig->Sumw2();
 	TH1* hM3bodySig = new TH1F("m",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodySig->Sumw2();
+	TH1* hScoreBkg  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg->Sumw2();
+	TH1* hM3bodyBkg = new TH1F("m",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg->Sumw2();
 	TH1* hScoreBkg_noblind  = new TH1F("s_noblind",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg_noblind->Sumw2();
 	TH1* hM3bodyBkg_noblind = new TH1F("#it{m}_noblind",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg_noblind->Sumw2();
 	TH1* hScoreBkg_noblind_opt  = new TH1F("s_noblind_opt",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg_noblind_opt->Sumw2();
@@ -534,7 +578,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	Int_t ncandidatesS = readData(tS,scoreS,m3bodyS,UnbinnedDataSet_scoreS,UnbinnedDataSet_m3bodyS,
 								m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "full","",true,hScoreSig,hM3bodySig);
 	Int_t ncandidatesDfull = readData(tD,score,m3body,UnbinnedDataSet_score,UnbinnedDataSet_m3body,
-								m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "bkg","CR0");
+								m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "bkg","CR0",blinded,hScoreBkg,hM3bodyBkg);
 
 	// return;
 
@@ -542,8 +586,20 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 											m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "bkg","CR0", false, hScoreBkg_noblind, hM3bodyBkg_noblind);
 	Int_t ncandidatesDoptNoBlind = readData(tD,score,m3body,UnbinnedDataSet_score_noblind_opt,UnbinnedDataSet_m3body_noblind_opt,
 										m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtopt,xbdtmax, "bkg","CR0", false, hScoreBkg_noblind_opt, hM3bodyBkg_noblind_opt);
-	hScoreSig->Scale(1./200.); hScoreSig->SetMaximum(30);
-	hM3bodySig->Scale(1./115.); hM3bodySig->SetMinimum(1e-5); hM3bodySig->SetMaximum(30); // hM3bodySig->SetMaximum(120);
+										
+	
+	float scaleScore = Sum(hScoreBkg)/Sum(hScoreSig);
+	hScoreSig->Scale(scaleScore);
+	hScoreSig->SetMinimum(1e-5);
+	hScoreSig->SetMaximum(25);
+	
+	float scaleM3body = Sum(hM3bodyBkg)/Sum(hM3bodySig);
+	hM3bodySig->Scale(scaleM3body);
+	hM3bodySig->SetMinimum(1e-5);
+	hM3bodySig->SetMaximum(25);
+										
+	// hScoreSig->Scale(1./200.); hScoreSig->SetMaximum(30);
+	// hM3bodySig->Scale(1./115.); hM3bodySig->SetMinimum(1e-5); hM3bodySig->SetMaximum(30); // hM3bodySig->SetMaximum(120);
 	
 	scoreS->setBins(nbdtbins);
 	
@@ -720,6 +776,14 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	
 	
+	
+	TFile* fUncert = new TFile("Uncert.root","READ");
+	TH1F* hdBDT = (TH1F*)((TH1F*)fUncert->Get("hdBDT"))->Clone();
+	hdBDT->SetFillColor(kBlue);
+	hdBDT->SetLineColor(kBlue);
+	hdBDT->SetFillStyle(3244);
+	TGraphErrors* grBDTfitErr = (TGraphErrors*)inflate(hdBDT)->Clone();
+	
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
 	RooPlot* scoreFrameS = score->frame(Name("scoreFrameS"),Title("BDT response"));
 	UnbinnedDataSet_score->plotOn(scoreFrameS,Name("BDT score background"),MarkerSize(1),Binning(nbdtbins));
@@ -730,18 +794,21 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	bkgBDTpdfNominal0->plotOn(scoreFrameS,Name("Nominal"),LineWidth(2),LineColor(kBlue),NormRange("range_score"));
 	
 	// delete leg;
-	leg = new TLegend(0.15,0.74,0.55,0.92,NULL,"brNDC");
+	leg = new TLegend(0.15,0.68,0.55,0.92,NULL,"brNDC");
 	leg->SetFillStyle(4000); //will be transparent
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
-	leg->AddEntry(scoreFrameS->findObject("BDT score background"),"Sidebands data (tight+x>x_{0})","ple");
-	leg->AddEntry(scoreFrameS->findObject("Nominal"),"Fit to the data","l");
-	leg->AddEntry(hScoreSig,"Signal (tight+x>x_{0})","f");
+	leg->AddEntry(scoreFrameS->findObject("BDT score background"),"SB data (tight+x>x_{0} selection)","ple");
+	leg->AddEntry(scoreFrameS->findObject("Nominal"),"Fit to the SB data","l");
+	leg->AddEntry(hdBDT,"Fit uncertainty","F");
+	leg->AddEntry(hScoreSig,"Signal (tight+x>x_{0} selection)","f");
 	
 	// // cnv->SetLeftMargin(0.2);
 	cnv->SetTicks(1,1);
 	hScoreSig->Draw("hist");
+	// hdBDT->Draw("e2 same");
+	grBDTfitErr->Draw("3 same");
 	// hScoreBkg_noblind->Draw("hist same");
 	scoreFrameS->Draw("same");
 	plotAtlasLabel(); // ptxt->Draw("same");
@@ -1094,23 +1161,31 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	m3bodyFrameS->SetMinimum(1e-5);
 	
 	
+	TH1F* hdSB = (TH1F*)((TH1F*)fUncert->Get("hdSB"))->Clone();
+	hdSB->SetFillColor(kBlue);
+	hdSB->SetLineColor(kBlue);
+	hdSB->SetFillStyle(3244);
+	TGraphErrors* grSBfitErr = (TGraphErrors*)inflate(hdSB)->Clone();
 	
 	delete leg;
-	leg = new TLegend(0.15,0.70,0.55,0.92,NULL,"brNDC");
+	leg = new TLegend(0.15,0.64,0.55,0.92,NULL,"brNDC");
 	leg->SetFillStyle(4000); //will be transparent
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
-	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"Sidebands data (tight+x>x_{0})","ple");
-	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"Sidebands data (tight+x>x_{1})","ple");
-	leg->AddEntry(m3bodyFrameS->findObject("Nominal_left"),"Sidebands fit","l");
+	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"SB data (tight+x>x_{0} selection)","ple");
+	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"SB data (tight+x>x_{1} selection)","ple");
+	leg->AddEntry(m3bodyFrameS->findObject("Nominal_left"),"Fit to the SB data","l");
 	leg->AddEntry(m3bodyFrameS->findObject("Nominal_blinded"),"Interpolation","l");
-	leg->AddEntry(hM3bodySig,"Signal (tight+x>x_{0})","f");
+	leg->AddEntry(hdSB,"Fit uncertainty","F");
+	leg->AddEntry(hM3bodySig,"Signal (tight+x>x_{0} selection)","f");
 	
 	// cnv->SetLeftMargin(0.2);
 	cnv->SetTicks(1,1);
 	cnv->Update();
 	hM3bodySig->Draw("hist");
+	// hdSB->Draw("e2 same");
+	grSBfitErr->Draw("3 same");
 	m3bodyFrameS->Draw("same");
 	plotAtlasLabel(); // ptxt->Draw("same");
 	leg->Draw("same");
@@ -1145,7 +1220,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	lSBright->SetLineStyle(3);
 	lSBright->Draw();
 	
-	y = ymax/1.6;
+	y = ymax/1.7;
 	TLine* lSignalRegionMin = new TLine(1713,0,1713,y);
 	lSignalRegionMin->SetLineColor(kRed);
 	lSignalRegionMin->SetLineWidth(2);
@@ -1173,7 +1248,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	legR->SetFillColor(0);
 	legR->SetTextFont(42);
 	legR->SetBorderSize(0);
-	legR->AddEntry(lSBright,"Sidebands","l");
+	legR->AddEntry(lSBright,"Sidebands (SB)","l");
 	legR->AddEntry(lSRright,"Signal region","l");
 	legR->Draw("same");
 	

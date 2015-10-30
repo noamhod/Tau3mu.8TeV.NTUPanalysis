@@ -29,6 +29,7 @@
 #include "Riostream.h"
 #include "TEventList.h"
 #include "TPaveText.h"
+#include "TGraphErrors.h"
 #include "TGraphAsymmErrors.h"
 #include "TMultiGraph.h"
 #include "TGaxis.h"

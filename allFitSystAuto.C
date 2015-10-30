@@ -297,6 +297,17 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->SaveAs("figures/nSR1fitSyst.pdf)");
 	
 	
+	TFile* fUncert = new TFile("Uncert.root","RECREATE");
+	fUncert->cd();
+	hdBDT->Write();
+	hlBDT->Write();
+	hBDT->Write();
+	hdSB->Write();
+	hlSB->Write();
+	hSB->Write();
+	fUncert->Write();
+	fUncert->Close();
+	
 	
 	TString cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,scurrentBDTcut, "sig", sxSRmin,sxSRmax, false,true,"postTraining");
 	TString cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,scurrentBDTcut, "bkg", "",     "",      true,true,"postTraining");
