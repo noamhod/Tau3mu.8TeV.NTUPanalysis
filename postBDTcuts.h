@@ -66,9 +66,10 @@ TString postBDTcut(TString xFullMin, TString xBlindMin, TString xBlindMax, TStri
 	TString blindedcuts   = (isBlinded) ? "("+m3body+"<"+xBlindMin+" || "+m3body+">"+xBlindMax+")" : "(1)";
 
 	TString cut = basecuts;
-	if     (type=="bkg")  cut += " && "+blindedcuts;
-	else if(type=="sig")  cut += " && "+srcuts;
-	else if(type=="full") cut += "";
+	if     (type=="bkg")   cut += " && "+blindedcuts;
+	else if(type=="sig")   cut += " && "+srcuts;
+	else if(type=="bkgsr") cut += " && "+srcuts;
+	else if(type=="full")  cut += "";
 	else _FAT("unknown type: "<<type);
 	return cut;
 }

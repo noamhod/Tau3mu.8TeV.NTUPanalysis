@@ -579,11 +579,23 @@ void getJetMETsyst()
 	npassedS = tS->GetEntries(cuts_sig); cout << "Loose only (signal) : " << npassedS << endl;
 	npassedD = tD->GetEntries(cuts_bkg); cout << "Loose only (SB data): " << npassedD << endl;
 	
+	//// loose selection unblinded
+	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","sig", sxSRmin,sxSRmax, unblinded,noBDT,"preTraining",ntuple);
+	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","bkgsr", sxSRmin,sxSRmax, unblinded,noBDT,"preTraining",ntuple);
+	npassedS = tS->GetEntries(cuts_sig); cout << "Loose only (signal) : " << npassedS << endl;
+	npassedD = tD->GetEntries(cuts_bkg); cout << "Loose only (SR data): " << npassedD << endl;
+	
 	//// loose+x>x0 selection
 	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"preTraining",ntuple);
 	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"bkg", sxSRmin,sxSRmax, blinded,doBDT,"preTraining",ntuple);
 	npassedS = tS->GetEntries(cuts_sig); cout << "Loose+x>x0 only (signal) : " << npassedS << endl;
 	npassedD = tD->GetEntries(cuts_bkg); cout << "Loose+x>x0 only (SB data): " << npassedD << endl;
+	
+	//// loose+x>x0 selection unblinded
+	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"preTraining",ntuple);
+	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"bkgsr", sxSRmin,sxSRmax,unblinded,doBDT,"preTraining",ntuple);
+	npassedS = tS->GetEntries(cuts_sig); cout << "Loose+x>x0 only (signal) : " << npassedS << endl;
+	npassedD = tD->GetEntries(cuts_bkg); cout << "Loose+x>x0 only (SR data): " << npassedD << endl;
 	
 	//// tight selection
 	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","sig", sxSRmin,sxSRmax, unblinded,noBDT,"postTraining",ntuple);
@@ -591,19 +603,35 @@ void getJetMETsyst()
 	npassedS = tS->GetEntries(cuts_sig); cout << "Tight only (signal) : " << npassedS << endl;
 	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight only (SB data): " << npassedD << endl;
 	
+	//// tight selection unblinded
+	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","sig", sxSRmin,sxSRmax, unblinded,noBDT,"postTraining",ntuple);
+	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,"-1","-1","bkgsr", sxSRmin,sxSRmax, unblinded,noBDT,"postTraining",ntuple);
+	npassedS = tS->GetEntries(cuts_sig); cout << "Tight only (signal) : " << npassedS << endl;
+	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight only (SR data): " << npassedD << endl;
+	
 	//// tight+x>x0 selection
 	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"postTraining",ntuple);
 	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"bkg", sxSRmin,sxSRmax, blinded,doBDT,"postTraining",ntuple);
-	// cout << "Tight+x>x0 only (signal)  cuts_sig=" << cuts_sig << endl;
-	// cout << "Tight+x>x0 only (SB data) cuts_bkg=" << cuts_bkg << endl;
 	npassedS = tS->GetEntries(cuts_sig); cout << "Tight+x>x0 only (signal) : " << npassedS << endl;
 	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight+x>x0 only (SB data): " << npassedD << endl;
+	
+	//// tight+x>x0 selection unblinded
+	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"postTraining",ntuple);
+	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,sminBDTcut,"bkgsr", sxSRmin,sxSRmax,unblinded,doBDT,"postTraining",ntuple);
+	npassedS = tS->GetEntries(cuts_sig); cout << "Tight+x>x0 only (signal) : " << npassedS << endl;
+	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight+x>x0 only (SR data): " << npassedD << endl;
 	
 	//// tight+x>x1 selection
 	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,soptBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"postTraining",ntuple);
 	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,soptBDTcut,"bkg", sxSRmin,sxSRmax, blinded,doBDT,"postTraining",ntuple);
 	npassedS = tS->GetEntries(cuts_sig); cout << "Tight+x>x1 only (signal) : " << npassedS << endl;
 	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight+x>x1 only (SB data): " << npassedD << endl;
+	
+	//// tight+x>x1 selection in the SR
+	cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,soptBDTcut,"sig", sxSRmin,sxSRmax, unblinded,doBDT,"postTraining",ntuple);
+	cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright,sminBDTcut,soptBDTcut,"bkgsr", sxSRmin,sxSRmax, unblinded,doBDT,"postTraining",ntuple);
+	npassedS = tS->GetEntries(cuts_sig); cout << "Tight+x>x1 only (signal) : " << npassedS << endl;
+	npassedD = tD->GetEntries(cuts_bkg); cout << "Tight+x>x1 only (SR): " << npassedD << endl;
 	
 	cout << endl;
 

@@ -781,7 +781,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	TH1F* hdBDT = (TH1F*)((TH1F*)fUncert->Get("hdBDT"))->Clone();
 	hdBDT->SetFillColor(kBlue);
 	hdBDT->SetLineColor(kBlue);
-	hdBDT->SetFillStyle(3244);
+	hdBDT->SetFillStyle(3344);
 	TGraphErrors* grBDTfitErr = (TGraphErrors*)inflate(hdBDT)->Clone();
 	
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
@@ -1156,7 +1156,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	hM3bodyBkg_noblind_opt->SetLineColor(kRed); hM3bodyBkg_noblind_opt->SetMarkerStyle(20); hM3bodyBkg_noblind_opt->SetMarkerColor(kRed);
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_left"),LineWidth(2),LineColor(kBlue),Range("range_SBleft"),NormRange("range_SBleft,range_SBright"));
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_right"),LineWidth(2),LineColor(kBlue),Range("range_SBright"),NormRange("range_SBleft,range_SBright"));
-	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_blinded"),LineWidth(2),LineStyle(2),LineColor(kBlue),Range("range_blinded"),NormRange("range_SBleft,range_SBright"));
+	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_blinded"),LineWidth(2)/*,LineStyle(2)*/,LineColor(kBlue),Range("range_blinded"),NormRange("range_SBleft,range_SBright"));
 	if(!blinded) UnbinnedDataSet_m3body_noblind_opt->plotOn(m3bodyFrameS,Name("m3body background noblind opt"),MarkerSize(1),MarkerColor(kRed),LineColor(kRed),MarkerStyle(22),Binning(nm3bodybins));
 	m3bodyFrameS->SetMinimum(1e-5);
 	
@@ -1164,7 +1164,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	TH1F* hdSB = (TH1F*)((TH1F*)fUncert->Get("hdSB"))->Clone();
 	hdSB->SetFillColor(kBlue);
 	hdSB->SetLineColor(kBlue);
-	hdSB->SetFillStyle(3244);
+	hdSB->SetFillStyle(3344);
 	TGraphErrors* grSBfitErr = (TGraphErrors*)inflate(hdSB)->Clone();
 	
 	delete leg;
@@ -1176,7 +1176,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"SB data (tight+x>x_{0} selection)","ple");
 	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"SB data (tight+x>x_{1} selection)","ple");
 	leg->AddEntry(m3bodyFrameS->findObject("Nominal_left"),"Fit to the SB data","l");
-	leg->AddEntry(m3bodyFrameS->findObject("Nominal_blinded"),"Interpolation","l");
+	// leg->AddEntry(m3bodyFrameS->findObject("Nominal_blinded"),"Interpolation","l");
 	leg->AddEntry(hdSB,"Fit uncertainty","F");
 	leg->AddEntry(hM3bodySig,"Signal (tight+x>x_{0} selection)","f");
 	
