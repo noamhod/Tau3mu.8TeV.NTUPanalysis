@@ -10,7 +10,7 @@
 			<key>filename</key>
 			<string>std.h</string>
 			<key>lastUsed</key>
-			<date>2015-10-30T21:20:01Z</date>
+			<date>2015-11-20T10:00:08Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -52,13 +52,13 @@
 			<key>filename</key>
 			<string>select.h</string>
 			<key>lastUsed</key>
-			<date>2015-11-01T08:17:10Z</date>
+			<date>2015-11-09T22:14:22Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>postBDTcuts.h</string>
 			<key>lastUsed</key>
-			<date>2015-11-02T13:33:32Z</date>
+			<date>2015-11-20T10:12:26Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -76,25 +76,25 @@
 			<key>filename</key>
 			<string>NTUPanalysis.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-06T22:36:58Z</date>
+			<date>2015-11-19T21:18:34Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>replotBDTvars.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-05T09:47:31Z</date>
+			<date>2015-11-21T07:41:32Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>Dalitz.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-04T11:33:12Z</date>
+			<date>2015-11-22T21:16:44Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>bdtroofit.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-07T19:59:37Z</date>
+			<date>2015-11-22T21:39:57Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -118,7 +118,7 @@
 			<key>filename</key>
 			<string>allFitSystAuto.C</string>
 			<key>lastUsed</key>
-			<date>2015-10-30T16:12:47Z</date>
+			<date>2015-11-20T07:46:23Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -142,7 +142,7 @@
 			<key>filename</key>
 			<string>getJetMETsyst.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-02T14:00:25Z</date>
+			<date>2015-11-21T09:21:09Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -172,7 +172,7 @@
 			<key>filename</key>
 			<string>copyPaperFigs.sh</string>
 			<key>lastUsed</key>
-			<date>2015-11-07T19:59:39Z</date>
+			<date>2015-11-22T21:39:57Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -180,19 +180,19 @@
 			<key>filename</key>
 			<string>oldSRevents.txt</string>
 			<key>lastUsed</key>
-			<date>2015-11-02T09:19:19Z</date>
+			<date>2015-11-20T13:43:26Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>testSR.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-07T19:30:38Z</date>
+			<date>2015-11-21T09:21:22Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>replotTMVA.C</string>
 			<key>lastUsed</key>
-			<date>2015-11-07T19:59:39Z</date>
+			<date>2015-11-21T11:34:09Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -234,43 +234,43 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>32</integer>
+				<integer>51</integer>
 				<key>line</key>
-				<integer>285</integer>
+				<integer>426</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>260</integer>
+			<integer>407</integer>
 		</dict>
 		<key>NTUPanalysis.C</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>21</integer>
 				<key>line</key>
-				<integer>514</integer>
+				<integer>409</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>495</integer>
+			<integer>446</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>514</integer>
+				<integer>409</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>514</integer>
+				<integer>409</integer>
 			</dict>
 		</dict>
 		<key>allFitSystAuto.C</key>
@@ -278,30 +278,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>54</integer>
+				<integer>95</integer>
 				<key>line</key>
-				<integer>299</integer>
+				<integer>224</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>289</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>299</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>54</integer>
-				<key>line</key>
-				<integer>299</integer>
-			</dict>
+			<integer>209</integer>
 		</dict>
 		<key>allFitSystAuto.h</key>
 		<dict>
@@ -322,30 +306,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>53</integer>
+				<integer>160</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>1159</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>5</integer>
-				<key>line</key>
-				<integer>1</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>53</integer>
-				<key>line</key>
-				<integer>1</integer>
-			</dict>
+			<integer>1154</integer>
 		</dict>
 		<key>const.h</key>
 		<dict>
@@ -382,30 +350,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>95</integer>
 				<key>line</key>
 				<integer>35</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>33</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>35</integer>
-			</dict>
+			<integer>4</integer>
 		</dict>
 		<key>count.h</key>
 		<dict>
@@ -479,7 +431,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>559</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
@@ -586,29 +538,29 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>57</integer>
 				<key>line</key>
-				<integer>70</integer>
+				<integer>131</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>46</integer>
+			<integer>87</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>16</integer>
+				<integer>55</integer>
 				<key>line</key>
-				<integer>70</integer>
+				<integer>131</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>21</integer>
+				<integer>64</integer>
 				<key>line</key>
-				<integer>70</integer>
+				<integer>131</integer>
 			</dict>
 		</dict>
 		<key>readmvaout.C</key>
@@ -646,44 +598,44 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>16</integer>
+				<integer>111</integer>
 				<key>line</key>
-				<integer>508</integer>
+				<integer>1042</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>489</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>2</integer>
-				<key>line</key>
-				<integer>508</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>16</integer>
-				<key>line</key>
-				<integer>508</integer>
-			</dict>
+			<integer>1027</integer>
 		</dict>
 		<key>replotTMVA.C</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>44</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>510</integer>
+				<integer>18</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>494</integer>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>26</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
 		</dict>
 		<key>run2projplots/test2d.C</key>
 		<dict>
@@ -720,14 +672,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>29</integer>
+				<integer>13</integer>
 				<key>line</key>
-				<integer>382</integer>
+				<integer>187</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>166</integer>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>5</integer>
+				<key>line</key>
+				<integer>187</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>13</integer>
+				<key>line</key>
+				<integer>187</integer>
+			</dict>
 		</dict>
 		<key>sidebandsBias.C</key>
 		<dict>
@@ -762,9 +730,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>22</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>31</integer>
+				<integer>44</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -911,6 +879,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{2, 57}, {1064, 720}}</string>
+	<string>{{9, 57}, {1049, 720}}</string>
 </dict>
 </plist>

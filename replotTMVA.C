@@ -292,9 +292,9 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TLegend* leg, bool 
 	TString suffix = (doLogy) ? ".logy" : "";
 	
 	cnv->SaveAs("figures/"+prefix+".pdf");
-	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".png");
-	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".eps");
-	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".pdf");
+	cnv->SaveAs("figures/"+prefix+"."+var+suffix+".png");
+	cnv->SaveAs("figures/"+prefix+"."+var+suffix+".eps");
+	cnv->SaveAs("figures/"+prefix+"."+var+suffix+".pdf");
 	
 	delete hTmp;
 }
@@ -452,22 +452,22 @@ void replotTMVA()
 		{
 			addHist(histos1,i,j,"score",         ";BDT score;Events",40,-1,+1);
 			addHist(histos1,i,j,"PVNtrk",        ";#it{N}_{trk}^{PV};Events",50,0,200);
-			addHist(histos1,i,j,"pT3body",       ";#it{p}_{T}^{3body} [MeV];Events", 40,0.*GeV2MeV,100.*GeV2MeV);
+			addHist(histos1,i,j,"pT3body",       ";#it{p}_{T}^{3body} [GeV];Events", 40,0.,100.);
 			addHist(histos1,i,j,"isolation020",  ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
 			addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",50,0.,1.);
 			// addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",nPbins,Pbins);
 			addHist(histos1,i,j,"pvalue",        ";#it{p}-value (three-body vertex);Events", 50,0.,1.);				
-			addHist(histos1,i,j,"SLxy",          ";#it{S}(#it{L}_{xy});Events", 50,-10.,+40.);
+			addHist(histos1,i,j,"SLxy",          ";#it{S}(#it{L}_{xy});Events", 60,-10.,+50.);
 			addHist(histos1,i,j,"Sa0xy",         ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,25.);
-			addHist(histos1,i,j,"calo_met",      ";#it{E}_{T,cal}^{miss} [MeV];Events",25,10.*GeV2MeV,110.*GeV2MeV);
-			addHist(histos1,i,j,"calo_mt",       ";#it{m}_{T}^{cal} [MeV];Events",40,20.*GeV2MeV,140.*GeV2MeV);
+			addHist(histos1,i,j,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events",25,10.,110.);
+			addHist(histos1,i,j,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events",40,20.,140.);
 			addHist(histos1,i,j,"calo_dphi3mu",  ";#Delta#it{#phi}_{3body}^{cal};Events",32,0.,TMath::Pi());
-			addHist(histos1,i,j,"trk_met",       ";#it{E}_{T,trk}^{miss} [MeV];Events",25,10.*GeV2MeV,110.*GeV2MeV);
-			addHist(histos1,i,j,"trk_mt",        ";#it{m}_{T}^{trk} [MeV];Events",40,20.*GeV2MeV,140.*GeV2MeV);
+			addHist(histos1,i,j,"trk_met",       ";#it{E}_{T,trk}^{miss} [GeV];Events",25,10.,110.);
+			addHist(histos1,i,j,"trk_mt",        ";#it{m}_{T}^{trk} [GeV];Events",40,20.,140.);
 			addHist(histos1,i,j,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events",32,0.,TMath::Pi());
 			addHist(histos1,i,j,"dptreltrk",     ";p_{T}^{3body}/#it{E}_{T,trk}^{miss}-1;Events",60,-1.,+5.);
 			addHist(histos1,i,j,"dptrelcal",     ";p_{T}^{3body}/#it{E}_{T,cal}^{miss}-1;Events",60,-1.,+5.);
-			addHist(histos1,i,j,"ht",            ";#it{H}_{T} [MeV];Events",40,0.,100.*GeV2MeV);
+			addHist(histos1,i,j,"ht",            ";#it{#Sigma}_{T} [GeV];Events",40,0.,100.);
 		}
 	}
 	
@@ -531,21 +531,21 @@ void replotTMVA()
 			//// fill histos
 			histos1["score"+channel+id]->Fill(BDTG,weight);
 			histos1["PVNtrk"+channel+id]->Fill(vtx_pvNtrk,weight);
-			histos1["pT3body"+channel+id]->Fill(vtx_pt,weight);
+			histos1["pT3body"+channel+id]->Fill(vtx_pt*MeV2GeV,weight);
 			histos1["isolation020"+channel+id]->Fill(vtx_isolation020,weight);
 			histos1["trksfitprob"+channel+id]->Fill(trks_fitprob,weight);
 			histos1["pvalue"+channel+id]->Fill(vtx_pval,weight);		
 			histos1["SLxy"+channel+id]->Fill(geo_lxySig,weight);
 			histos1["Sa0xy"+channel+id]->Fill(geo_a0xySig,weight);
-			histos1["calo_met"+channel+id]->Fill(met_muons_et,weight);
-			histos1["calo_mt"+channel+id]->Fill(met_muons_mT,weight);
+			histos1["calo_met"+channel+id]->Fill(met_muons_et*MeV2GeV,weight);
+			histos1["calo_mt"+channel+id]->Fill(met_muons_mT*MeV2GeV,weight);
 			histos1["calo_dphi3mu"+channel+id]->Fill(met_muons_dPhi3mu,weight);
-			histos1["trk_met"+channel+id]->Fill(met_track_et,weight);
-			histos1["trk_mt"+channel+id]->Fill(met_track_mT,weight);
+			histos1["trk_met"+channel+id]->Fill(met_track_et*MeV2GeV,weight);
+			histos1["trk_mt"+channel+id]->Fill(met_track_mT*MeV2GeV,weight);
 			histos1["calo_trk_dphi"+channel+id]->Fill(mets_dphi,weight);
 			histos1["dptreltrk"+channel+id]->Fill(mets_dptreltrk,weight);
 			histos1["dptrelcal"+channel+id]->Fill(mets_dptrelcal,weight);
-			histos1["ht"+channel+id]->Fill(ht_pt,weight);
+			histos1["ht"+channel+id]->Fill(ht_pt*MeV2GeV,weight);
 		}
    }
 
