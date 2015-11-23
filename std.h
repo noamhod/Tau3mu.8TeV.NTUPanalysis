@@ -42,6 +42,7 @@
 #include "TCut.h"
 #include "TEfficiency.h"
 #include "TProfile.h"
+#include "TEllipse.h"
 
 #include <iostream>
 #include <stdlib.h>

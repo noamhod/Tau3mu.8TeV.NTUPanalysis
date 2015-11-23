@@ -1,7 +1,8 @@
 #!/bin/sh
 
 /bin/cp -f figures/paperplots.m3body.pdf           /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00a.pdf
-/bin/cp -f figures/paperplots.score.pdf            /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
+# /bin/cp -f figures/paperplots.score.pdf            /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
+/bin/cp -f figures/paperplots.score.logy.pdf       /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
 
 /bin/cp -f figures/paperplots.calo_mt.pdf          /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_01a.pdf
 /bin/cp -f figures/paperplots.trk_met.pdf          /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_01b.pdf
@@ -30,6 +31,14 @@
 /bin/cp -f figures/paperplots.mOS1.pdf             /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_05e.pdf
 /bin/cp -f figures/paperplots.mOS2.pdf             /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_05f.pdf
 
-/bin/cp -f figures/BkgEstimateWithSignal.*.1450-1690-1870-2110.neg090.pos1000.*      /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/
+# /bin/cp -f figures/BkgEstimateWithSignal.*.1450-1690-1870-2110.neg090.pos1000.*      /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/
 /bin/cp -f figures/BkgEstimateWithSignal.BDT.1450-1690-1870-2110.neg090.pos1000.pdf  /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_06.pdf
 /bin/cp -f figures/BkgEstimateWithSignal.SB0.1450-1690-1870-2110.neg090.pos1000.pdf  /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_07.pdf
+
+#0.193
+#<INFO> HypoTestTool: The computed upper limit is: 1.53965 +/- 0 (N=0)
+#<INFO> HypoTestTool: The computed upper limit is: 1.86876 +/- 0 (N=0.193)
+
+#0.198
+#<INFO> HypoTestTool: The computed upper limit is: 1.54194 +/- 0 (N=0)
+#<INFO> HypoTestTool: The computed upper limit is: 1.87745 +/- 0 (N=0.198)

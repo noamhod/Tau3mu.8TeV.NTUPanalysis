@@ -232,7 +232,7 @@ void addHist(TMapTSP2TH1& histos, TMapTSP2TH2& histos2, TMapTSP2TProfile& profil
 	if(channel=="Data")
 	{
 		histos[hname]->SetMarkerStyle(24);
-		histos[hname]->SetMarkerSize(1);
+		histos[hname]->SetMarkerSize(1.2);
 		histos[hname]->SetLineWidth(1);
 		histos[hname]->SetMarkerColor(kBlack);
 		histos[hname]->SetLineColor(kBlack);
@@ -253,12 +253,12 @@ void addHist(TMapTSP2TH1& histos, TMapTSP2TH2& histos2, TMapTSP2TProfile& profil
 	profiles.insert(make_pair(pnameBDT, new TProfile(pnameBDT,titlesProfBDT,(int)((float)nbins/2.),xmin,xmax,minBDTcut,+1.0)));
 	profiles[pnameBDT]->SetLineColor(kBlack); profiles[pnameBDT]->SetMarkerColor(kBlack); profiles[pnameBDT]->SetMarkerStyle(20);
 	
-	TString titlesMass2d = titles; titlesMass2d.ReplaceAll(";Events",";#it{m}_{3body} [MeV];Events");
+	TString titlesMass2d = titles; titlesMass2d.ReplaceAll(";Events",";#it{m}_{3#mu} [MeV];Events");
 	TString hnameMass2d = "m3body_vs_"+hname;
 	histos2.insert(make_pair(hnameMass2d, new TH2F(hnameMass2d,titlesMass2d,nbins,xmin,xmax,22,1450,2110)));
 	histos2[hnameMass2d]->Sumw2();
 	
-	TString titlesProfMass = titles; titlesProfMass.ReplaceAll(";Events",";#it{m}_{3body} [MeV];Events");
+	TString titlesProfMass = titles; titlesProfMass.ReplaceAll(";Events",";#it{m}_{3#mu} [MeV];Events");
 	TString pnameMass = "prof_m3body_"+hname;
 	profiles.insert(make_pair(pnameMass, new TProfile(pnameMass,titlesProfMass,(int)((float)nbins/2.),xmin,xmax,1450,2110)));
 	profiles[pnameMass]->SetLineColor(kBlack); profiles[pnameMass]->SetMarkerColor(kBlack); profiles[pnameMass]->SetMarkerStyle(20);
@@ -273,7 +273,7 @@ void addHist(TMapTSP2TH2& histos, TString channel, TString name, TString titles,
 	if(channel=="Data")
 	{
 		// histos[hname]->SetMarkerStyle(20);
-		// histos[hname]->SetMarkerSize(1);
+		// histos[hname]->SetMarkerSize(1.2);
 		// histos[hname]->SetMarkerColor(kBlack);
 		// histos[hname]->SetLineColor(kBlack);
 	}
@@ -413,6 +413,46 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos
 		cnv->SaveAs("figures/"+prefix+"."+varname+".eps");
 		cnv->SaveAs("figures/"+prefix+"."+varname+".pdf");
 	}
+	
+	///////////////////// Plot in log Y axis
+	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+
+	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
+	histos1["Wtaunu_3mu_"+varname]->SetMinimum(5e-1);
+	histos1["Wtaunu_3mu_tight_"+varname]->SetMinimum(5e-1);
+	histos1["Data_"+varname]->SetMinimum(5e-1);
+	histos1["Data_tight_"+varname]->SetMinimum(5e-1);
+	
+	TCanvas* cnvlog = new TCanvas("cnvlog","",800,600);
+	gPad->SetTicks(1,1);
+	gPad->SetLogy();
+	histos1["Wtaunu_3mu_"+varname+"_frame"]->Draw();
+	histos1["Wtaunu_3mu_"+varname]->Draw("hist same");
+	histos1["Wtaunu_3mu_tight_"+varname]->Draw("hist same");
+	histos1["Data_"+varname]->Draw("p1x1 same");
+	histos1["Data_tight_"+varname]->Draw("p1x1 same");
+	plotAtlasLabel();
+	leg->Draw("same");
+	cnvlog->Update();
+	cnvlog->RedrawAxis();
+	if(rangeOS!="") cnvlog->SaveAs("figures/"+prefix+"_resonances"+rangeOS+".logy.pdf");
+	else
+	{
+		cnvlog->SaveAs("figures/"+prefix+".pdf");
+		cnvlog->SaveAs("figures/"+prefix+"."+varname+".logy.png");
+		cnvlog->SaveAs("figures/"+prefix+"."+varname+".logy.eps");
+		cnvlog->SaveAs("figures/"+prefix+"."+varname+".logy.pdf");
+	}
+	
+	//// set it back to the default
+	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*1.1);
+
+	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(0);
+	histos1["Wtaunu_3mu_"+varname]->SetMinimum(0);
+	histos1["Wtaunu_3mu_tight_"+varname]->SetMinimum(0);
+	histos1["Data_"+varname]->SetMinimum(0);
+	histos1["Data_tight_"+varname]->SetMinimum(0);
+	/////////////////////
 	
 	TCanvas* cnv2 = new TCanvas("cnv2","",1200,600);
 	cnv2->Divide(2,1);
@@ -746,7 +786,7 @@ int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 			hname = channel+"_m3body"+rangeOS;       histos1[hname]->Fill(mass->at(0));       histos2["bdt_vs_"+hname]->Fill(mass->at(0),score->at(0));       histos2["m3body_vs_"+hname]->Fill(mass->at(0),mass->at(0));        profiles["prof_bdt_"+hname]->Fill(mass->at(0),score->at(0));       profiles["prof_m3body_"+hname]->Fill(mass->at(0),mass->at(0));
 			hname = channel+"_PVNtrk"+rangeOS;       histos1[hname]->Fill(pvntrk->at(0));     histos2["bdt_vs_"+hname]->Fill(pvntrk->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(pvntrk->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(pvntrk->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(pvntrk->at(0),mass->at(0));
 			hname = channel+"_dRmax"+rangeOS;        histos1[hname]->Fill(drmax->at(0));      histos2["bdt_vs_"+hname]->Fill(drmax->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(drmax->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(drmax->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(drmax->at(0),mass->at(0));
-			hname = channel+"_pT3body"+rangeOS;      histos1[hname]->Fill(pt->at(0));         histos2["bdt_vs_"+hname]->Fill(pt->at(0),score->at(0));         histos2["m3body_vs_"+hname]->Fill(pt->at(0),mass->at(0));          profiles["prof_bdt_"+hname]->Fill(pt->at(0),score->at(0));         profiles["prof_m3body_"+hname]->Fill(pt->at(0),mass->at(0));
+			hname = channel+"_pT3body"+rangeOS;      histos1[hname]->Fill(pt->at(0)*MeV2GeV);         histos2["bdt_vs_"+hname]->Fill(pt->at(0)*MeV2GeV,score->at(0));         histos2["m3body_vs_"+hname]->Fill(pt->at(0)*MeV2GeV,mass->at(0));          profiles["prof_bdt_"+hname]->Fill(pt->at(0)*MeV2GeV,score->at(0));         profiles["prof_m3body_"+hname]->Fill(pt->at(0)*MeV2GeV,mass->at(0));
 			hname = channel+"_mSS"+rangeOS;          histos1[hname]->Fill(mSS->at(0));        histos2["bdt_vs_"+hname]->Fill(mSS->at(0),score->at(0));        histos2["m3body_vs_"+hname]->Fill(mSS->at(0),mass->at(0));         profiles["prof_bdt_"+hname]->Fill(mSS->at(0),score->at(0));        profiles["prof_m3body_"+hname]->Fill(mSS->at(0),mass->at(0));
 			hname = channel+"_mOS2"+rangeOS;         histos1[hname]->Fill(mOS2->at(0));       histos2["bdt_vs_"+hname]->Fill(mOS2->at(0),score->at(0));       histos2["m3body_vs_"+hname]->Fill(mOS2->at(0),mass->at(0));        profiles["prof_bdt_"+hname]->Fill(mOS2->at(0),score->at(0));       profiles["prof_m3body_"+hname]->Fill(mOS2->at(0),mass->at(0));
 			hname = channel+"_mOS1"+rangeOS;         histos1[hname]->Fill(mOS1->at(0));       histos2["bdt_vs_"+hname]->Fill(mOS1->at(0),score->at(0));       histos2["m3body_vs_"+hname]->Fill(mOS1->at(0),mass->at(0));        profiles["prof_bdt_"+hname]->Fill(mOS1->at(0),score->at(0));       profiles["prof_m3body_"+hname]->Fill(mOS1->at(0),mass->at(0));
@@ -758,7 +798,7 @@ int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 			hname = channel+"_maxpbalsig"+rangeOS;   histos1[hname]->Fill(maxpbalsig->at(0)); histos2["bdt_vs_"+hname]->Fill(maxpbalsig->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(maxpbalsig->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(maxpbalsig->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(maxpbalsig->at(0),mass->at(0));
 			hname = channel+"_pvalue"+rangeOS;       histos1[hname]->Fill(pvalue->at(0));     histos2["bdt_vs_"+hname]->Fill(pvalue->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(pvalue->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(pvalue->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(pvalue->at(0),mass->at(0));
 			hname = channel+"_pvalue_zoom"+rangeOS;  histos1[hname]->Fill(pvalue->at(0));     histos2["bdt_vs_"+hname]->Fill(pvalue->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(pvalue->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(pvalue->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(pvalue->at(0),mass->at(0));
-			
+	
 			hname = channel+"_Lxy"+rangeOS;        histos1[hname]->Fill(lxy->at(0));      histos2["bdt_vs_"+hname]->Fill(lxy->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(lxy->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(lxy->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(lxy->at(0),mass->at(0));
 			hname = channel+"_dLxy"+rangeOS;       histos1[hname]->Fill(dlxy->at(0));     histos2["bdt_vs_"+hname]->Fill(dlxy->at(0),score->at(0));     histos2["m3body_vs_"+hname]->Fill(dlxy->at(0),mass->at(0));      profiles["prof_bdt_"+hname]->Fill(dlxy->at(0),score->at(0));     profiles["prof_m3body_"+hname]->Fill(dlxy->at(0),mass->at(0));
 			hname = channel+"_SLxy"+rangeOS;       histos1[hname]->Fill(lxySig->at(0));   histos2["bdt_vs_"+hname]->Fill(lxySig->at(0),score->at(0));   histos2["m3body_vs_"+hname]->Fill(lxySig->at(0),mass->at(0));    profiles["prof_bdt_"+hname]->Fill(lxySig->at(0),score->at(0));   profiles["prof_m3body_"+hname]->Fill(lxySig->at(0),mass->at(0));
@@ -767,35 +807,33 @@ int readData(TTree* t, TMapTSP2TH1& histos1, TMapTSP2TH2& histos2, TMapTSP2TProf
 			hname = channel+"_da0xy"+rangeOS;      histos1[hname]->Fill(da0xy->at(0));    histos2["bdt_vs_"+hname]->Fill(da0xy->at(0),score->at(0));    histos2["m3body_vs_"+hname]->Fill(da0xy->at(0),mass->at(0));     profiles["prof_bdt_"+hname]->Fill(da0xy->at(0),score->at(0));    profiles["prof_m3body_"+hname]->Fill(da0xy->at(0),mass->at(0));
 			hname = channel+"_Sa0xy"+rangeOS;      histos1[hname]->Fill(a0xySig->at(0));  histos2["bdt_vs_"+hname]->Fill(a0xySig->at(0),score->at(0));  histos2["m3body_vs_"+hname]->Fill(a0xySig->at(0),mass->at(0));   profiles["prof_bdt_"+hname]->Fill(a0xySig->at(0),score->at(0));  profiles["prof_m3body_"+hname]->Fill(a0xySig->at(0),mass->at(0));
 			hname = channel+"_Sa0xy_zoom"+rangeOS; histos1[hname]->Fill(a0xySig->at(0));  histos2["bdt_vs_"+hname]->Fill(a0xySig->at(0),score->at(0));  histos2["m3body_vs_"+hname]->Fill(a0xySig->at(0),mass->at(0));   profiles["prof_bdt_"+hname]->Fill(a0xySig->at(0),score->at(0));  profiles["prof_m3body_"+hname]->Fill(a0xySig->at(0),mass->at(0));
-			
-			if(!isFilled) { hname = channel+"_calo_met"+rangeOS; histos1[hname]->Fill(calo_met);             histos2["bdt_vs_"+hname]->Fill(calo_met,score->at(0));            histos2["m3body_vs_"+hname]->Fill(calo_met,mass->at(0));             profiles["prof_bdt_"+hname]->Fill(calo_met,score->at(0));            profiles["prof_m3body_"+hname]->Fill(calo_met,mass->at(0)); }
-			hname = channel+"_calo_mt"+rangeOS;                  histos1[hname]->Fill(calo_mt->at(0));       histos2["bdt_vs_"+hname]->Fill(calo_mt->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(calo_mt->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(calo_mt->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(calo_mt->at(0),mass->at(0));
+
+			if(!isFilled) { hname = channel+"_calo_met"+rangeOS; histos1[hname]->Fill(calo_met*MeV2GeV);             histos2["bdt_vs_"+hname]->Fill(calo_met*MeV2GeV,score->at(0));            histos2["m3body_vs_"+hname]->Fill(calo_met*MeV2GeV,mass->at(0));             profiles["prof_bdt_"+hname]->Fill(calo_met*MeV2GeV,score->at(0));            profiles["prof_m3body_"+hname]->Fill(calo_met*MeV2GeV,mass->at(0)); }
+			hname = channel+"_calo_mt"+rangeOS;                  histos1[hname]->Fill(calo_mt->at(0)*MeV2GeV);       histos2["bdt_vs_"+hname]->Fill(calo_mt->at(0)*MeV2GeV,score->at(0));      histos2["m3body_vs_"+hname]->Fill(calo_mt->at(0)*MeV2GeV,mass->at(0));       profiles["prof_bdt_"+hname]->Fill(calo_mt->at(0)*MeV2GeV,score->at(0));      profiles["prof_m3body_"+hname]->Fill(calo_mt->at(0)*MeV2GeV,mass->at(0));
 			hname = channel+"_calo_dphi3mu"+rangeOS;             histos1[hname]->Fill(calo_dphimet->at(0));  histos2["bdt_vs_"+hname]->Fill(calo_dphimet->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(calo_dphimet->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(calo_dphimet->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(calo_dphimet->at(0),mass->at(0));
-			
-			if(!isFilled) { hname = channel+"_trk_met"+rangeOS; histos1[hname]->Fill(trk_met); histos2["bdt_vs_"+hname]->Fill(trk_met,score->at(0));            histos2["m3body_vs_"+hname]->Fill(trk_met,mass->at(0));             profiles["prof_bdt_"+hname]->Fill(trk_met,score->at(0));            profiles["prof_m3body_"+hname]->Fill(trk_met,mass->at(0));             }
-			hname = channel+"_trk_mt"+rangeOS;      histos1[hname]->Fill(trk_mt->at(0));       histos2["bdt_vs_"+hname]->Fill(trk_mt->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(trk_mt->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(trk_mt->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(trk_mt->at(0),mass->at(0));
+
+			if(!isFilled) { hname = channel+"_trk_met"+rangeOS; histos1[hname]->Fill(trk_met*MeV2GeV); histos2["bdt_vs_"+hname]->Fill(trk_met*MeV2GeV,score->at(0));            histos2["m3body_vs_"+hname]->Fill(trk_met*MeV2GeV,mass->at(0));             profiles["prof_bdt_"+hname]->Fill(trk_met*MeV2GeV,score->at(0));            profiles["prof_m3body_"+hname]->Fill(trk_met*MeV2GeV,mass->at(0));             }
+			hname = channel+"_trk_mt"+rangeOS;      histos1[hname]->Fill(trk_mt->at(0)*MeV2GeV);       histos2["bdt_vs_"+hname]->Fill(trk_mt->at(0)*MeV2GeV,score->at(0));      histos2["m3body_vs_"+hname]->Fill(trk_mt->at(0)*MeV2GeV,mass->at(0));       profiles["prof_bdt_"+hname]->Fill(trk_mt->at(0)*MeV2GeV,score->at(0));      profiles["prof_m3body_"+hname]->Fill(trk_mt->at(0)*MeV2GeV,mass->at(0));
 			hname = channel+"_trk_dphi3mu"+rangeOS; histos1[hname]->Fill(trk_dphimet->at(0));  histos2["bdt_vs_"+hname]->Fill(trk_dphimet->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(trk_dphimet->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(trk_dphimet->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(trk_dphimet->at(0),mass->at(0));
-			
+
 			if(!isFilled) { hname = channel+"_calo_trk_dphi"+rangeOS; histos1[hname]->Fill(dphimets->at(0));  histos2["bdt_vs_"+hname]->Fill(dphimets->at(0),score->at(0));  histos2["m3body_vs_"+hname]->Fill(dphimets->at(0),mass->at(0));   profiles["prof_bdt_"+hname]->Fill(dphimets->at(0),score->at(0));  profiles["prof_m3body_"+hname]->Fill(dphimets->at(0),mass->at(0));  }
 			hname = channel+"_dptreltrk"+rangeOS;                     histos1[hname]->Fill(dptreltrk->at(0)); histos2["bdt_vs_"+hname]->Fill(dptreltrk->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(dptreltrk->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(dptreltrk->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(dptreltrk->at(0),mass->at(0));
 			hname = channel+"_dptrelcal"+rangeOS;                     histos1[hname]->Fill(dptrelcal->at(0)); histos2["bdt_vs_"+hname]->Fill(dptrelcal->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(dptrelcal->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(dptrelcal->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(dptrelcal->at(0),mass->at(0));
-			
-			hname = channel+"_ht"+rangeOS;              histos1[hname]->Fill(ht->at(0));               histos2["bdt_vs_"+hname]->Fill(ht->at(0),score->at(0));              histos2["m3body_vs_"+hname]->Fill(ht->at(0),mass->at(0));               profiles["prof_bdt_"+hname]->Fill(ht->at(0),score->at(0));              profiles["prof_m3body_"+hname]->Fill(ht->at(0),mass->at(0));              
+
+			hname = channel+"_ht"+rangeOS;              histos1[hname]->Fill(ht->at(0)*MeV2GeV);               histos2["bdt_vs_"+hname]->Fill(ht->at(0)*MeV2GeV,score->at(0));              histos2["m3body_vs_"+hname]->Fill(ht->at(0)*MeV2GeV,mass->at(0));               profiles["prof_bdt_"+hname]->Fill(ht->at(0)*MeV2GeV,score->at(0));              profiles["prof_m3body_"+hname]->Fill(ht->at(0)*MeV2GeV,mass->at(0));              
 			hname = channel+"_ht_dphimet_calo"+rangeOS; histos1[hname]->Fill(calo_dphimet_ht->at(0));  histos2["bdt_vs_"+hname]->Fill(calo_dphimet_ht->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(calo_dphimet_ht->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(calo_dphimet_ht->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(calo_dphimet_ht->at(0),mass->at(0));
 			hname = channel+"_ht_dphimet_trk"+rangeOS;  histos1[hname]->Fill(trk_dphimet_ht->at(0));   histos2["bdt_vs_"+hname]->Fill(trk_dphimet_ht->at(0),score->at(0));  histos2["m3body_vs_"+hname]->Fill(trk_dphimet_ht->at(0),mass->at(0));   profiles["prof_bdt_"+hname]->Fill(trk_dphimet_ht->at(0),score->at(0));  profiles["prof_m3body_"+hname]->Fill(trk_dphimet_ht->at(0),mass->at(0));
-			hname = channel+"_calo_mht"+rangeOS;        histos1[hname]->Fill(calo_mht->at(0));         histos2["bdt_vs_"+hname]->Fill(calo_mht->at(0),score->at(0));        histos2["m3body_vs_"+hname]->Fill(calo_mht->at(0),mass->at(0));         profiles["prof_bdt_"+hname]->Fill(calo_mht->at(0),score->at(0));        profiles["prof_m3body_"+hname]->Fill(calo_mht->at(0),mass->at(0));
-			hname = channel+"_trk_mht"+rangeOS;         histos1[hname]->Fill(trk_mht->at(0));          histos2["bdt_vs_"+hname]->Fill(trk_mht->at(0),score->at(0));         histos2["m3body_vs_"+hname]->Fill(trk_mht->at(0),mass->at(0));          profiles["prof_bdt_"+hname]->Fill(trk_mht->at(0),score->at(0));         profiles["prof_m3body_"+hname]->Fill(trk_mht->at(0),mass->at(0));
+			hname = channel+"_calo_mht"+rangeOS;        histos1[hname]->Fill(calo_mht->at(0)*MeV2GeV);         histos2["bdt_vs_"+hname]->Fill(calo_mht->at(0)*MeV2GeV,score->at(0));        histos2["m3body_vs_"+hname]->Fill(calo_mht->at(0)*MeV2GeV,mass->at(0));         profiles["prof_bdt_"+hname]->Fill(calo_mht->at(0)*MeV2GeV,score->at(0));        profiles["prof_m3body_"+hname]->Fill(calo_mht->at(0)*MeV2GeV,mass->at(0));
+			hname = channel+"_trk_mht"+rangeOS;         histos1[hname]->Fill(trk_mht->at(0)*MeV2GeV);          histos2["bdt_vs_"+hname]->Fill(trk_mht->at(0)*MeV2GeV,score->at(0));         histos2["m3body_vs_"+hname]->Fill(trk_mht->at(0)*MeV2GeV,mass->at(0));          profiles["prof_bdt_"+hname]->Fill(trk_mht->at(0)*MeV2GeV,score->at(0));         profiles["prof_m3body_"+hname]->Fill(trk_mht->at(0)*MeV2GeV,mass->at(0));
 			
 			hname = channel+"_dR3body_ht"+rangeOS; histos1[hname]->Fill(dr_ht->at(0));      histos2["bdt_vs_"+hname]->Fill(dr_ht->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(dr_ht->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(dr_ht->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(dr_ht->at(0),mass->at(0));      
 			hname = channel+"_njets"+rangeOS;      histos1[hname]->Fill(njets->at(0));      histos2["bdt_vs_"+hname]->Fill(njets->at(0),score->at(0));      histos2["m3body_vs_"+hname]->Fill(njets->at(0),mass->at(0));       profiles["prof_bdt_"+hname]->Fill(njets->at(0),score->at(0));      profiles["prof_m3body_"+hname]->Fill(njets->at(0),mass->at(0));
 			hname = channel+"_muonauthor"+rangeOS; histos1[hname]->Fill(muonauthor->at(0)); histos2["bdt_vs_"+hname]->Fill(muonauthor->at(0),score->at(0)); histos2["m3body_vs_"+hname]->Fill(muonauthor->at(0),mass->at(0));  profiles["prof_bdt_"+hname]->Fill(muonauthor->at(0),score->at(0)); profiles["prof_m3body_"+hname]->Fill(muonauthor->at(0),mass->at(0));
-        	
 			
 			if(k>0) continue;
 			hname = channel+"_Dalitz0"+rangeOS; histos2[hname]->Fill(mOS1->at(0)*MeV2GeV*mOS1->at(0)*MeV2GeV,mOS2->at(0)*MeV2GeV*mOS2->at(0)*MeV2GeV);
 			hname = channel+"_Dalitz1"+rangeOS; histos2[hname]->Fill(mOS1->at(0)*MeV2GeV*mOS1->at(0)*MeV2GeV,mSS->at(0)*MeV2GeV*mSS->at(0)*MeV2GeV);
 			hname = channel+"_Dalitz2"+rangeOS; histos2[hname]->Fill(mOS2->at(0)*MeV2GeV*mOS2->at(0)*MeV2GeV,mSS->at(0)*MeV2GeV*mSS->at(0)*MeV2GeV);
-	    
 		}
 		
 		isFilled = true; // fill floats only once.
@@ -956,53 +994,53 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 				TString rangeOS = getRangeOS(k);
 				
 				addHist(histos1,histos2,profiles,channel,rangeOS,"score",        ";BDT score;Events",40,-1,+1);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"m3body",       ";#it{m}_{3body} [MeV];Events",22,1450,2110);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"m3body",       ";#it{m}_{3#mu} [MeV];Events",22,1450,2110);
 				
 				addHist(histos1,histos2,profiles,channel,rangeOS,"PVNtrk",       ";#it{N}_{trk}^{PV};Events",50,0,200);
 				
 				addHist(histos1,histos2,profiles,channel,rangeOS,"dRmax",        ";3body #Delta#it{R}_{max};Events", 30,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pT3body",      ";#it{p}_{T}^{3body} [MeV];Events", 50,0.*GeV2MeV,100.*GeV2MeV);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pT3body",      ";#it{p}_{T}^{3#mu} [GeV];Events", 50,0.,100.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"mSS",          ";#it{m}_{SS} [MeV];Events", 50,0.,2100.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS2",         ";#it{m}_{OS2} [MeV];Events", 50,0.,2100.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS1",         ";#it{m}_{OS1} [MeV];Events", 50,0.,2100.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation003", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.03)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation010", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.10)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation020", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation030", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.30)/#it{p}_{T}^{3body};Events", 50,0.,1.0);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation003", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.03)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation010", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.10)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation020", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation030", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.30)/#it{p}_{T}^{3#mu};Events", 50,0.,1.0);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"trksfitprob",  ";#it{P}_{trks};Events",50,0.,1.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"maxpbalsig",   ";#it{#sigma}_{#it{p}-balance}^{max};Events", 70,-3.,+4.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (three-body vertex);Events", 50,0.,1.);		
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (three-body vertex);Events", 100,0.,0.5);		
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (3#mu vertex);Events", 50,0.,1.);		
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (3#mu vertex);Events", 100,0.,0.5);		
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Lxy",          ";#it{L}_{xy} [#mum];Events", 52,-1.,+12.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}_{0}^{xy} [#mum];Events", 50,0.,0.1);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"dLxy",         ";#Delta#it{L}_{xy} [#mum];Events", 50,0.,+1.5);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Events", 50,-10.,+40.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Events", 60,-10.,+50.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy_zoom",    ";#it{S}(#it{L}_{xy});Events", 60,-10.,+20.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}_{0}^{xy} [#mum];Events", 50,0.,+0.05);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,25.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,3.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_met",      ";#it{E}_{T,cal}^{miss} [MeV];Events",45,10.*GeV2MeV,100.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mt",       ";#it{m}_{T}^{cal} [MeV];Events",65,20.*GeV2MeV,150.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_dphi3mu",  ";#Delta#it{#phi}_{3body}^{cal};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events",45,10.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events",65,20.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{cal};Events",32,0.,TMath::Pi());
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_met",      ";#it{E}_{T,trk}^{miss} [MeV];Events",45,10.*GeV2MeV,100.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mt",       ";#it{m}_{T}^{trk} [MeV];Events",60,30.*GeV2MeV,150.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_dphi3mu",  ";#Delta#it{#phi}_{3body}^{trk};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_met",      ";#it{E}_{T,trk}^{miss} [GeV];Events",45,10.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mt",       ";#it{m}_{T}^{trk} [GeV];Events",60,30.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{trk};Events",32,0.,TMath::Pi());
 				                       
 				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dptreltrk",     ";p_{T}^{3body}/#it{E}_{T,trk}^{miss}-1;Events",60,-1.,+5.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dptrelcal",     ";p_{T}^{3body}/#it{E}_{T,cal}^{miss}-1;Events",60,-1.,+5.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dptreltrk",     ";p_{T}^{3#mu}/#it{E}_{T,trk}^{miss}-1;Events",60,-1.,+5.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dptrelcal",     ";p_{T}^{3#mu}/#it{E}_{T,cal}^{miss}-1;Events",60,-1.,+5.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht",              ";#it{H}_{T} [MeV];Events",100,0.,100.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_calo", ";#Delta#it{#phi}_{#it{H}_{T}}^{cal};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_trk",  ";#Delta#it{#phi}_{#it{H}_{T}}^{trk};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mht",        ";#it{m}_{#it{H}_{T}}^{cal} [MeV];Events",65,20.*GeV2MeV,150.*GeV2MeV);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mht",         ";#it{m}_{#it{H}_{T}}^{trk} [MeV];Events",60,30.*GeV2MeV,150.*GeV2MeV);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht",              ";#it{#Sigma}_{T} [GeV];Events",100,0.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_calo", ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{cal};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_trk",  ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{trk};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mht",        ";#it{m}_{#it{#Sigma}_{T}}^{cal} [GeV];Events",65,20.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mht",         ";#it{m}_{#it{#Sigma}_{T}}^{trk} [GeV];Events",60,30.,150.);
         		                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dR3body_ht",      ";#Delta#it{R}(#it{p}_{3body},#it{H});Events",32,0.,2.*TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dR3body_ht",      ";#Delta#it{R}(#it{p}_{3#mu},#it{#Sigma});Events",32,0.,2.*TMath::Pi());
 				addHist(histos1,histos2,profiles,channel,rangeOS,"njets",           ";#it{N}_{jets};Events",5,-0.5,4.5);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"muonauthor",      ";Muon author;Events",2,0.,2.); 
             	
@@ -1060,7 +1098,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 			hit->second->SetMarkerColor(kBlack);
 			hit->second->SetMarkerStyle(20);
 			hit->second->SetLineWidth(1);
-			hit->second->SetMarkerSize(1);
+			hit->second->SetMarkerSize(1.2);
 		}
 		else
 		{

@@ -40,7 +40,7 @@ void makeLegend()
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
 	
-	legR = new TLegend(0.5,0.70,0.88,0.86,NULL,"brNDC");
+	legR = new TLegend(0.4,0.6,0.88,0.86,NULL,"brNDC");
 	legR->SetFillStyle(4000); //will be transparent
 	legR->SetFillColor(0);
 	legR->SetTextFont(42);
@@ -172,7 +172,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	TCanvas* cnv = NULL;
 	
 	if(cnv) delete cnv;
-	cnv = new TCanvas("","",600,400);
+	cnv = new TCanvas("","",800,600);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	// cnv->SetGridy();
@@ -195,7 +195,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->SaveAs("figures/nSR1fitSyst.pdf(");
 	
 	if(cnv) delete cnv;
-	cnv = new TCanvas("","",600,400);
+	cnv = new TCanvas("","",800,600);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hCorrection->SetMinimum(0.75);
@@ -222,36 +222,57 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	TString scurrentBDTcut = tstr(currentBDTcut,4);
 	TString sminBDTcut     = tstr(minBDTcut,4);
 	
-
-	TString loose_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,sminBDTcut, "bkg", "",     "",      true,true,"postTraining");
+	TString loose_test_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, "-0.5","-0.5", "bkg", "",     "",      true,true,"preTraining");
+	cout << "loose_test_cuts_bkg=" << loose_test_cuts_bkg << endl;
+	TString loose_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,sminBDTcut, "bkg", "",     "",      true,true,"preTraining");
 	cout << "loose_cuts_bkg=" << loose_cuts_bkg << endl;
+	TString tight_test_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, "-0.5","-0.5", "bkg", "",     "",      true,true,"postTraining");
+	cout << "tight_test_cuts_bkg=" << tight_test_cuts_bkg << endl;
+	
+	TString tight_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,sminBDTcut, "bkg", "",     "",      true,true,"postTraining");
+	cout << "tight_cuts_bkg=" << tight_cuts_bkg << endl;
 	Double_t m3bodyMin = mSideBandLeftLowerMeVGlob;
 	Double_t m3bodyMax = mSideBandRightUpperMeVGlob;
 	Double_t m3bodyBinSize = mBinSize;
 	Int_t nm3bodybins = (Int_t)((m3bodyMax-m3bodyMin)/m3bodyBinSize);
-	TH1* hBDT  = new TH1F("hBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hBDT->SetLineColor(kBlack); hBDT->SetLineWidth(1); hBDT->SetMarkerColor(kBlack); hBDT->SetMarkerStyle(20); hBDT->SetMarkerSize(0.8); hBDT->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdBDT = new TH1F("hdBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kGray+1); hdBDT->SetFillColor(kGray+1);
-	TH1* hSB   = new TH1F("hSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hSB->SetLineColor(kBlack); hSB->SetLineWidth(1); hSB->SetMarkerColor(kBlack); hSB->SetMarkerStyle(20); hSB->SetMarkerSize(0.8); hSB->SetBinErrorOption(TH1::kPoisson);
-	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kGray+1); hdSB->SetFillColor(kGray+1);
+	TH1* hBDTloose  = new TH1F("hBDTloose",";BDTloose score;Events",nBDTbins,minBDTcut,+1); hBDTloose->Sumw2(); hBDTloose->SetLineColor(kRed); hBDTloose->SetLineWidth(1); hBDTloose->SetMarkerColor(kRed); hBDTloose->SetMarkerStyle(21); hBDTloose->SetMarkerSize(1); hBDTloose->SetBinErrorOption(TH1::kPoisson);
+	TH1* hBDTloosezoom  = new TH1F("hBDTloosezoom",";BDT score;Events",nBDTbins,minBDTcut,+1); hBDTloosezoom->Sumw2(); hBDTloosezoom->SetLineColor(kRed); hBDTloosezoom->SetLineWidth(1); hBDTloosezoom->SetMarkerColor(kRed); hBDTloosezoom->SetMarkerStyle(21); hBDTloosezoom->SetMarkerSize(1); hBDTloosezoom->SetBinErrorOption(TH1::kPoisson);
+	TH1* hBDT  = new TH1F("hBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hBDT->Sumw2(); hBDT->SetLineColor(kBlack); hBDT->SetLineWidth(1); hBDT->SetMarkerColor(kBlack); hBDT->SetMarkerStyle(20); hBDT->SetMarkerSize(1); hBDT->SetBinErrorOption(TH1::kPoisson);
+	TH1* hBDTzoom  = new TH1F("hBDTzoom",";BDT score;Events",nBDTbins,minBDTcut,+1); hBDT->Sumw2(); hBDTzoom->SetLineColor(kBlack); hBDTzoom->SetLineWidth(1); hBDTzoom->SetMarkerColor(kBlack); hBDTzoom->SetMarkerStyle(20); hBDTzoom->SetMarkerSize(1); hBDTzoom->SetBinErrorOption(TH1::kPoisson);
+	TH1* hdBDT = new TH1F("hdBDT",";BDT score;Events",nBDTbins,minBDTcut,+1); hdBDT->Sumw2(); hdBDT->SetLineColor(kBlack); hdBDT->SetFillColor(kBlack); hdBDT->SetFillStyle(3344);
+	TH1* hdBDTzoom = new TH1F("hdBDTzoom",";BDT score;Events",nBDTbins,minBDTcut,+1); hdBDTzoom->Sumw2(); hdBDTzoom->SetLineColor(kBlack); hdBDTzoom->SetFillColor(kBlack); hdBDTzoom->SetFillStyle(3344);
+	TH1* hSB   = new TH1F("hSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hSB->Sumw2(); hSB->SetLineColor(kBlack); hSB->SetLineWidth(1); hSB->SetMarkerColor(kBlack); hSB->SetMarkerStyle(20); hSB->SetMarkerSize(1); hSB->SetBinErrorOption(TH1::kPoisson);
+	TH1* hdSB  = new TH1F("hdSB",";#it{m}_{3body} [MeV];Events",nm3bodybins,m3bodyMin,m3bodyMax); hdSB->Sumw2(); hdSB->SetLineColor(kBlack); hdSB->SetFillColor(kBlack); hdSB->SetFillStyle(3344);
 	
-	tD->Draw("score>>hBDT",loose_cuts_bkg);
-	tD->Draw("m3body>>hSB",loose_cuts_bkg);
+	
+	Double_t NlooseTest = tD->GetEntries(loose_test_cuts_bkg);
+	Double_t NtightTest = tD->GetEntries(tight_test_cuts_bkg);
+	Double_t Nloose = tD->Draw("score>>hBDTloose",loose_cuts_bkg);
+	Double_t Ntight = tD->Draw("score>>hBDT",tight_cuts_bkg);
+	// tD->Draw("score>>hBDTloosezoom",loose_cuts_bkg);
+	// tD->Draw("score>>hBDTzoom",tight_cuts_bkg);
+	tD->Draw("m3body>>hSB",tight_cuts_bkg);
 	getEnvelopes(hdBDT,hdSB,hBDT,hSB,false);
+	// hBDTloose->Scale(Ntight/Nloose);
+	hBDTloose->Scale(NtightTest/NlooseTest);
+	
+	cout << "NtightTest/NlooseTest = " << NtightTest/NlooseTest << endl;
+	cout << "Ntight/Nloose = " << Ntight/Nloose << endl;
 	
 	TH1* hlBDT = (TH1*)hdBDT->Clone("lBDT"); hlBDT->SetLineColor(kBlack); hlBDT->SetLineWidth(2); hlBDT->SetFillColor(0); hlBDT->Smooth();
 	TH1* hlSB = (TH1*)hdSB->Clone("lSB");    hlSB->SetLineColor(kBlack);  hlSB->SetLineWidth(2);  hlSB->SetFillColor(0);  hlSB->Smooth();
-	
 	
 	
 	// for(Int_t b=1 ; b<=hBDT->GetNbinsX() ; ++b) { if(hBDT->GetBinContent(b)<1) { hBDTzro->SetBinContent(b,0); hBDTzro->SetBinError(b,0); } else { hBDTzro->SetBinContent(b,-1); hBDTzro->SetBinError(b,0); } }
 	// for(Int_t b=1 ; b<=hSB->GetNbinsX() ; ++b)  { if(hSB->GetBinContent(b)<1)  { hSBzro->SetBinContent(b,0);  hSBzro->SetBinError(b,0);  } else { hSBzro->SetBinContent(b,-1);  hSBzro->SetBinError(b,0);  } }
 	
 	legR->Clear();
-	legR->AddEntry(hBDT,"SB data (Loose+x>x_{0})","lpe");
+	legR->AddEntry(hBDTloose,"SB data (loose+x>x_{0} norm to tight)","lpe");
+	legR->AddEntry(hBDT,"SB data (tight+x>x_{0})","lpe");
 	legR->AddEntry(hlBDT,"Nominal fit","l");
 	legR->AddEntry(hdBDT,"Fit uncertainty","f");
 	if(cnv) delete cnv;
-	cnv = new TCanvas("","",600,400);
+	cnv = new TCanvas("","",800,600);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdBDT->SetMinimum(0);
@@ -259,6 +280,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	hdBDT->Draw("e2");
 	hlBDT->Draw("hist same");
 	hBDT->Draw("p0 e same");
+	hBDTloose->Draw("p0 e same");
 	ptxt->Draw("same");
 	legR->Draw("same");
 	cnv->Update();
@@ -269,11 +291,11 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	cnv->SaveAs("figures/nSR1fitSyst.pdf");
 	
 	legR->Clear();
-	legR->AddEntry(hSB,"SB data (Loose+x>x_{0})","lpe");
+	legR->AddEntry(hSB,"SB data (tight+x>x_{0})","lpe");
 	legR->AddEntry(hlSB,"Nominal fit","l");
 	legR->AddEntry(hdSB,"Fit uncertainty","f");
 	if(cnv) delete cnv;
-	cnv = new TCanvas("","",600,400);
+	cnv = new TCanvas("","",800,600);
 	cnv->Draw();
 	cnv->SetTicks(1,1);
 	hdSB->SetMinimum(0);
@@ -292,7 +314,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	
 	
 	if(cnv) delete cnv;
-	cnv = new TCanvas("","",600,400);
+	cnv = new TCanvas("","",800,600);
 	cnv->Draw();
 	cnv->SaveAs("figures/nSR1fitSyst.pdf)");
 	

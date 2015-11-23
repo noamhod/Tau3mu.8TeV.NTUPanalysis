@@ -10,6 +10,16 @@
 TString drawopt = "colz text45"; //"colz_one_palette";
 bool doLog      = false;
 
+TString tstr(float x, int prcn=-1)
+{
+	stringstream strm;
+	string str;
+	if(prcn!=-1) strm << setprecision(prcn) << fixed << x;
+	else         strm                       << fixed << x;
+	strm >> str;
+	return (TString)str;
+}
+
 void rgbPalette(Double_t r, Double_t g, Double_t b, Int_t nb=50)
 {
 	const UInt_t Number = 3;
@@ -69,6 +79,32 @@ void plotAtlasLabel()
 	t3.DrawLatex(x,y-0.7*delx,"#sqrt{s}=8 TeV, "+slumi);
 }
 
+void plotAtlasLabel2D()
+{
+	Double_t x = 0.50;
+	Double_t y = 0.88;
+	
+	TLatex t1; //l.SetTextAlign(12); l.SetTextSize(tsize); 
+	t1.SetNDC();
+	t1.SetTextFont(72);
+	t1.SetTextColor(kBlack);
+	double delx = 0.115*696*gPad->GetWh()/(472*gPad->GetWw());
+	// double dely = 0.115*696*gPad->GetWh()/(472*gPad->GetWw());
+	t1.DrawLatex(x,y,"ATLAS");
+	
+	TLatex t2; 
+	t2.SetNDC();
+	t2.SetTextFont(42);
+	t2.SetTextColor(kBlack);
+	t2.DrawLatex(x+delx,y,"Internal");
+	
+	TLatex t3; 
+	t3.SetNDC();
+	t3.SetTextFont(42);
+	t3.SetTextColor(kBlack);
+	t3.DrawLatex(x,y-0.7*delx,"#sqrt{s}=8 TeV, "+slumi);
+}
+
 void plotLabel(TString label, Double_t x, Double_t y)
 {
 	TLatex t; //l.SetTextAlign(12); l.SetTextSize(tsize); 
@@ -79,6 +115,54 @@ void plotLabel(TString label, Double_t x, Double_t y)
 }
 
 
+void printTable(TH2* h, TString xName, TString yName, int precision=2)
+{
+	cout << "%----------------- " << yName << " vs " << xName << " ------------------" << endl;
+	for(Int_t x=0 ; x<=h->GetNbinsX() ; ++x)
+	{
+		if(x==0) { cout << "\\backslashbox{$"+yName+"$~[GeV$^2$]}{$"+xName+"$~[GeV$^2$]}"; continue; }
+		TString xtitle = "["+tstr(h->GetXaxis()->GetBinLowEdge(x),2)+","+tstr(h->GetXaxis()->GetBinUpEdge(x),2)+"]";
+		if(x>0) cout << " &" << xtitle << " ";
+		if(x==h->GetNbinsX()) cout << "\\\\\\hline\\relax" << endl; 
+	}
+	for(Int_t y=1 ; y<=h->GetNbinsY() ; ++y)
+	{
+		for(Int_t x=1 ; x<=h->GetNbinsX() ; ++x)
+		{
+			TString ytitle = "["+tstr(h->GetYaxis()->GetBinLowEdge(y),2)+","+tstr(h->GetYaxis()->GetBinUpEdge(y),2)+"]";
+			TString acceff = "";
+			if(h->GetBinContent(x,y)>0)  acceff = tstr(h->GetBinContent(x,y),precision)+"\\pm "+tstr(h->GetBinError(x,y),precision);
+			if(h->GetBinContent(x,y)==0) acceff = "0";
+			if(h->GetBinContent(x,y)<0)  acceff = "--";
+			
+			if(h->GetBinContent(x,y)>=0) acceff = "$"+acceff+"$";
+			
+			if(x==1)                                   cout << ytitle << " &" << acceff << " "; 
+			if(x>1 && x<h->GetNbinsX())                cout << " &" << acceff << " ";  
+			if(x==h->GetNbinsX() && y<h->GetNbinsY())  cout << "\\\\\\relax" << endl;
+			if(x==h->GetNbinsX() && y==h->GetNbinsY()) cout << "\\\\\\hline\\hline" << endl;
+		}
+	}
+	
+	cout << "%---------------------------------------------------" << endl;
+}
+
+
+
+void regularize(TH2* hEff, TH2* hAll, int nMin=100)
+{
+	for(Int_t y=1 ; y<=hEff->GetNbinsY() ; ++y)
+	{
+		for(Int_t x=1 ; x<=hEff->GetNbinsX() ; ++x)
+		{
+			if(hAll->GetBinContent(x,y)<nMin)
+			{
+				hEff->SetBinContent(x,y,-1);
+				hEff->SetBinError(x,y,0);
+			}
+		}
+	}
+}
 
 
 void Dalitz()
@@ -185,13 +269,23 @@ void Dalitz()
 	
 	
 	int      nmbins1 = 56;
-	int      nmbins  = 10;
+	int      nmbins  = 20;
 	Double_t mbins[nmbins+1];
 	Double_t xMmin1 = (doLog) ? 0.3 : 0.3;
-	Double_t xMmin  = (doLog) ? 0.1*0.1 : 0.;
+	Double_t xMmin  = (doLog) ? 0.1*0.1 : 0.3*0.3;
 	Double_t xMmax1 = 1.7;
-	Double_t xMmax  = 1.7*1.7;
+	Double_t xMmax  = 1.8*1.8;
 	setLogBins(nmbins,xMmin,xMmax,mbins);
+	
+	
+	Double_t xmax0 = 3.0;
+	Double_t ymax0 = 2.2;
+	
+	Double_t xmax1 = 2.8;
+	Double_t ymax1 = 3.0;
+	
+	Double_t xmax2 = 2.2;
+	Double_t ymax2 = 3.0;
 	
 	TH1D* h1AllDalitz0;
 	TH1D* h1AllDalitz1;
@@ -211,23 +305,23 @@ void Dalitz()
 		
 	if(doLog)
 	{
-		h2AllDalitz0 = new TH2D("h2Dalitz0.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,mbins, nmbins,mbins); 
-		h2AllDalitz1 = new TH2D("h2Dalitz1.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins); 
-		h2AllDalitz2 = new TH2D("h2Dalitz2.all", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins);
+		h2AllDalitz0 = new TH2D("h2Dalitz0.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,mbins, nmbins,mbins); 
+		h2AllDalitz1 = new TH2D("h2Dalitz1.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins); 
+		h2AllDalitz2 = new TH2D("h2Dalitz2.all", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins);
 
-		h2PasDalitz0 = new TH2D("h2Dalitz0.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,mbins, nmbins,mbins); 
-		h2PasDalitz1 = new TH2D("h2Dalitz1.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins); 
-		h2PasDalitz2 = new TH2D("h2Dalitz2.pas", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins);
+		h2PasDalitz0 = new TH2D("h2Dalitz0.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,mbins, nmbins,mbins); 
+		h2PasDalitz1 = new TH2D("h2Dalitz1.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins); 
+		h2PasDalitz2 = new TH2D("h2Dalitz2.pas", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,mbins, nmbins,mbins);
 	}
 	else
 	{
-		h2AllDalitz0 = new TH2D("h2Dalitz0.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,xMmin,xMmax, nmbins,xMmin,xMmax); 
-		h2AllDalitz1 = new TH2D("h2Dalitz1.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xMmax, nmbins,xMmin,xMmax); 
-		h2AllDalitz2 = new TH2D("h2Dalitz2.all", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xMmax, nmbins,xMmin,xMmax);
+		h2AllDalitz0 = new TH2D("h2Dalitz0.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,xMmin,xmax0, nmbins,xMmin,ymax0); 
+		h2AllDalitz1 = new TH2D("h2Dalitz1.all", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xmax1, nmbins,xMmin,ymax1); 
+		h2AllDalitz2 = new TH2D("h2Dalitz2.all", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xmax2, nmbins,xMmin,ymax2);
 
-		h2PasDalitz0 = new TH2D("h2Dalitz0.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,xMmin,xMmax, nmbins,xMmin,xMmax); 
-		h2PasDalitz1 = new TH2D("h2Dalitz1.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xMmax, nmbins,xMmin,xMmax); 
-		h2PasDalitz2 = new TH2D("h2Dalitz2.pas", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];#it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xMmax, nmbins,xMmin,xMmax);
+		h2PasDalitz0 = new TH2D("h2Dalitz0.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{OS2}^{2} [GeV^{2}];Events",nmbins,xMmin,xmax0, nmbins,xMmin,ymax0); 
+		h2PasDalitz1 = new TH2D("h2Dalitz1.pas", ";Truth #it{m}_{OS1}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xmax1, nmbins,xMmin,ymax1); 
+		h2PasDalitz2 = new TH2D("h2Dalitz2.pas", ";Truth #it{m}_{OS2}^{2} [GeV^{2}];Truth #it{m}_{SS}^{2} [GeV^{2}];Events", nmbins,xMmin,xmax2, nmbins,xMmin,ymax2);
 		
 		h1AllDalitz0 = new TH1D("h1Dalitz0.all", ";Truth #it{m}_{SS} [GeV];Events",  nmbins1,xMmin1,xMmax1); 
 		h1AllDalitz1 = new TH1D("h1Dalitz1.all", ";Truth #it{m}_{OS1} [GeV];Events", nmbins1,xMmin1,xMmax1); 
@@ -309,9 +403,9 @@ void Dalitz()
 	TH2D* h2PasDalitz2orig = (TH2D*)h2PasDalitz2->Clone();
 	
 	
-	h2PasDalitz0->Divide(h2AllDalitz0);
-	h2PasDalitz1->Divide(h2AllDalitz1);
-	h2PasDalitz2->Divide(h2AllDalitz2);
+	h2PasDalitz0->Divide(h2PasDalitz0,h2AllDalitz0,1,1,"B");
+	h2PasDalitz1->Divide(h2PasDalitz1,h2AllDalitz1,1,1,"B");
+	h2PasDalitz2->Divide(h2PasDalitz2,h2AllDalitz2,1,1,"B");
 	
 	h2PasDalitz0->GetZaxis()->SetTitle("Acceptance#timesEfficinecy [%]");
 	h2PasDalitz1->GetZaxis()->SetTitle("Acceptance#timesEfficinecy [%]");
@@ -321,15 +415,18 @@ void Dalitz()
 	h2PasDalitz1->Scale(100);
 	h2PasDalitz2->Scale(100);
 	
-	// h2PasDalitz0->SetMaximum(20);
-	// h2PasDalitz1->SetMaximum(20);
-	// h2PasDalitz2->SetMaximum(20);
+
+	int nMin = 100;
+	regularize(h2PasDalitz0,h2AllDalitz0,nMin);
+	regularize(h2PasDalitz1,h2AllDalitz1,nMin);
+	regularize(h2PasDalitz2,h2AllDalitz2,nMin);
+
 	
 	////////////////////////////////////////////////////
 	
-	h1PasDalitz0->Divide(h1AllDalitz0);
-	h1PasDalitz1->Divide(h1AllDalitz1);
-	h1PasDalitz2->Divide(h1AllDalitz2);
+	h1PasDalitz0->Divide(h1PasDalitz0,h1AllDalitz0,1,1,"B");
+	h1PasDalitz1->Divide(h1PasDalitz1,h1AllDalitz1,1,1,"B");
+	h1PasDalitz2->Divide(h1PasDalitz2,h1AllDalitz2,1,1,"B");
 	
 	h1PasDalitz0->GetYaxis()->SetTitle("Acceptance#timesEfficinecy [%]");
 	h1PasDalitz1->GetYaxis()->SetTitle("Acceptance#timesEfficinecy [%]");
@@ -432,6 +529,41 @@ void Dalitz()
 	
 	////////////////////////////////////////////////////////////////////
 	if(drawopt.Contains("z")) gStyle->SetPadRightMargin(0.16); /////////
+	////////////////////////////////////////////////////////////////////
+	
+	
+	
+	cnv = new TCanvas("cnv","",800,600); cnv->cd(); cnv->Draw();
+	h2PasDalitz0->Draw(drawopt);
+	plotAtlasLabel2D();
+	cnv->RedrawAxis();
+	cnv->Update();
+	cnv->SaveAs("figures/Dalitz.pdf");
+	cnv->SaveAs("figures/DalitzEff.mOS2.vs.mOS1.pdf");
+	cnv->SaveAs("figures/DalitzEff.mOS2.vs.mOS1.png");
+	cnv->SaveAs("figures/DalitzEff.mOS2.vs.mOS1.eps");
+	
+	cnv = new TCanvas("cnv","",800,600); cnv->cd(); cnv->Draw();
+	h2PasDalitz1->Draw(drawopt);
+	plotAtlasLabel2D();
+	cnv->RedrawAxis();
+	cnv->Update();
+	cnv->SaveAs("figures/Dalitz.pdf");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS1.pdf");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS1.png");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS1.eps");
+	
+	cnv = new TCanvas("cnv","",800,600); cnv->cd(); cnv->Draw();
+	h2PasDalitz2->Draw(drawopt);
+	plotAtlasLabel2D();
+	cnv->RedrawAxis();
+	cnv->Update();
+	cnv->SaveAs("figures/Dalitz.pdf");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS2.pdf");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS2.png");
+	cnv->SaveAs("figures/DalitzEff.mSS.vs.mOS2.eps");
+	
+	
 	////////////////////////////////////////////////////////////////////
 	
 	
@@ -592,4 +724,9 @@ void Dalitz()
 	cnv->SaveAs("figures/DalitzAll.eps");
 
 	cout << "nall=" << nall << ", npas=" << npas << endl;
+	
+	
+	cout << endl; printTable(h2PasDalitz0, "\\mOSasq", "\\mOSbsq");
+	cout << endl; printTable(h2PasDalitz1, "\\mOSasq", "\\mSSsq");
+	cout << endl; printTable(h2PasDalitz2, "\\mOSbsq", "\\mSSsq");
 }

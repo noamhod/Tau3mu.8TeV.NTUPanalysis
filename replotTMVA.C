@@ -95,7 +95,16 @@ void makeLegend()
 	legL->SetBorderSize(0);
 }
 
-void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString titles, int nbins, float xmin, float xmax)
+void setLogBins(Int_t nbins, Double_t min, Double_t max, Double_t* xpoints)
+{
+	Double_t logmin  = log10(min);
+	Double_t logmax  = log10(max);
+	Double_t logbinwidth = (Double_t)( (logmax-logmin)/(Double_t)nbins );
+	xpoints[0] = min;
+	for(Int_t i=1 ; i<=nbins ; i++) xpoints[i] = TMath::Power( 10,(logmin + i*logbinwidth) );
+}
+
+void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString titles, Int_t nbins, Double_t* xpoints)
 {
 	if(nbins<=0) _FAT("nbins="<<nbins<<" for histogram: "<<name);
 	
@@ -103,8 +112,8 @@ void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString tit
 	TString idname      = (id==TRAIN)    ? "train"  : "test";
 	TString hname       = name+"_"+channelname+"_"+idname;
 	
-	histos.insert(make_pair(hname, new TH1F(hname,titles,nbins,xmin,xmax)));
-	histos.insert(make_pair(hname+"_frame", new TH1F(hname+"_frame",titles,nbins,xmin,xmax)));
+	histos.insert(make_pair(hname, new TH1F(hname,titles,nbins,xpoints)));
+	histos.insert(make_pair(hname+"_frame", new TH1F(hname+"_frame",titles,nbins,xpoints)));
 	histos[hname]->Sumw2();
 	
 	if(channel==BKG)
@@ -112,7 +121,7 @@ void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString tit
 		if(id==TRAIN)
 		{
 			histos[hname]->SetMarkerStyle(20);
-			histos[hname]->SetMarkerSize(0.8);
+			histos[hname]->SetMarkerSize(1.2);
 			histos[hname]->SetLineWidth(1);
 			histos[hname]->SetMarkerColor(kBlack);
 			histos[hname]->SetLineColor(kBlack);
@@ -130,7 +139,58 @@ void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString tit
 		if(id==TRAIN)
 		{
 			histos[hname]->SetMarkerStyle(24);
-			histos[hname]->SetMarkerSize(0.8);
+			histos[hname]->SetMarkerSize(1.2);
+			histos[hname]->SetLineWidth(1);
+			histos[hname]->SetMarkerColor(kBlack);
+			histos[hname]->SetLineColor(kBlack);
+		}
+		else
+		{
+			histos[hname]->SetFillColor(kGray);
+			histos[hname]->SetLineColor(kGray);
+		}
+	}
+	
+	_DBG(vis,"Added histo: "<<hname);
+}
+
+
+void addHist(TMapTSP2TH1& histos, int id, int channel, TString name, TString titles, int nbins, float xmin, float xmax)
+{
+	if(nbins<=0) _FAT("nbins="<<nbins<<" for histogram: "<<name);
+	
+	TString channelname = (channel==SIG) ? "signal" : "background";
+	TString idname      = (id==TRAIN)    ? "train"  : "test";
+	TString hname       = name+"_"+channelname+"_"+idname;
+	
+	histos.insert(make_pair(hname, new TH1F(hname,titles,nbins,xmin,xmax)));
+	histos.insert(make_pair(hname+"_frame", new TH1F(hname+"_frame",titles,nbins,xmin,xmax)));
+	histos[hname]->Sumw2();
+	
+	if(channel==BKG)
+	{
+		if(id==TRAIN)
+		{
+			histos[hname]->SetMarkerStyle(20);
+			histos[hname]->SetMarkerSize(1.2);
+			histos[hname]->SetLineWidth(1);
+			histos[hname]->SetMarkerColor(kBlack);
+			histos[hname]->SetLineColor(kBlack);
+		}
+		else
+		{
+			histos[hname]->SetLineColor(kBlack);
+			histos[hname]->SetLineWidth(1);
+			histos[hname]->SetFillColor(kBlack);
+			histos[hname]->SetFillStyle(3354);
+		}
+	}
+	else
+	{
+		if(id==TRAIN)
+		{
+			histos[hname]->SetMarkerStyle(24);
+			histos[hname]->SetMarkerSize(1.2);
 			histos[hname]->SetLineWidth(1);
 			histos[hname]->SetMarkerColor(kBlack);
 			histos[hname]->SetLineColor(kBlack);
@@ -157,11 +217,12 @@ float Sum(TH1* h, bool addUunderFlow=false, bool addOverFlow=false)
 	return I;
 }
 
-void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TLegend* leg, bool doLogy=false)
+void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TLegend* leg, bool doLogy=false, bool doLogx=false)
 {
 	TCanvas* cnv = new TCanvas("cnv","",800,600);
 	gPad->SetTicks(1,1);
 	if(doLogy) gPad->SetLogy();
+	if(doLogx) gPad->SetLogx();
 	
 	float dx = histos1[var+"_background_test"]->GetBinWidth(1);
 	
@@ -200,7 +261,8 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TLegend* leg, bool 
 	float maxTest = (maxSig>maxDat) ? maxSig : maxDat;
 	
 	float max = (maxTest>maxTrain) ? maxTest : maxTrain;
-	histos1[var+"_signal_train_frame"]->SetMaximum(max*1.1);
+	histos1[var+"_signal_train_frame"]->SetMaximum((doLogy) ? max*20 : max*1.1);
+	histos1[var+"_signal_train_frame"]->SetMinimum((doLogy) ? 5.e-3  : 0);
 	
 	histos1[var+"_signal_train_frame"]->Draw();
 	histos1[var+"_signal_test"]->Draw("hist same");
@@ -210,19 +272,31 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TLegend* leg, bool 
 	
 	plotAtlasLabel();
 	
+	TH1F* hTmp = new TH1F("hTmp","",1,0,1);
+	hTmp->SetMarkerStyle(4);
+	hTmp->SetMarkerSize(1.2);
+	hTmp->SetLineWidth(1);
+	hTmp->SetMarkerColor(kBlack);
+	hTmp->SetLineColor(kBlack);
+	
 	leg->Clear();
-	leg->AddEntry(histos1[var+"_background_train"],"Background (training sample)","ple");
-	leg->AddEntry(histos1[var+"_signal_train"],"Signal (training sample)","ple");
+	leg->AddEntry(histos1[var+"_background_train"],"Background (training sample)","elp");
+	// leg->AddEntry(histos1[var+"_signal_train"],"Signal (training sample)","elp");
+	leg->AddEntry(hTmp,"Signal (training sample)","elp");
 	leg->AddEntry(histos1[var+"_background_test"],"Background (test sample)","f");
 	leg->AddEntry(histos1[var+"_signal_test"],"Signal (test sample)","f");
 	leg->Draw("same");
 	cnv->Update();
 	cnv->RedrawAxis();
 	
+	TString suffix = (doLogy) ? ".logy" : "";
+	
 	cnv->SaveAs("figures/"+prefix+".pdf");
-	cnv->SaveAs("figures/"+prefix+"."+var+".png");
-	cnv->SaveAs("figures/"+prefix+"."+var+".eps");
-	cnv->SaveAs("figures/"+prefix+"."+var+".pdf");
+	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".png");
+	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".eps");
+	cnv->SaveAs("figures/"+prefix+suffix+"."+var+".pdf");
+	
+	delete hTmp;
 }
 
 void plot8(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>& legs, TMapTSP2TH1& histos1, bool doLogy=false)
@@ -367,6 +441,10 @@ void replotTMVA()
 	_DBG(vis,"");
 	
 	
+	int      nPbins = 25;
+	Double_t Pbins[nPbins+1];
+	setLogBins(nPbins,1e-9,1.,Pbins);
+	
 	TMapTSP2TH1 histos1;
 	for(unsigned int j=SIG ; j<=BKG ; ++j)
 	{
@@ -377,6 +455,7 @@ void replotTMVA()
 			addHist(histos1,i,j,"pT3body",       ";#it{p}_{T}^{3body} [MeV];Events", 40,0.*GeV2MeV,100.*GeV2MeV);
 			addHist(histos1,i,j,"isolation020",  ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
 			addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",50,0.,1.);
+			// addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",nPbins,Pbins);
 			addHist(histos1,i,j,"pvalue",        ";#it{p}-value (three-body vertex);Events", 50,0.,1.);				
 			addHist(histos1,i,j,"SLxy",          ";#it{S}(#it{L}_{xy});Events", 50,-10.,+40.);
 			addHist(histos1,i,j,"Sa0xy",         ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,25.);
@@ -477,7 +556,6 @@ void replotTMVA()
 	cnv->SaveAs("figures/"+pdffilename+".pdf(");
 
 	plot(pdffilename,"score",         histos1,legTM);
-	
 	plot(pdffilename,"calo_mt",       histos1,legR);
 	plot(pdffilename,"trk_met",       histos1,legR);
 	plot(pdffilename,"isolation020",  histos1,legR);
@@ -489,11 +567,31 @@ void replotTMVA()
 	plot(pdffilename,"calo_dphi3mu",  histos1,legTM);
 	plot(pdffilename,"pvalue",        histos1,legR);
 	plot(pdffilename,"Sa0xy",         histos1,legR);
+	// plot(pdffilename,"trksfitprob",   histos1,legR,false,true);
 	plot(pdffilename,"trksfitprob",   histos1,legR);
 	plot(pdffilename,"pT3body",       histos1,legR);
 	plot(pdffilename,"PVNtrk",        histos1,legR);
 	plot(pdffilename,"SLxy",          histos1,legR);
 	plot(pdffilename,"dptrelcal",     histos1,legR);
+
+	plot(pdffilename,"score",         histos1,legTM,true);
+	plot(pdffilename,"calo_mt",       histos1,legR,true);
+	plot(pdffilename,"trk_met",       histos1,legR,true);
+	plot(pdffilename,"isolation020",  histos1,legR,true);
+	plot(pdffilename,"ht",            histos1,legR,true);
+	plot(pdffilename,"trk_mt",        histos1,legR,true);
+	plot(pdffilename,"calo_trk_dphi", histos1,legR,true);
+	plot(pdffilename,"calo_met",      histos1,legR,true);
+	plot(pdffilename,"dptreltrk",     histos1,legR,true);
+	plot(pdffilename,"calo_dphi3mu",  histos1,legTM,true);
+	plot(pdffilename,"pvalue",        histos1,legR,true);
+	plot(pdffilename,"Sa0xy",         histos1,legR,true);
+	// plot(pdffilename,"trksfitprob",   histos1,legR,true,true);
+	plot(pdffilename,"trksfitprob",   histos1,legR,true);
+	plot(pdffilename,"pT3body",       histos1,legR,true);
+	plot(pdffilename,"PVNtrk",        histos1,legR,true);
+	plot(pdffilename,"SLxy",          histos1,legR,true);
+	plot(pdffilename,"dptrelcal",     histos1,legR,true);
 	
 	_DBG(vis,"");
 	

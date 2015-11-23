@@ -538,8 +538,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	// RooRealVar* scoreS = new RooRealVar("scoreS","BDT score",xbdtmin,xbdtmax);
 	RooRealVar* scoreS = new RooRealVar("score","BDT score",xbdtmin,xbdtmax);
 	RooRealVar* score = new RooRealVar("score","BDT score",xbdtmin,xbdtmax);
-	RooRealVar* m3bodyS = new RooRealVar("m3bodyS","#it{m}_{3body} [MeV]",m3bodyMin,m3bodyMax);
-	RooRealVar* m3body = new RooRealVar("m3body","#it{m}_{3body} [MeV]",m3bodyMin,m3bodyMax);
+	RooRealVar* m3bodyS = new RooRealVar("m3bodyS","#it{m}_{3#mu} [MeV]",m3bodyMin,m3bodyMax);
+	RooRealVar* m3body = new RooRealVar("m3body","#it{m}_{3#mu} [MeV]",m3bodyMin,m3bodyMax);
 	
 	
 	// Roo Data holder for the BDT score
@@ -565,13 +565,13 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	TString sytitle = "Events"; // "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,3);
 	
 	TH1* hScoreSig  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreSig->Sumw2();
-	TH1* hM3bodySig = new TH1F("m",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodySig->Sumw2();
+	TH1* hM3bodySig = new TH1F("m",";#it{m}_{3#mu} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodySig->Sumw2();
 	TH1* hScoreBkg  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg->Sumw2();
-	TH1* hM3bodyBkg = new TH1F("m",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg->Sumw2();
+	TH1* hM3bodyBkg = new TH1F("m",";#it{m}_{3#mu} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg->Sumw2();
 	TH1* hScoreBkg_noblind  = new TH1F("s_noblind",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg_noblind->Sumw2();
-	TH1* hM3bodyBkg_noblind = new TH1F("#it{m}_noblind",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg_noblind->Sumw2();
+	TH1* hM3bodyBkg_noblind = new TH1F("#it{m}_noblind",";#it{m}_{3#mu} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg_noblind->Sumw2();
 	TH1* hScoreBkg_noblind_opt  = new TH1F("s_noblind_opt",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreBkg_noblind_opt->Sumw2();
-	TH1* hM3bodyBkg_noblind_opt = new TH1F("m_noblind_opt",";#it{m}_{3body} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg_noblind_opt->Sumw2();
+	TH1* hM3bodyBkg_noblind_opt = new TH1F("m_noblind_opt",";#it{m}_{3#mu} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodyBkg_noblind_opt->Sumw2();
 	
 	// Int_t ncandidatesS = readData(tS,scoreS,m3bodyS,UnbinnedDataSet_scoreS,UnbinnedDataSet_m3bodyS,
 	// 							m3bodyMin,xbmin,xbmax,m3bodyMax, xbdtmin,xbdtmax, "full","",true,hScoreSig,hM3bodySig);
@@ -717,8 +717,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	RooPlot* scoreFrame = score->frame(Name("scoreFrame"),Title("Background BDT response in the sidebands: "+sidebands+" and BDT>"+tstr(xbdtcutoff,2)));
 	scoreFrame->SetMaximum(20);
 	// scoreFrame->SetAxisRange(0,50,"Y");
-	UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),MarkerSize(1),Binning(nbdtbins));
-	// UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),XErrorSize(0),MarkerSize(1),Binning(nbdtbins));
+	UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),MarkerSize(1.2),Binning(nbdtbins));
+	// UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),XErrorSize(0),MarkerSize(1.2),Binning(nbdtbins));
 	// BinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),XErrorSize(0),MarkerSize(0.3),Binning(nbdtbins));
 	
 	bkgBDTpdfNominal0->plotOn(scoreFrame,Name("Nominal"),LineWidth(2),LineColor(kBlue),NormRange("range_score"));
@@ -749,7 +749,7 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
 	RooPlot* scoreFrameZoom = score->frame(Name("scoreFrameZoom"),Title("Background BDT response in the sidebands: "+sidebands+" and BDT>"+tstr(xbdtcutoff,2)),Range("range_score_zoom"));
-	UnbinnedDataSet_score->plotOn(scoreFrameZoom,Name("BDT score zoom"),MarkerSize(1),Binning(nbdtbins),Range("range_score_zoom"));
+	UnbinnedDataSet_score->plotOn(scoreFrameZoom,Name("BDT score zoom"),MarkerSize(1.2),Binning(nbdtbins),Range("range_score_zoom"));
 	bkgBDTpdfNominal0->plotOn(scoreFrameZoom,Name("Nominal"),LineWidth(2),LineColor(kBlue),Range("range_score"));
 	bkgBDTpdfNominal1->plotOn(scoreFrameZoom,Name("Alternative A"),LineWidth(2),LineColor(kRed+1),LineStyle(kDashed));
 	bkgBDTpdfNominal2->plotOn(scoreFrameZoom,Name("Alternative B"),LineWidth(2),LineColor(kGreen+1),LineStyle(kDashed));
@@ -786,8 +786,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
 	RooPlot* scoreFrameS = score->frame(Name("scoreFrameS"),Title("BDT response"));
-	UnbinnedDataSet_score->plotOn(scoreFrameS,Name("BDT score background"),MarkerSize(1),Binning(nbdtbins));
-	// UnbinnedDataSet_score_noblind->plotOn(scoreFrameS,Name("BDT score background noblind"),MarkerSize(1),MarkerColor(kRed),Binning(nbdtbins));
+	UnbinnedDataSet_score->plotOn(scoreFrameS,Name("BDT score background"),MarkerSize(1.2),Binning(nbdtbins));
+	// UnbinnedDataSet_score_noblind->plotOn(scoreFrameS,Name("BDT score background noblind"),MarkerSize(1.2),MarkerColor(kRed),Binning(nbdtbins));
 	// UnbinnedDataSet_scoreS->plotOn(scoreFrameS,Name("BDT score signal"),LineStyle(kDashed),LineColor(kRed),MarkerStyle(22),MarkerColor(kRed),Binning(nbdtbins));
 	hScoreSig->SetLineColor(kGray); hScoreSig->SetFillColor(kGray);
 	hScoreBkg_noblind->SetLineColor(kRed); hScoreBkg_noblind->SetLineStyle(2);
@@ -886,8 +886,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
 	
 	RooPlot* m3bodySFrame = m3bodyS->frame(Name("m3bodySFrame"),Title("Signal 3body mass"));
-	UnbinnedDataSet_m3bodyS->plotOn(m3bodySFrame,Name("m3bodyS"),MarkerSize(1),Binning(nm3bodybins));
-	// UnbinnedDataSet_m3bodyS->plotOn(m3bodySFrame,Name("BDT m3bodyS"),XErrorSize(0),MarkerSize(1),Binning(nm3bodybins));
+	UnbinnedDataSet_m3bodyS->plotOn(m3bodySFrame,Name("m3bodyS"),MarkerSize(1.2),Binning(nm3bodybins));
+	// UnbinnedDataSet_m3bodyS->plotOn(m3bodySFrame,Name("BDT m3bodyS"),XErrorSize(0),MarkerSize(1.2),Binning(nm3bodybins));
 	// BinnedDataSet_m3bodyS->plotOn(m3bodySFrame,Name("BDT m3bodyS"),XErrorSize(0),MarkerSize(0.3),Binning(nm3bodybins));
 	
 	// sigm3bodypdf->plotOn(m3bodySFrame,LineWidth(2),LineColor(kBlue),Range("range_SBleft,range_SBright"),NormRange("range_SBleft,range_SBright"));
@@ -1114,8 +1114,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	RooPlot* m3bodyFrame = m3body->frame(Name("m3bodyFrame"),Title("3body mass in the sidebands of CR_{0} (BDT>"+tstr(xbdtcutoff,2)+")"));
 	m3bodyFrame->SetMaximum(20);
-	if(!blinded) UnbinnedDataSet_m3body_noblind->plotOn(m3bodyFrame,Name("m3body SB0"),MarkerSize(1),Binning(nm3bodybins));
-	else         UnbinnedDataSet_m3body->plotOn(m3bodyFrame,Name("m3body SB0"),MarkerSize(1),Binning(nm3bodybins));
+	if(!blinded) UnbinnedDataSet_m3body_noblind->plotOn(m3bodyFrame,Name("m3body SB0"),MarkerSize(1.2),Binning(nm3bodybins));
+	else         UnbinnedDataSet_m3body->plotOn(m3bodyFrame,Name("m3body SB0"),MarkerSize(1.2),Binning(nm3bodybins));
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrame,Name("Nominal"),LineWidth(2),LineColor(kBlue),Range("range_m3body"),NormRange("range_SBleft,range_SBright"));
 	bkgm3bodypdfNominal1->plotOn(m3bodyFrame,Name("Alternative A"),LineWidth(2),LineColor(kRed),LineStyle(kDashed),Range("range_m3body"),NormRange("range_SBleft,range_SBright"));
 	bkgm3bodypdfNominal2->plotOn(m3bodyFrame,Name("Alternative B"),LineWidth(2),LineColor(kViolet),LineStyle(kDashed),Range("range_m3body"),NormRange("range_SBleft,range_SBright"));
@@ -1150,14 +1150,14 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	///////////
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
 	RooPlot* m3bodyFrameS = m3body->frame(Name("m3bodyFrameS"),Title("3body mass in the sidebands (BDT>"+tstr(xbdtcutoff,2)+")"));
-	if(blinded) UnbinnedDataSet_m3body->plotOn(m3bodyFrameS,Name("m3body background"),MarkerSize(1),Binning(nm3bodybins));
-	else        UnbinnedDataSet_m3body_noblind->plotOn(m3bodyFrameS,Name("m3body background"),MarkerSize(1),Binning(nm3bodybins));
+	if(blinded) UnbinnedDataSet_m3body->plotOn(m3bodyFrameS,Name("m3body background"),MarkerSize(1.2),Binning(nm3bodybins));
+	else        UnbinnedDataSet_m3body_noblind->plotOn(m3bodyFrameS,Name("m3body background"),MarkerSize(1.2),Binning(nm3bodybins));
 	hM3bodySig->SetLineColor(kGray); hM3bodySig->SetFillColor(kGray);
 	hM3bodyBkg_noblind_opt->SetLineColor(kRed); hM3bodyBkg_noblind_opt->SetMarkerStyle(20); hM3bodyBkg_noblind_opt->SetMarkerColor(kRed);
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_left"),LineWidth(2),LineColor(kBlue),Range("range_SBleft"),NormRange("range_SBleft,range_SBright"));
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_right"),LineWidth(2),LineColor(kBlue),Range("range_SBright"),NormRange("range_SBleft,range_SBright"));
 	bkgm3bodypdfNominal0->plotOn(m3bodyFrameS,Name("Nominal_blinded"),LineWidth(2)/*,LineStyle(2)*/,LineColor(kBlue),Range("range_blinded"),NormRange("range_SBleft,range_SBright"));
-	if(!blinded) UnbinnedDataSet_m3body_noblind_opt->plotOn(m3bodyFrameS,Name("m3body background noblind opt"),MarkerSize(1),MarkerColor(kRed),LineColor(kRed),MarkerStyle(22),Binning(nm3bodybins));
+	if(!blinded) UnbinnedDataSet_m3body_noblind_opt->plotOn(m3bodyFrameS,Name("m3body background noblind opt"),MarkerSize(1.2),MarkerColor(kRed+1),LineColor(kRed+1),MarkerStyle(21),Binning(nm3bodybins));
 	m3bodyFrameS->SetMinimum(1e-5);
 	
 	
@@ -1173,8 +1173,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	leg->SetFillColor(0);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
-	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"SB data (tight+x>x_{0} selection)","ple");
-	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"SB data (tight+x>x_{1} selection)","ple");
+	leg->AddEntry(m3bodyFrameS->findObject("m3body background"),"Data (tight+x>x_{0} selection)","ple");
+	if(!blinded) leg->AddEntry(m3bodyFrameS->findObject("m3body background noblind opt"),"Data (tight+x>x_{1} selection)","ple");
 	leg->AddEntry(m3bodyFrameS->findObject("Nominal_left"),"Fit to the SB data","l");
 	// leg->AddEntry(m3bodyFrameS->findObject("Nominal_blinded"),"Interpolation","l");
 	leg->AddEntry(hdSB,"Fit uncertainty","F");
