@@ -107,6 +107,7 @@ class Estimate
 		};
 	public:
 		vector<float> bdtRooFitSF, sbRooFitSF;
+		vector<float> bdtIntegralLeft, bdtIntegralRight;
 		float         nSB, dnSBstat;
 		vector<float> nSR, dnSRstat;
 		vector<float> chi2BDT, chi2SB;
@@ -118,6 +119,8 @@ class Estimate
 	public:
 		void reset()
 		{
+			bdtIntegralLeft.clear();
+			bdtIntegralRight.clear();
 			bdtRooFitSF.clear();
 			nSR.clear(); dnSRstat.clear();
 			chi2BDT.clear(); chi2SB.clear();
@@ -159,6 +162,31 @@ class Estimate
 			
 			_INF(vis,"");
 		};
+		void addBDTintegralLeft(float x)
+		{
+			if(nSB<0) _FAT("Cannot call addBDTintegralLeft() before calling setSB() first");
+			bdtIntegralLeft.push_back(x);
+			_INF(vis,"");
+		};
+		float getBDTintegralLeft(unsigned int entry)
+		{
+			if(entry>=bdtIntegralLeft.size()) _FAT("entry="<<entry<<" is out of vector size!");
+			return bdtIntegralLeft[entry];
+			_INF(vis,"");
+		}
+		void addBDTintegralRight(float x)
+		{
+			if(nSB<0) _FAT("Cannot call addBDTintegralRight() before calling setSB() first");
+			bdtIntegralRight.push_back(x);
+			_INF(vis,"");
+		};
+		float getBDTintegralRight(unsigned int entry)
+		{
+			if(entry>=bdtIntegralRight.size()) _FAT("entry="<<entry<<" is out of vector size!");
+			return bdtIntegralRight[entry];
+			_INF(vis,"");
+		}
+		
 		void addBDTsf(float x)
 		{
 			if(nSB<0) _FAT("Cannot call addBDTsf() before calling setSB() first");
@@ -202,7 +230,7 @@ class Estimate
 typedef map<TString, Estimate*> TMapTSP2Estimate;
 
 
-Estimate* setEstimate(TFile* f)
+Estimate* setEstimate(TFile* f, float xBDTcut=optBDTcut)
 {
 	Estimate* est = new Estimate();
 	
@@ -261,6 +289,20 @@ Estimate* setEstimate(TFile* f)
 	
 	_INF(vis,"");
 	
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.0"); est->addBDTintegralLeft(tf1BDTnorm->Integral(minBDTabs,xBDTcut));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.1"); est->addBDTintegralLeft(tf1BDTnorm->Integral(minBDTabs,xBDTcut));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.2"); est->addBDTintegralLeft(tf1BDTnorm->Integral(minBDTabs,xBDTcut));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.3"); est->addBDTintegralLeft(tf1BDTnorm->Integral(minBDTabs,xBDTcut));
+	
+	_INF(vis,"");
+	
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.0"); est->addBDTintegralRight(tf1BDTnorm->Integral(xBDTcut,maxBDTabs));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.1"); est->addBDTintegralRight(tf1BDTnorm->Integral(xBDTcut,maxBDTabs));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.2"); est->addBDTintegralRight(tf1BDTnorm->Integral(xBDTcut,maxBDTabs));
+	tf1BDTnorm = (TF1*)f->Get("fBDT0.3"); est->addBDTintegralRight(tf1BDTnorm->Integral(xBDTcut,maxBDTabs));
+	
+	_INF(vis,"");
+	
 	//// BDT functions [0]=nominal, need to remember the RooFitSF per function !
 	tf1BDTnorm = (TF1*)f->Get("fBDT0.0"); est->addBDTsf(est->nSB/(tf1BDTnorm->Integral(minBDTabs,maxBDTabs)/BDTbinWidth));
 	tf1BDTnorm = (TF1*)f->Get("fBDT0.1"); est->addBDTsf(est->nSB/(tf1BDTnorm->Integral(minBDTabs,maxBDTabs)/BDTbinWidth));
@@ -289,6 +331,8 @@ struct Extrapolation
 	float BDTcut;
 	float correction;
 	float f01;
+	float LeftInt;
+	float RightInt;
 	float nSB, dnSBstat;
 	float nSR, dnSRstat;
 	float nSR0, dnSR0stat;
@@ -309,6 +353,9 @@ Extrapolation* extrapulate(unsigned int iBDT, unsigned int iSB, unsigned int iSR
 	strm >> str;
  	TString sIBDT = str;
 	
+	float integralLeft  = est->getBDTintegralLeft(iBDT);
+	float integralRight = est->getBDTintegralRight(iBDT);
+	
 	RooFitSF = est->getBDTRooFitSF(iBDT);
 	tf1BDTnorm = (TF1*)f->Get("fBDT0."+tstr(iBDT,0)); // this global TF1 is part of fBDT function pointer
 	TF1* tf1BDT = new TF1("fBDT",fBDT,est->minBDTabs,est->minBDTabs);
@@ -328,6 +375,8 @@ Extrapolation* extrapulate(unsigned int iBDT, unsigned int iSB, unsigned int iSR
 	CR1->BDTcut       = xBDTcut;
 	CR1->correction   = correction;
 	CR1->f01          = f01;
+	CR1->LeftInt      = integralLeft;
+	CR1->RightInt     = integralRight;
 	CR1->nSB          = est->nSB*correction*f01;
 	CR1->dnSBstat     = est->dnSBstat*correction*f01;
 	CR1->nSR0         = est->nSR[iSB];
@@ -393,7 +442,7 @@ struct Result
 	float correction;
 	float nSB0, dnSB0stat;
 	float nSB1, dnSB1stat;
-	float f01,             df01shape,  df01range,  df01cutoff;
+	float f01, LeftInt, RightInt, df01shape,  df01range,  df01cutoff;
 	float nSR0, dnSR0stat, dnSR0shape, dnSR0range, dnSR0cutoff;
 	float nSR1, dnSR1stat, dnSR1shape, dnSR1range, dnSR1cutoff, dnSR1quad;
 	//
@@ -401,8 +450,11 @@ struct Result
 	float VARnSR1, VARdnSR1stat, VARdnSR1shape, VARdnSR1range, VARdnSR1cutoff, VARdnSR1quad;
 	float xSRmin, xSRmax;
 };
-Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false)
+Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false, bool write=false)
 {
+	ofstream ftxt;
+	if(write) ftxt.open("extrapolation_result.txt");
+	
 	vector<float> vf01_BDTcutoff, vf01_SBrange;
 	vector<float> vnSR0_BDTcutoff, vnSR0_SBrange;
 	vector<float> VARvnSR0_BDTcutoff, VARvnSR0_SBrange;
@@ -414,6 +466,8 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 	float nSR1             = -1;
 	float nSB1             = -1;
 	float f01              = -1;
+	float LeftInt          = -1;
+	float RightInt         = -1;
 	float dnSB0stat        = -1;
 	float dnSR0stat        = -1;
 	float dnSR1stat        = -1;
@@ -437,6 +491,8 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 	float nominal_nSR1             = -1;
 	float nominal_nSB1             = -1;
 	float nominal_f01              = -1;
+	float nominal_LeftInt          = -1;
+	float nominal_RightInt         = -1;
 	float nominal_dnSB0stat        = -1;
 	float nominal_dnSR0stat        = -1;
 	float nominal_dnSR1stat        = -1;
@@ -455,7 +511,7 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 	TMapTSP2Estimate estimates;
 	for(TMapTSP2TFILE::iterator it=files.begin() ; it!=files.end() ; ++it)
 	{
-		estimates.insert(make_pair(it->first,setEstimate(it->second)));
+		estimates.insert(make_pair(it->first,setEstimate(it->second,xBDTcut)));
 		string summary = estimates[it->first]->getSummary();
 		if(print) cout << summary << endl;
 		
@@ -466,9 +522,14 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 		if(nominal_fits->chi2BDT>maxChi2) { _WRN(1,"nominal_fits->chi2BDT="<<nominal_fits->chi2BDT<<" --> skipping!"); continue; }
 		if(nominal_fits->chi2SB>maxChi2)  { _WRN(1,"nominal_fits->chi2SB="<<nominal_fits->chi2SB<<" --> skipping!");   continue; }
 		
+		if(write && it->first==snominal) ftxt << "Nominals: R=" << nominal_fits->f01 << ", Nb(x0)=" << nominal_fits->nSR0 << ", correction=" << nominal_fits->correction << endl;
+		if(write && it->first==snominal) ftxt << "------------------------------------------------------" << endl;
+		
 		//// Keep the nominal values to calculate the distances
 		if(it->first.Contains("neg090"))
 		{
+			if(write) ftxt << "[" << it->first << "] BDT range is fixed and the SB range is shifted (using only nominal BDT function): R=" << tstr(nominal_fits->f01,7) << ", Left=" << tstr(nominal_fits->LeftInt,5) << ", Right=" << tstr(nominal_fits->RightInt,5) << endl;
+			
 			//// when the BDT range is fixed and the SB range is shifted
 			vf01_SBrange.push_back(nominal_fits->f01);
 			vnSR0_SBrange.push_back(nominal_fits->nSR0);
@@ -476,6 +537,8 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 		}
 		else
 		{
+			if(write) ftxt << "[" << it->first << "] SB range is fixed and the BDT range is shifted (using only nominal SB function): R=" << tstr(nominal_fits->f01,7) << ", Left=" << tstr(nominal_fits->LeftInt,5) << ", Right=" << tstr(nominal_fits->RightInt,5) << endl;
+			
 			//// when the SB range is fixed and the BDT range is shifted
 			vf01_BDTcutoff.push_back(nominal_fits->f01);
 			vnSR0_BDTcutoff.push_back(nominal_fits->nSR0);
@@ -526,8 +589,6 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 		bool SBfitAflag  = 1;
 		bool SBfitBflag  = 1;
 		bool SBfitCflag  = 1;
-		
-		
 		if(variant_BDTfit_A->chi2BDT>maxChi2) { _WRN(1,"variant_BDTfit_A->chi2BDT="<<variant_BDTfit_A->chi2BDT); BDTfitAflag = 0; }
 		if(variant_BDTfit_B->chi2BDT>maxChi2) { _WRN(1,"variant_BDTfit_B->chi2BDT="<<variant_BDTfit_B->chi2BDT); BDTfitBflag = 0; }
 		if(variant_BDTfit_C->chi2BDT>maxChi2) { _WRN(1,"variant_BDTfit_C->chi2BDT="<<variant_BDTfit_C->chi2BDT); BDTfitCflag = 0; }
@@ -545,6 +606,10 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 		df01 = (df01C>df01) ? df01C : df01;
 		df01_BDTshape = df01;
 		// cout << "df01=" << df01 << " (" << df01/nominal_fits->f01*100 << "\%)" << endl;
+
+		if(write) ftxt << "[" << it->first << "] SB and BDT ranges are fixed and the BDT function is varied (a): R=" << tstr(variant_BDTfit_A->f01,7) << ", Left=" << tstr(variant_BDTfit_A->LeftInt,5) << ", Right=" << tstr(variant_BDTfit_A->RightInt,5) << endl;
+		if(write) ftxt << "[" << it->first << "] SB and BDT ranges are fixed and the BDT function is varied (b): R=" << tstr(variant_BDTfit_B->f01,7) << ", Left=" << tstr(variant_BDTfit_B->LeftInt,5) << ", Right=" << tstr(variant_BDTfit_B->RightInt,5) << endl;
+		if(write) ftxt << "[" << it->first << "] SB and BDT ranges are fixed and the BDT function is varied (c): R=" << tstr(variant_BDTfit_C->f01,7) << ", Left=" << tstr(variant_BDTfit_C->LeftInt,5) << ", Right=" << tstr(variant_BDTfit_C->RightInt,5) << endl;
 
 		
 		//// SR shape fit choice systematic
@@ -749,7 +814,7 @@ Result* getExtrapolationResult(float xBDTcut, unsigned int iSR, bool print=false
 	// _INF(vis,"");
 	
 	
-	
+	if(write) ftxt.close();
 	
 	return res;
 }

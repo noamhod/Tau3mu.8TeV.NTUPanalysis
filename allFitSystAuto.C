@@ -97,6 +97,7 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	
 	
 	bool print = false;
+	bool write = true;
 
 	
 	makeAtlasLabel();
@@ -105,14 +106,31 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	setFiles();
 	
 	//// get the exact values for the optimal cut
-	Result* res = getExtrapolationResult(currentBDTcut,iSR,print);
+	Result* res = getExtrapolationResult(currentBDTcut,iSR,print,write);
 	TString SRname = "iSR="+tstr(iSR,0)+": ["+tstr(res->xSRmin,0)+","+tstr(res->xSRmax,0)+"] #rightarrow "+tstr(res->xSRmax-res->xSRmin,0)+" MeV";
 
-	//return;
+	////////////
+	return; ////
+	////////////
 
+	TString smMinSBleft    = tstr(mSideBandLeftLowerMeVGlob,0);
+	TString smMaxSBleft    = tstr(mBlindMinGlob,0);
+	TString smMinSBright   = tstr(mBlindMaxGlob,0);
+	TString smMaxSBright   = tstr(mSideBandRightUpperMeVGlob,0);
+	TString sxSRmin        = tstr(res->xSRmin,0);
+	TString sxSRmax        = tstr(res->xSRmax,0);
+	TString scurrentBDTcut = tstr(currentBDTcut,4);
+	TString sminBDTcut     = tstr(minBDTcut,4);
+
+	TFile* fmvaout = new TFile("mvaout.muons.root","READ");
+	// TTree* tS = (TTree*)fmvaout->Get("fltmva_Wtaunu_3mu");
+	TTree* tS = (TTree*)fmvaout->Get("fltmva_Wtaunu_200k_3mu");
+	TTree* tD = (TTree*)fmvaout->Get("fltmva_Data");
 	
-	float dx      = 0.005;
-	float xmin    = 0.6; // minBDTcut;
+	
+	
+	float dx      = 0.001; // 0.005;
+	float xmin    = 0.5; // minBDTcut;
 	float xmax    = +1.0; // maxBDTcut;
 	Float_t hXmin = xmin-dx/2.;
 	Float_t hXmax = xmax+dx/2.;
@@ -132,6 +150,11 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	
 	TH1F* hCorrection = new TH1F("Correction", ";BDT score cut;Correction factor",hNbins,hXmin,hXmax); hCorrection->SetLineWidth(2); hCorrection->SetLineColor(kBlack); hCorrection->SetLineStyle(1); 
 	
+	TH1F* hEff     = new TH1F("AccEff",              ";BDT score cut;#it{A}_{s}#times#it{#epsilon}_{s}",hNbins,hXmin,hXmax);
+	TH1F* hBkg     = new TH1F("Nbkg",                ";BDT score cut;#it{N}_{bkg}",hNbins,hXmin,hXmax);
+	TH1F* hBkgSyst = new TH1F("Nbkg_with_syst_err",  ";BDT score cut;#it{N}_{bkg}",hNbins,hXmin,hXmax);
+	TH1F* hBkgStat = new TH1F("Nbkg_with_stat_err",  ";BDT score cut;#it{N}_{bkg}",hNbins,hXmin,hXmax);
+	
 	leg->Clear();
 	leg->AddEntry(hQuad,     "Systematic (total)","l");
 	leg->AddEntry(hStat,     "Statistic","l");
@@ -142,6 +165,8 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	leg->AddEntry(hBDTcutoff,"BDT cutoff #Delta#it{R}","l");
 	leg->AddEntry(hSBcutoff, "BDT cutoff #DeltaN_{SR0}","l");
 	
+	ofstream fbkg;
+	fbkg.open("fbkg.txt");
 	
 	for(float x=xmin ; x<xmax ; x+=dx, ++hbin)
 	{
@@ -165,9 +190,34 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 		hStat->SetBinContent(hbin, R->VARdnSR1stat/R->VARnSR1*100);
 		
 		hCorrection->SetBinContent(hbin, R->correction);
+
+		TString cuts_sig = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,tstr(x,4), "sig", sxSRmin,sxSRmax, false,true,"postTraining");
+		float npassedS   = tS->GetEntries(cuts_sig);
+		float ninitS     = (((TString)tS->GetName()).Contains("Wtaunu_200k_3mu")) ? 200000 : 99900;
+		float AccEffSig  = npassedS/ninitS;
+		hEff->SetBinContent(hbin,AccEffSig);
+		hBkg->SetBinContent(hbin,R->VARnSR1);
+		hBkgSyst->SetBinContent(hbin,R->VARnSR1); hBkgSyst->SetBinError(hbin,R->VARdnSR1quad);
+		hBkgStat->SetBinContent(hbin,R->VARnSR1); hBkgStat->SetBinError(hbin,R->VARdnSR1stat);
+		
+		fbkg << "x1=" << tstr(x,3) << " Acc*Eff=" << tstr(AccEffSig,4) << " Nbkg=" << tstr(R->VARnSR1,4) << " +- " << tstr(R->VARdnSR1quad,4) << "(syst) +- " << tstr(R->VARdnSR1stat,4) << "(stat)" << endl;
 		
 		delete R;
 	}
+	
+	TFile* fBkg = new TFile("Background.root","RECREATE");
+	fBkg->cd();
+	hEff->Write();
+	hBkg->Write();
+	hBkgSyst->Write();
+	hBkgStat->Write();
+	fBkg->Write();
+	fBkg->Close();
+	fbkg.close();
+	
+	
+	
+	
 	
 	TCanvas* cnv = NULL;
 	
@@ -209,19 +259,6 @@ void allFitSystAuto(unsigned int iSR, float currentBDTcut=optBDTcut)
 	
 	
 	//// calculate the signal efficiency
-	TFile* fmvaout = new TFile("mvaout.muons.root","READ");
-	// TTree* tS = (TTree*)fmvaout->Get("fltmva_Wtaunu_3mu");
-	TTree* tS = (TTree*)fmvaout->Get("fltmva_Wtaunu_200k_3mu");
-	TTree* tD = (TTree*)fmvaout->Get("fltmva_Data");
-	TString smMinSBleft    = tstr(mSideBandLeftLowerMeVGlob,0);
-	TString smMaxSBleft    = tstr(mBlindMinGlob,0);
-	TString smMinSBright   = tstr(mBlindMaxGlob,0);
-	TString smMaxSBright   = tstr(mSideBandRightUpperMeVGlob,0);
-	TString sxSRmin        = tstr(res->xSRmin,0);
-	TString sxSRmax        = tstr(res->xSRmax,0);
-	TString scurrentBDTcut = tstr(currentBDTcut,4);
-	TString sminBDTcut     = tstr(minBDTcut,4);
-	
 	TString loose_test_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, "-0.5","-0.5", "bkg", "",     "",      true,true,"preTraining");
 	cout << "loose_test_cuts_bkg=" << loose_test_cuts_bkg << endl;
 	TString loose_cuts_bkg = postBDTcut(smMinSBleft,smMaxSBleft,smMinSBright,smMaxSBright, sminBDTcut,sminBDTcut, "bkg", "",     "",      true,true,"preTraining");

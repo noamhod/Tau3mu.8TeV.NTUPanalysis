@@ -397,9 +397,11 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos
 	histos1["Data_tight_"+varname]->Draw("p1x1 same");	
 	
 	plotAtlasLabel();
+	
+	TString dataleg = (isBlinded) ? "SB data" : "Data";
 	leg->Clear();
-	leg->AddEntry(histos1["Data_"+varname],"SB data (loose)","ple");
-	leg->AddEntry(histos1["Data_tight_"+varname],"SB data (tight+#it{x}>#it{x}_{0})","ple");
+	leg->AddEntry(histos1["Data_"+varname],dataleg+" (loose)","ple");
+	leg->AddEntry(histos1["Data_tight_"+varname],dataleg+" (tight+#it{x}>#it{x}_{0})","ple");
 	leg->AddEntry(histos1["Wtaunu_3mu_"+varname],"Signal (loose)","f");
 	leg->AddEntry(histos1["Wtaunu_3mu_tight_"+varname],"Signal (tight+#it{x}>#it{x}_{0})","f");
 	leg->Draw("same");
@@ -415,7 +417,8 @@ void plot(TString prefix, TString var, TMapTSP2TH1& histos1, TMapTSP2TH2& histos
 	}
 	
 	///////////////////// Plot in log Y axis
-	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+	if(varname=="m3body") histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*100);
+	else                  histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
 
 	histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
 	histos1["Wtaunu_3mu_"+varname]->SetMinimum(5e-1);
@@ -531,7 +534,8 @@ void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 		float maxSig = histos1["Wtaunu_3mu_"+varname]->GetBinContent(maxbinSig)+histos1["Wtaunu_3mu_"+varname]->GetBinError(maxbinSig);
 		float maxDat = histos1["Data_"+varname]->GetBinContent(maxbinDat)+histos1["Data_"+varname]->GetBinError(maxbinDat);
 		float max = (maxSig>maxDat) ? maxSig : maxDat;
-		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+		if(varname=="m3body") histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*100);
+		else                  histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
 	
 	
 		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
@@ -548,9 +552,10 @@ void plot9(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 		
 		plotAtlasLabel();
 		
+		TString dataleg = (isBlinded) ? "SB data" : "Data";
 		legs[pad]->Clear();
-		legs[pad]->AddEntry(histos1["Data_"+varname],"SB data (loose)","ple");
-		legs[pad]->AddEntry(histos1["Data_tight_"+varname],"SB data (tight+#it{x}>#it{x}_{0})","ple");
+		legs[pad]->AddEntry(histos1["Data_"+varname],dataleg+" (loose)","ple");
+		legs[pad]->AddEntry(histos1["Data_tight_"+varname],dataleg+" (tight+#it{x}>#it{x}_{0})","ple");
 		legs[pad]->AddEntry(histos1["Wtaunu_3mu_"+varname],"Signal (loose)","f");
 		legs[pad]->AddEntry(histos1["Wtaunu_3mu_tight_"+varname],"Signal (tight+#it{x}>#it{x}_{0})","f");
 		legs[pad]->Draw("same");
@@ -585,7 +590,8 @@ void plot2(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 		float maxSig = histos1["Wtaunu_3mu_"+varname]->GetBinContent(maxbinSig)+histos1["Wtaunu_3mu_"+varname]->GetBinError(maxbinSig);
 		float maxDat = histos1["Data_"+varname]->GetBinContent(maxbinDat)+histos1["Data_"+varname]->GetBinError(maxbinDat);
 		float max = (maxSig>maxDat) ? maxSig : maxDat;
-		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
+		if(varname=="m3body") histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*100);
+		else                  histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMaximum(max*20);
 	
 	
 		histos1["Wtaunu_3mu_"+varname+"_frame"]->SetMinimum(5e-1);
@@ -602,9 +608,10 @@ void plot2(TString prefix, TString name, vector<TString>& vars, vector<TLegend*>
 		
 		plotAtlasLabel();
 		
+		TString dataleg = (isBlinded) ? "SB data" : "Data";
 		legs[pad]->Clear();
-		legs[pad]->AddEntry(histos1["Data_"+varname],"SB data (loose)","ple");
-		legs[pad]->AddEntry(histos1["Data_tight_"+varname],"SB data (tight+#it{x}>#it{x}_{0})","ple");
+		legs[pad]->AddEntry(histos1["Data_"+varname],dataleg+" (loose)","ple");
+		legs[pad]->AddEntry(histos1["Data_tight_"+varname],dataleg+" (tight+#it{x}>#it{x}_{0})","ple");
 		legs[pad]->AddEntry(histos1["Wtaunu_3mu_"+varname],"Signal (loose)","f");
 		legs[pad]->AddEntry(histos1["Wtaunu_3mu_tight_"+varname],"Signal (tight+#it{x}>#it{x}_{0})","f");
 		legs[pad]->Draw("same");
@@ -1014,13 +1021,13 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (3#mu vertex);Events", 50,0.,1.);		
 				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (3#mu vertex);Events", 100,0.,0.5);		
 				addHist(histos1,histos2,profiles,channel,rangeOS,"Lxy",          ";#it{L}_{xy} [#mum];Events", 52,-1.,+12.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}_{0}^{xy} [#mum];Events", 50,0.,0.1);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}^{0}_{xy} [#mum];Events", 50,0.,0.1);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"dLxy",         ";#Delta#it{L}_{xy} [#mum];Events", 50,0.,+1.5);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Events", 60,-10.,+50.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy_zoom",    ";#it{S}(#it{L}_{xy});Events", 60,-10.,+20.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}_{0}^{xy} [#mum];Events", 50,0.,+0.05);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,25.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,3.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}^{0}_{xy} [#mum];Events", 50,0.,+0.05);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}^{0}_{xy});Events", 50,0.,25.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}^{0}_{xy});Events", 50,0.,3.);
 				                       
 				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events",45,10.,100.);
 				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events",65,20.,150.);
@@ -1139,7 +1146,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 		TString rangeOS = getRangeOS(k);
 		
 		plot(pdffilename,"score", histos1, histos2,profiles, rescales, legTM,rangeOS);
-		plot(pdffilename,"m3body", histos1, histos2,profiles, rescales, legR,rangeOS);
+		plot(pdffilename,"m3body", histos1, histos2,profiles, rescales, legTL,rangeOS);
 		plot(pdffilename,"PVNtrk", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"dRmax", histos1, histos2,profiles, rescales, legR,rangeOS);
 		plot(pdffilename,"pT3body", histos1, histos2,profiles, rescales, legR,rangeOS);
@@ -1216,7 +1223,7 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 	
 	vars.clear(); legs.clear();
 	vars.push_back("m3body");   vars.push_back("score");
-	legs.push_back(legR); legs.push_back(legTM);
+	legs.push_back(legTL); legs.push_back(legTM);
 	plot2(pdffilename,"Others26to27",vars,legs,histos1);
 	plot2(pdffilename,"Others26to27.logy",vars,legs,histos1,true);
 	

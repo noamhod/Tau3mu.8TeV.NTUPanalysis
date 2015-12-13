@@ -1,8 +1,9 @@
 #!/bin/sh
 
-/bin/cp -f figures/paperplots.m3body.pdf           /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00a.pdf
-# /bin/cp -f figures/paperplots.score.pdf            /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
-/bin/cp -f figures/paperplots.score.logy.pdf       /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
+# /bin/cp -f figures/paperplots.m3body.pdf               /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00a.pdf
+/bin/cp -f figures/paperplots.unblinded.m3body.logy.pdf  /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00a.pdf
+# /bin/cp -f figures/paperplots.score.pdf                /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
+/bin/cp -f figures/paperplots.score.logy.pdf             /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_00b.pdf
 
 /bin/cp -f figures/paperplots.calo_mt.pdf          /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_01a.pdf
 /bin/cp -f figures/paperplots.trk_met.pdf          /Users/hod/Google\ Drive/Papers/LFV/paper/paper/figures/fig_01b.pdf
