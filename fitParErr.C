@@ -627,11 +627,27 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 		
 	//// nominal
-	RooRealVar* C0 = new RooRealVar("C0","C0",randomizeItialGuess(0.,+1000.),0.,+1000.); C0->setError(0.000001);
-	RooRealVar* C1 = new RooRealVar("C1","C1",randomizeItialGuess(0.,1000),0.,1000.);    C1->setError(0.000001);
-	RooRealVar* C2 = new RooRealVar("C2","C2",randomizeItialGuess(-1.5,0.),-1.5,0.);     C2->setError(0.000001);
-	RooRealVar* C3 = new RooRealVar("C3","C3",randomizeItialGuess(0.,1000),0.,1000.);    C3->setError(0.000001);
-	RooRealVar* C4 = new RooRealVar("C4","C4",randomizeItialGuess(1.,+10.),1.,+10.);     C4->setError(0.000001);
+	float C0min=0.;    float C0max=+1000.;
+	float C1min=0.;    float C1max=+1000.;
+	float C2min=-1.5;  float C2max=0.;
+	float C3min=0.;    float C3max=+1000.;
+	float C4min=1.;    float C4max=+10.;
+	// float C0min=0.;     float C0max=+2000.;
+	// float C1min=0.;     float C1max=+20000.;
+	// float C2min=-10.;   float C2max=0.;
+	// float C3min=0.;     float C3max=+20000.;
+	// float C4min=0.;     float C4max=+500.;
+	
+	RooRealVar* C0 = new RooRealVar("C0","C0",randomizeItialGuess(C0min,C0max),C0min,C0max); C0->setError(0.000001);
+	RooRealVar* C1 = new RooRealVar("C1","C1",randomizeItialGuess(C1min,C1max),C1min,C1max); C1->setError(0.000001);
+	RooRealVar* C2 = new RooRealVar("C2","C2",randomizeItialGuess(C2min,C2max),C2min,C2max); C2->setError(0.000001);
+	RooRealVar* C3 = new RooRealVar("C3","C3",randomizeItialGuess(C3min,C3max),C3min,C3max); C3->setError(0.000001);
+	RooRealVar* C4 = new RooRealVar("C4","C4",randomizeItialGuess(C4min,C4max),C4min,C4max); C4->setError(0.000001);
+	// RooRealVar* C0 = new RooRealVar("C0","C0",randomizeItialGuess(0.,+1000.),0.,+1000.); C0->setError(0.000001);
+	// RooRealVar* C1 = new RooRealVar("C1","C1",randomizeItialGuess(0.,1000),0.,1000.);    C1->setError(0.000001);
+	// RooRealVar* C2 = new RooRealVar("C2","C2",randomizeItialGuess(-1.5,0.),-1.5,0.);     C2->setError(0.000001);
+	// RooRealVar* C3 = new RooRealVar("C3","C3",randomizeItialGuess(0.,1000),0.,1000.);    C3->setError(0.000001);
+	// RooRealVar* C4 = new RooRealVar("C4","C4",randomizeItialGuess(1.,+10.),1.,+10.);     C4->setError(0.000001);
 	TString bkgBDTpdfFormula1 = "C0+C1*pow((score+1),C2)+C3*pow((score+1),C4)";
 	TString bkgBDTpdfFormulaX = "A0+A1*pow((score+1),A2)+A3*pow((score+1),A4)";
 	RooGenericPdf* bkgBDTpdf1 = new RooGenericPdf("bkgBDTpdf1","bkgBDTpdf1",bkgBDTpdfFormula1,RooArgSet(*score,*C0,*C1,*C2,*C3,*C4));
@@ -659,12 +675,17 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	TF1* pdf = (TF1*)bkgBDTpdfNominal0->asTF(*score, RooArgList(*C0,*C1,*C2,*C3,*C4), *score);
 	
 	// Sample dataset with parameter values according to distribution of covariance matrix of fit result
-	RooRealVar* A0 = new RooRealVar("A0","A0",C0->getVal(),0.,+1000.); 
-	RooRealVar* A1 = new RooRealVar("A1","A1",C1->getVal(),0.,1000.);       
-	RooRealVar* A2 = new RooRealVar("A2","A2",C2->getVal(),-1.5,0.);         
-	RooRealVar* A3 = new RooRealVar("A3","A3",C3->getVal(),0.,1000.);       
-	RooRealVar* A4 = new RooRealVar("A4","A4",C4->getVal(),1.,+10.);     
-	TH1F* hChi2 = new TH1F("hChi2","hChi2",200,0,2);
+	RooRealVar* A0 = new RooRealVar("A0","A0",C0->getVal(),C0min,C0max); 
+	RooRealVar* A1 = new RooRealVar("A1","A1",C1->getVal(),C1min,C1max);       
+	RooRealVar* A2 = new RooRealVar("A2","A2",C2->getVal(),C2min,C2max);         
+	RooRealVar* A3 = new RooRealVar("A3","A3",C3->getVal(),C3min,C3max);       
+	RooRealVar* A4 = new RooRealVar("A4","A4",C4->getVal(),C4min,C4max);     
+	TH1F* hChi2 = new TH1F("hChi2","hChi2",200,C0min,C0max);
+	TH1F* hA0 = new TH1F("hA0",";A0;N_{toys}",200,C0min,C0max);
+	TH1F* hA1 = new TH1F("hA1",";A1;N_{toys}",200,C1min,C1max);
+	TH1F* hA2 = new TH1F("hA2",";A2;N_{toys}",200,C2min,C2max);
+	TH1F* hA3 = new TH1F("hA3",";A3;N_{toys}",200,C3min,C3max);
+	TH1F* hA4 = new TH1F("hA4",";A4;N_{toys}",200,C4min,C4max);
 	vector<float> R,c0,c1,c2,c3,c4,chi2i,pdfneg09;
 	for(Int_t i=0 ; i<10000 ; i++)
 	{
@@ -678,30 +699,40 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 		{
 			TString parname = par->GetName();
 			
-			if(parname=="C0") { A0->setVal( par->getVal() ); c0.push_back(par->getVal()); }
-			if(parname=="C1") { A1->setVal( par->getVal() ); c1.push_back(par->getVal()); }
-			if(parname=="C2") { A2->setVal( par->getVal() ); c2.push_back(par->getVal()); }
-			if(parname=="C3") { A3->setVal( par->getVal() ); c3.push_back(par->getVal()); }
-			if(parname=="C4") { A4->setVal( par->getVal() ); c4.push_back(par->getVal()); }
+			if(parname=="C0") { A0->setVal( par->getVal() ); }
+			if(parname=="C1") { A1->setVal( par->getVal() ); }
+			if(parname=="C2") { A2->setVal( par->getVal() ); }
+			if(parname=="C3") { A3->setVal( par->getVal() ); }
+			if(parname=="C4") { A4->setVal( par->getVal() ); }
 		}
 		delete iter;
 		
 		RooGenericPdf bkgBDTpdfX(pdfname.Data(),pdfname.Data(),bkgBDTpdfFormulaX,RooArgSet(*score,*A0,*A1,*A2,*A3,*A4));
 		bkgBDTpdfX.plotOn(scoreFrame,Name(pdfname.Data()),LineWidth(1),LineColor(kRed),NormRange("range_score"));
 		Double_t chi2BDTpdf = scoreFrame->chiSquare(pdfname.Data(),"BDT score",nparBDT0);
-		hChi2->Fill(chi2BDTpdf);
-		chi2i.push_back(chi2BDTpdf);
 		
 		TF1* pdfX = (TF1*)bkgBDTpdfX.asTF(*score, RooArgList(*A0,*A1,*A2,*A3,*A4), *score);
-		pdfneg09.push_back(pdfX->Eval(-0.9));
-		
-		
 		if(pdfX->Eval(-0.9)<pdfX->Eval(+1) || pdfX->Eval(-0.9)<0.)
 		{
 			scoreFrame->remove(pdfname.Data());
 			continue;
 		}
 
+		chi2i.push_back(chi2BDTpdf);
+		c0.push_back(A0->getVal());
+		c1.push_back(A1->getVal());
+		c2.push_back(A2->getVal());
+		c3.push_back(A3->getVal());
+		c4.push_back(A4->getVal());
+		
+		hChi2->Fill(chi2BDTpdf);
+		hA0->Fill(A0->getVal());
+        hA1->Fill(A1->getVal());
+		hA2->Fill(A2->getVal());
+        hA3->Fill(A3->getVal());
+        hA4->Fill(A4->getVal());
+
+		
 
 		// bool isbad = false;
 		// for(float xx=-0.9 ; xx<=+1.0 ; xx+=0.01)
@@ -730,7 +761,6 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	// for(Int_t i=0 ; i<10000 ; i++)
 	// {
 	// // 	cout << "c0=" << tstr(c0[i],2) << ", c1=" << tstr(c1[i],3) << ", c2=" << tstr(c2[i],6) << ", c3=" << tstr(c3[i],3) << ", c4=" << tstr(c4[i],6) << ", chi2=" << tstr(chi2i[i],3) << endl;
-	// 	cout << "pdfneg09=" << pdfneg09[i] << endl;
 	// }
 
 	float dR = maxdistance(R,R0);
@@ -792,6 +822,20 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	cnv->RedrawAxis();
 	cnv->SaveAs("figures/BkgEstimateErrs.Chi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".png");
 	cnv->SaveAs("figures/BkgEstimateErrs.Chi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".eps");
+	cnv->SaveAs("figures/BkgEstimateErrs."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".pdf(");
+	
+	
+	if(cnv) delete cnv; cnv = new TCanvas("cnv","",1200,900);
+	cnv->Divide(3,2);
+	cnv->cd(1); hA0->Draw();   gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); gPad->SetLogx();
+	cnv->cd(2); hA1->Draw();   gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); gPad->SetLogx();
+	cnv->cd(3); hA2->Draw();   gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); //gPad->SetLogx();
+	cnv->cd(4); hA3->Draw();   gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); gPad->SetLogx();
+	cnv->cd(5); hA4->Draw();   gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); gPad->SetLogx();
+	cnv->cd(6); hChi2->Draw(); gPad->Update(); gPad->RedrawAxis(); gPad->SetTicks(1,1); gPad->SetLogy(); gPad->SetLogx();
+	cnv->Update();
+	cnv->SaveAs("figures/BkgEstimateErrs.AiChi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".png");
+	cnv->SaveAs("figures/BkgEstimateErrs.AiChi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".eps");
 	cnv->SaveAs("figures/BkgEstimateErrs."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".pdf(");
 	
 	return;
