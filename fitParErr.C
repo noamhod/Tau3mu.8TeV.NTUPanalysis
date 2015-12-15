@@ -68,6 +68,46 @@ float Sum(TH1* h, bool addUunderFlow=false, bool addOverFlow=false)
 	return I;
 }
 
+float maxdistance(vector<float>& v, float reference, bool print=false)
+{
+	float maxd = -1.e20;
+	for(unsigned int i=0 ; i<v.size() ; ++i)
+	{
+		float d = fabs(v[i]-reference);
+		if(print) cout << "["<<i<<"] " << d << endl;
+		maxd = (d>maxd) ? d : maxd;
+	}
+	if(print) cout << "max distance=" << maxd <<endl;
+	return maxd;
+}
+float rmsd(vector<float>& v, float reference=0, bool doreference=false, bool print=false)
+{
+	float x = 0;
+	float av = reference;
+	float n = 0;
+	for(unsigned int i=0 ; i<v.size() ; ++i)
+	{
+		if(!isnan(v[i])) n++;
+	}
+	if(!doreference)
+	{
+		av = 0;
+		for(unsigned int i=0 ; i<v.size() ; ++i)
+		{
+			if(!isnan(v[i])) av += v[i];
+		}
+		av = av/n;
+	}
+	for(unsigned int i=0 ; i<v.size() ; ++i)
+	{
+		if(!isnan(v[i])) x += (av-v[i])*(av-v[i]);
+	}
+	x = sqrt(x/n);
+	if(print) cout << "RMSD=" << x <<endl;
+	return x;
+}
+
+
 TPaveText* ptxt;
 void makeAtlasLabel()
 {
@@ -300,49 +340,49 @@ int readData(TTree* t, RooRealVar* score, RooRealVar* m3body, RooAbsData* data_s
 		delete loose;
 		
 	
-		if(pass && bdtscore->at(0)>0.85 && type=="bkg")
-		{
-			cout << "------- entry=" << entry << " ------" << endl;
-			cout << "code         " << code->at(0) << endl;
-			cout << "Ncandidates  " << bdtscore->size() << endl;
-			cout << "xBDT         " << bdtscore->at(0) << endl;
-			cout << "mass         " << mass->at(0) << endl;
-			cout << "mOS1         " << mOS1->at(0) << endl;
-			cout << "mOS2         " << mOS2->at(0) << endl;
-			cout << "mSS          " << mSS->at(0) << endl;
-			cout << "pval         " << pval->at(0) << endl;
-			cout << "trkspval     " << trkspval->at(0) << endl;
-			cout << "njets        " << njets->at(0) << endl;
-			cout << "pt           " << pt->at(0) << endl;
-			cout << "ht           " << ht->at(0) << endl;
-			cout << "dpthtrel     " << pt->at(0)/ht->at(0)-1 << endl;
-			cout << "mettrk       " << mettrk    ->at(0) << endl;
-			cout << "metcal       " << metcal    ->at(0) << endl;
-			cout << "dmetsrel     " << (mettrk->at(0)-pt->at(0))/(metcal->at(0)+mettrk->at(0)) << endl;
-			cout << "dptmetcal    " << fabs(pt->at(0)-metcal->at(0))/metcal->at(0) << endl;
-			cout << "dptmettrk    " << fabs(pt->at(0)-mettrk->at(0))/mettrk->at(0) << endl;
-			cout << "dhtmetcal    " << fabs(ht->at(0)-metcal->at(0))/metcal->at(0) << endl;
-			cout << "dhtmettrk    " << fabs(ht->at(0)-mettrk->at(0))/mettrk->at(0) << endl;
-			cout << "metsdphi     " << metsdphi  ->at(0) << endl;
-			cout << "dphical      " << dphical   ->at(0) << endl;
-			cout << "dphitrk      " << dphitrk   ->at(0) << endl;
-			cout << "mtcal        " << mtcal     ->at(0) << endl;
-			cout << "mttrk        " << mttrk     ->at(0) << endl;
-			
-			cout << "iso003       " << iso003    ->at(0) << endl;
-			cout << "iso014       " << iso014    ->at(0) << endl;
-			cout << "iso020       " << iso020    ->at(0) << endl;
-			cout << "iso030       " << iso030    ->at(0) << endl;
-			
-			cout << "lxy          " << lxy       ->at(0) << endl;
-			cout << "dlxy         " << dlxy      ->at(0) << endl;
-			cout << "lxysig       " << lxysig    ->at(0) << endl;
-			cout << "a0xy         " << a0xy      ->at(0) << endl;
-			cout << "da0xy        " << da0xy     ->at(0) << endl;
-			cout << "a0xysig      " << a0xysig   ->at(0) << endl;
-			
-			cout << "pvntrk       " << pvntrk    ->at(0) << endl;
-		}
+		// if(pass && bdtscore->at(0)>0.85 && type=="bkg")
+		// {
+		// 	cout << "------- entry=" << entry << " ------" << endl;
+		// 	cout << "code         " << code->at(0) << endl;
+		// 	cout << "Ncandidates  " << bdtscore->size() << endl;
+		// 	cout << "xBDT         " << bdtscore->at(0) << endl;
+		// 	cout << "mass         " << mass->at(0) << endl;
+		// 	cout << "mOS1         " << mOS1->at(0) << endl;
+		// 	cout << "mOS2         " << mOS2->at(0) << endl;
+		// 	cout << "mSS          " << mSS->at(0) << endl;
+		// 	cout << "pval         " << pval->at(0) << endl;
+		// 	cout << "trkspval     " << trkspval->at(0) << endl;
+		// 	cout << "njets        " << njets->at(0) << endl;
+		// 	cout << "pt           " << pt->at(0) << endl;
+		// 	cout << "ht           " << ht->at(0) << endl;
+		// 	cout << "dpthtrel     " << pt->at(0)/ht->at(0)-1 << endl;
+		// 	cout << "mettrk       " << mettrk    ->at(0) << endl;
+		// 	cout << "metcal       " << metcal    ->at(0) << endl;
+		// 	cout << "dmetsrel     " << (mettrk->at(0)-pt->at(0))/(metcal->at(0)+mettrk->at(0)) << endl;
+		// 	cout << "dptmetcal    " << fabs(pt->at(0)-metcal->at(0))/metcal->at(0) << endl;
+		// 	cout << "dptmettrk    " << fabs(pt->at(0)-mettrk->at(0))/mettrk->at(0) << endl;
+		// 	cout << "dhtmetcal    " << fabs(ht->at(0)-metcal->at(0))/metcal->at(0) << endl;
+		// 	cout << "dhtmettrk    " << fabs(ht->at(0)-mettrk->at(0))/mettrk->at(0) << endl;
+		// 	cout << "metsdphi     " << metsdphi  ->at(0) << endl;
+		// 	cout << "dphical      " << dphical   ->at(0) << endl;
+		// 	cout << "dphitrk      " << dphitrk   ->at(0) << endl;
+		// 	cout << "mtcal        " << mtcal     ->at(0) << endl;
+		// 	cout << "mttrk        " << mttrk     ->at(0) << endl;
+		// 	
+		// 	cout << "iso003       " << iso003    ->at(0) << endl;
+		// 	cout << "iso014       " << iso014    ->at(0) << endl;
+		// 	cout << "iso020       " << iso020    ->at(0) << endl;
+		// 	cout << "iso030       " << iso030    ->at(0) << endl;
+		// 	
+		// 	cout << "lxy          " << lxy       ->at(0) << endl;
+		// 	cout << "dlxy         " << dlxy      ->at(0) << endl;
+		// 	cout << "lxysig       " << lxysig    ->at(0) << endl;
+		// 	cout << "a0xy         " << a0xy      ->at(0) << endl;
+		// 	cout << "da0xy        " << da0xy     ->at(0) << endl;
+		// 	cout << "a0xysig      " << a0xysig   ->at(0) << endl;
+		// 	
+		// 	cout << "pvntrk       " << pvntrk    ->at(0) << endl;
+		// }
 
 		//// add this candidtate to the set
 		if(pass)
@@ -579,6 +619,7 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	scoreS->setRange("range_score_signal",xbdtmin,xbdtmax);
 	score->setRange("range_score",xbdtmin,xbdtmax);
 	score->setRange("range_score_zoom",0.7,xbdtmax);
+	score->setRange("range_score_full",xbdtmin,xbdtmax);
 	score->setRange("range_score_SB0",xbdtmin,xbdtopt);
 	score->setRange("range_score_SB1",xbdtopt,xbdtmax);
 	score->setBins(nbdtbins);
@@ -592,6 +633,7 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	RooRealVar* C3 = new RooRealVar("C3","C3",randomizeItialGuess(0.,1000),0.,1000.);    C3->setError(0.000001);
 	RooRealVar* C4 = new RooRealVar("C4","C4",randomizeItialGuess(1.,+10.),1.,+10.);     C4->setError(0.000001);
 	TString bkgBDTpdfFormula1 = "C0+C1*pow((score+1),C2)+C3*pow((score+1),C4)";
+	TString bkgBDTpdfFormulaX = "A0+A1*pow((score+1),A2)+A3*pow((score+1),A4)";
 	RooGenericPdf* bkgBDTpdf1 = new RooGenericPdf("bkgBDTpdf1","bkgBDTpdf1",bkgBDTpdfFormula1,RooArgSet(*score,*C0,*C1,*C2,*C3,*C4));
 	RooFitResult* fitresult_score1 = bkgBDTpdf1->fitTo( *UnbinnedDataSet_score,Minos(kTRUE),Range("range_score"),Strategy(2),Save(kTRUE),Timer(kTRUE));
 	
@@ -601,23 +643,139 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	RooAbsPdf* bkgBDTpdfNominal0 = bkgBDTpdf1; TString bkgBDTpdfNominalFormula0 = bkgBDTpdfFormula1; const unsigned int nparBDT0 = 5;
 	
+	RooAbsReal* integralSB0 = bkgBDTpdfNominal0->createIntegral(*score,NormSet(*score),Range("range_score_SB0"));
+	RooAbsReal* integralSB1 = bkgBDTpdfNominal0->createIntegral(*score,NormSet(*score),Range("range_score_SB1"));
+	float R0 = integralSB1->getVal()/integralSB0->getVal();
 	
 	
 	
-	
-	
-	
-	
-	
-	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
+	cnv = new TCanvas("cnv","",800,600);
 	
 	RooPlot* scoreFrame = score->frame(Name("scoreFrame"),Title("Background BDT response in the sidebands: "+sidebands+" and BDT>"+tstr(xbdtcutoff,2)));
 	scoreFrame->SetMaximum(20);
 	UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),MarkerSize(1.2),Binning(nbdtbins));
 	bkgBDTpdfNominal0->plotOn(scoreFrame,Name("Nominal"),LineWidth(2),LineColor(kBlue),NormRange("range_score"));
+	Double_t chi2BDTpdfNominal = scoreFrame->chiSquare("Nominal","BDT score", nparBDT0);
+	TF1* pdf = (TF1*)bkgBDTpdfNominal0->asTF(*score, RooArgList(*C0,*C1,*C2,*C3,*C4), *score);
+	
+	// Sample dataset with parameter values according to distribution of covariance matrix of fit result
+	RooRealVar* A0 = new RooRealVar("A0","A0",C0->getVal(),0.,+1000.); 
+	RooRealVar* A1 = new RooRealVar("A1","A1",C1->getVal(),0.,1000.);       
+	RooRealVar* A2 = new RooRealVar("A2","A2",C2->getVal(),-1.5,0.);         
+	RooRealVar* A3 = new RooRealVar("A3","A3",C3->getVal(),0.,1000.);       
+	RooRealVar* A4 = new RooRealVar("A4","A4",C4->getVal(),1.,+10.);     
+	TH1F* hChi2 = new TH1F("hChi2","hChi2",200,0,2);
+	vector<float> R,c0,c1,c2,c3,c4,chi2i,pdfneg09;
+	for(Int_t i=0 ; i<10000 ; i++)
+	{
+		const RooArgList randPars = fitresult_score1->randomizePars();
+		TIterator* iter = randPars.createIterator();
+		RooRealVar* par;
+		
+		TString pdfname = "bkgBDTpdfX"+tstr(i,0);
+		
+		while( par = (RooRealVar*)iter->Next() )
+		{
+			TString parname = par->GetName();
+			
+			if(parname=="C0") { A0->setVal( par->getVal() ); c0.push_back(par->getVal()); }
+			if(parname=="C1") { A1->setVal( par->getVal() ); c1.push_back(par->getVal()); }
+			if(parname=="C2") { A2->setVal( par->getVal() ); c2.push_back(par->getVal()); }
+			if(parname=="C3") { A3->setVal( par->getVal() ); c3.push_back(par->getVal()); }
+			if(parname=="C4") { A4->setVal( par->getVal() ); c4.push_back(par->getVal()); }
+		}
+		delete iter;
+		
+		RooGenericPdf bkgBDTpdfX(pdfname.Data(),pdfname.Data(),bkgBDTpdfFormulaX,RooArgSet(*score,*A0,*A1,*A2,*A3,*A4));
+		bkgBDTpdfX.plotOn(scoreFrame,Name(pdfname.Data()),LineWidth(1),LineColor(kRed),NormRange("range_score"));
+		Double_t chi2BDTpdf = scoreFrame->chiSquare(pdfname.Data(),"BDT score",nparBDT0);
+		hChi2->Fill(chi2BDTpdf);
+		chi2i.push_back(chi2BDTpdf);
+		
+		TF1* pdfX = (TF1*)bkgBDTpdfX.asTF(*score, RooArgList(*A0,*A1,*A2,*A3,*A4), *score);
+		pdfneg09.push_back(pdfX->Eval(-0.9));
+		
+		
+		if(pdfX->Eval(-0.9)<pdfX->Eval(+1) || pdfX->Eval(-0.9)<0.)
+		{
+			scoreFrame->remove(pdfname.Data());
+			continue;
+		}
+
+
+		// bool isbad = false;
+		// for(float xx=-0.9 ; xx<=+1.0 ; xx+=0.01)
+		// {
+		// 	if(pdfX->Eval(xx)<=0.1) { isbad=true; break; }
+		// }
+		// if(isbad)
+		// {
+		// 	scoreFrame->remove(pdfname.Data());
+		// 	continue;
+		// }
+		
+		
+		// if(chi2BDTpdf>0.5) //chi2BDTpdfNominal)
+		// {
+		// 	scoreFrame->remove(pdfname.Data());
+		// 	continue;
+		// }
+		
+		RooAbsReal* integralSB0 = bkgBDTpdfX.createIntegral(*score,NormSet(*score),Range("range_score_SB0"));
+		RooAbsReal* integralSB1 = bkgBDTpdfX.createIntegral(*score,NormSet(*score),Range("range_score_SB1"));
+		float Rx = integralSB1->getVal()/integralSB0->getVal();
+		R.push_back(Rx);
+	}
+	
+	// for(Int_t i=0 ; i<10000 ; i++)
+	// {
+	// // 	cout << "c0=" << tstr(c0[i],2) << ", c1=" << tstr(c1[i],3) << ", c2=" << tstr(c2[i],6) << ", c3=" << tstr(c3[i],3) << ", c4=" << tstr(c4[i],6) << ", chi2=" << tstr(chi2i[i],3) << endl;
+	// 	cout << "pdfneg09=" << pdfneg09[i] << endl;
+	// }
+
+	float dR = maxdistance(R,R0);
+	float RMSD = rmsd(R,R0,true);
+	float RMSDtrue = rmsd(R);
+	cout << "chi^2(nom)=" << chi2BDTpdfNominal << endl;
+	cout << "R0=" << R0 << endl;
+	cout << "dR=" << dR << endl;
+	cout << "dR/R0=" << tstr(dR/R0*100,1) << "%" << endl;
+	cout << "RMSD(R,R0) =" << tstr(RMSD,5) << endl;
+	cout << "RMSD(R,R)  =" << tstr(RMSDtrue,5) << endl;
+	cout << "RMSD(R,R0)/R0 =" << tstr(RMSD/R0*100,1) << "%" << endl;
+	cout << "RMSD(R,R)/R0  =" << tstr(RMSDtrue/R0*100,1) << "%" << endl;
+	/*
+	chi^2(nom)=0.439794
+	R0=0.0264858
+	dR=0.0216681
+	dR/R0=81.8%
+	RMSD(R)=0.00641
+	RMSD(R)/R0=24.2%
+	*/
+	/*
+	chi^2(nom)=0.438588
+	R0=0.0266285
+	dR=0.0597689
+	dR/R0=224.5%
+	RMSD(R)=0.00453
+	RMSD(R)/R0=17.0%
+	*/
+	/*
+	chi^2(nom)=0.438654
+	R0=0.0266178
+	dR=0.0270291
+	dR/R0=101.5%
+	RMSD(R)=0.00769
+	RMSD(R)/R0=28.9%
+	*/
+	
+	UnbinnedDataSet_score->plotOn(scoreFrame,Name("BDT score"),MarkerSize(1.2),Binning(nbdtbins));
+	bkgBDTpdfNominal0->plotOn(scoreFrame,Name("Nominal"),LineWidth(2),LineColor(kBlue),NormRange("range_score"));
+	
 	leg->Clear();
 	leg->AddEntry(scoreFrame->findObject("BDT score"),"Sidebands data","ple");
 	leg->AddEntry(scoreFrame->findObject("Nominal"),"Nominal fit","l");
+	leg->AddEntry(scoreFrame->findObject("bkgBDTpdfX0"),"Random pars","l");
 	scoreFrame->SetTitleOffset(2,"Y");
 	scoreFrame->Draw();
 	ptxt->Draw("same");
@@ -625,6 +783,18 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	cnv->SaveAs("figures/BkgEstimateErrs.BDT."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".png");
 	cnv->SaveAs("figures/BkgEstimateErrs.BDT."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".eps");
 	cnv->SaveAs("figures/BkgEstimateErrs."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".pdf(");
+	
+	
+	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
+	hChi2->Draw();
+	ptxt->Draw("same");
+	cnv->Update();
+	cnv->RedrawAxis();
+	cnv->SaveAs("figures/BkgEstimateErrs.Chi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".png");
+	cnv->SaveAs("figures/BkgEstimateErrs.Chi2."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".eps");
+	cnv->SaveAs("figures/BkgEstimateErrs."+sidebands+"."+bdtcutoff+"."+bdtmaxusr+".pdf(");
+	
+	return;
 	
 	
 	if(cnv) delete cnv; cnv = new TCanvas("cnv","",800,600);
@@ -882,14 +1052,16 @@ void fitParErr(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	
 	
 	
-	
+	Float_t xSRmin = 1713;
+	Float_t xSRmax = 1841;
+	m3body->setRange("range_m3body_SR",xSRmin,xSRmax);
 	
 	
 
 	RooAbsReal* integralSB00 = bkgBDTpdfNominal0->createIntegral(*score,NormSet(*score),Range("range_score_SB0"));
 	RooAbsReal* integralSB10 = bkgBDTpdfNominal0->createIntegral(*score,NormSet(*score),Range("range_score_SB1"));
 	float transferFactor0 = integralSB10->getVal()/integralSB00->getVal();
-	float nSB00bdt = integralSB00->getVal();	
+	float nSB00bdt = integralSB00->getVal();
 
 	RooAbsReal* integralSR00      = bkgm3bodypdfNominal0->createIntegral(*m3body,Range("range_m3body_SR"));
 	RooAbsReal* integralSB00left  = bkgm3bodypdfNominal0->createIntegral(*m3body,Range("range_SBleft"));
