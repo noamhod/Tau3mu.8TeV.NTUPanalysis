@@ -8,8 +8,9 @@
 #include <iterator>
 #include <cstdlib>
 
-bool isBlinded = true;
-bool resonVeto = true;
+bool isBlinded  = true;
+bool resonVeto  = true;
+bool doInternal = false;
 
 enum twoBody
 {
@@ -152,7 +153,7 @@ void makeAtlasLabel()
 	ptxt->SetFillColor(0);
 	ptxt->SetTextFont(42);
 	ptxt->SetBorderSize(0);
-	ptxt->AddText("#bf{#it{ATLAS}} Internal");
+	if(doInternal) ptxt->AddText("#bf{#it{ATLAS}} Internal");
 	ptxt->AddText("#sqrt{s}=8 TeV, "+slumi);
 }
 
@@ -173,7 +174,7 @@ void plotAtlasLabel()
 	t2.SetNDC();
 	t2.SetTextFont(42);
 	t2.SetTextColor(kBlack);
-	t2.DrawLatex(x+delx,y,"Internal");
+	if(doInternal) t2.DrawLatex(x+delx,y,"Internal");
 	
 	TLatex t3; 
 	t3.SetNDC();
@@ -358,14 +359,14 @@ void NormToEntries(TH1* h, Double_t factor=-1)
 	Double_t entries = (factor<0) ? Sum(h) : factor;
 	Double_t scale = (entries==0.) ? 1. : 1./entries;
 	h->Scale(scale);
-	h->GetYaxis()->SetTitle("Events");
+	// h->GetYaxis()->SetTitle("Events");
 }
 void NormToEntries(TH2* h)
 {
 	Double_t entries = Sum(h);
 	Double_t scale = (entries==0.) ? 1. : 1./entries;
 	h->Scale(scale);
-	h->GetZaxis()->SetTitle("Events");
+	// h->GetZaxis()->SetTitle("Events");
 }
 
 
@@ -1000,61 +1001,61 @@ void replotBDTvars(float mMinSBleft, float mMaxSBleft, float mMinSBright, float 
 			{
 				TString rangeOS = getRangeOS(k);
 				
-				addHist(histos1,histos2,profiles,channel,rangeOS,"score",        ";BDT score;Events",40,-1,+1);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"m3body",       ";#it{m}_{3#mu} [MeV];Events",22,1450,2110);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"score",        ";BDT score;Events / 0.05",40,-1,+1);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"m3body",       ";#it{m}_{3#mu} [MeV];Events / 30 MeV",22,1450,2110);
 				
-				addHist(histos1,histos2,profiles,channel,rangeOS,"PVNtrk",       ";#it{N}_{trk}^{PV};Events",50,0,200);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"PVNtrk",       ";#it{N}_{trk}^{PV};Events / 4",50,0,200);
 				
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dRmax",        ";3body #Delta#it{R}_{max};Events", 30,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pT3body",      ";#it{p}_{T}^{3#mu} [GeV];Events", 50,0.,100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"mSS",          ";#it{m}_{SS} [MeV];Events", 50,0.,2100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS2",         ";#it{m}_{OS2} [MeV];Events", 50,0.,2100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS1",         ";#it{m}_{OS1} [MeV];Events", 50,0.,2100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dRmax",        ";3body #Delta#it{R}_{max};Events / 0.01", 30,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pT3body",      ";#it{p}_{T}^{3#mu} [GeV];Events / 2 GeV", 50,0.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"mSS",          ";#it{m}_{SS} [MeV];Events / 25 MeV", 84,0.,2100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS2",         ";#it{m}_{OS2} [MeV];Events / 25 MeV", 84,0.,2100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"mOS1",         ";#it{m}_{OS1} [MeV];Events / 25 MeV", 84,0.,2100.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation003", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.03)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation010", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.10)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation020", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3#mu};Events", 60,0.,0.3);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation030", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.30)/#it{p}_{T}^{3#mu};Events", 50,0.,1.0);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trksfitprob",  ";#it{P}_{trks};Events",50,0.,1.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"maxpbalsig",   ";#it{#sigma}_{#it{p}-balance}^{max};Events", 70,-3.,+4.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation003", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.03)/#it{p}_{T}^{3#mu};Events / 0.005", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation010", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.10)/#it{p}_{T}^{3#mu};Events / 0.005", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation020", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3#mu};Events / 0.005", 60,0.,0.3);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"isolation030", ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.30)/#it{p}_{T}^{3#mu};Events / 0.02", 50,0.,1.0);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trksfitprob",  ";#it{P}_{trks};Events / 0.02",50,0.,1.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"maxpbalsig",   ";#it{#sigma}_{#it{p}-balance}^{max};Events / 0.1", 70,-3.,+4.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (3#mu vertex);Events", 50,0.,1.);		
-				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (3#mu vertex);Events", 100,0.,0.5);		
-				addHist(histos1,histos2,profiles,channel,rangeOS,"Lxy",          ";#it{L}_{xy} [#mum];Events", 52,-1.,+12.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}^{0}_{xy} [#mum];Events", 50,0.,0.1);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dLxy",         ";#Delta#it{L}_{xy} [#mum];Events", 50,0.,+1.5);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Events", 60,-10.,+50.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy_zoom",    ";#it{S}(#it{L}_{xy});Events", 60,-10.,+20.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}^{0}_{xy} [#mum];Events", 50,0.,+0.05);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}^{0}_{xy});Events", 50,0.,25.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}^{0}_{xy});Events", 50,0.,3.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue",       ";#it{p}-value (3#mu vertex);Events / 0.02", 50,0.,1.);		
+				addHist(histos1,histos2,profiles,channel,rangeOS,"pvalue_zoom",  ";#it{p}-value (3#mu vertex);Events / 0.005", 100,0.,0.5);		
+				addHist(histos1,histos2,profiles,channel,rangeOS,"Lxy",          ";#it{L}_{xy} [#mum];Events / 0.25 #mum", 52,-1.,+12.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dLxy",         ";#Delta#it{L}_{xy} [#mum];Events / 0.03 #mum", 50,0.,+1.5);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy",         ";#it{S}(#it{L}_{xy});Events / 1", 60,-10.,+50.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"SLxy_zoom",    ";#it{S}(#it{L}_{xy});Events / 0.5", 60,-10.,+20.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"a0xy",         ";#it{a}^{0}_{xy} [#mum];Events / 0.002 #mum", 50,0.,0.1);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"da0xy",        ";#Delta#it{a}^{0}_{xy} [#mum];Events / 0.001 #mum", 50,0.,+0.05);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy",        ";#it{S}(#it{a}^{0}_{xy});Events / 0.5", 50,0.,25.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"Sa0xy_zoom",   ";#it{S}(#it{a}^{0}_{xy});Events / 0.06", 50,0.,3.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events",45,10.,100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events",65,20.,150.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{cal};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events / 2 GeV",45,10.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events / 2 GeV",65,20.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{cal};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_met",      ";#it{E}_{T,trk}^{miss} [GeV];Events",45,10.,100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mt",       ";#it{m}_{T}^{trk} [GeV];Events",60,30.,150.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{trk};Events",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_met",      ";#it{E}_{T,trk}^{miss} [GeV];Events / 2 GeV",45,10.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mt",       ";#it{m}_{T}^{trk} [GeV];Events / 2 GeV",60,30.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_dphi3mu",  ";#Delta#it{#phi}_{3#mu}^{trk};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dptreltrk",     ";p_{T}^{3#mu}/#it{E}_{T,trk}^{miss}-1;Events",60,-1.,+5.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dptrelcal",     ";p_{T}^{3#mu}/#it{E}_{T,cal}^{miss}-1;Events",60,-1.,+5.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dptreltrk",     ";#it{p}_{T}^{3#mu}/#it{E}_{T,trk}^{miss}-1;Events / 0.1",60,-1.,+5.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dptrelcal",     ";#it{p}_{T}^{3#mu}/#it{E}_{T,cal}^{miss}-1;Events / 0.1",60,-1.,+5.);
 				                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht",              ";#it{#Sigma}_{T} [GeV];Events",100,0.,100.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_calo", ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{cal};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_trk",  ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{trk};Events",32,0.,TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mht",        ";#it{m}_{#it{#Sigma}_{T}}^{cal} [GeV];Events",65,20.,150.);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mht",         ";#it{m}_{#it{#Sigma}_{T}}^{trk} [GeV];Events",60,30.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht",              ";#it{#Sigma}_{T} [GeV];Events / 1 GeV",100,0.,100.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_calo", ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{cal};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"ht_dphimet_trk",  ";#Delta#it{#phi}_{#it{#Sigma}_{T}}^{trk};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"calo_mht",        ";#it{m}_{#it{#Sigma}_{T}}^{cal} [GeV];Events / 2 GeV",65,20.,150.);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"trk_mht",         ";#it{m}_{#it{#Sigma}_{T}}^{trk} [GeV];Events / 2 GeV",60,30.,150.);
         		                       
-				addHist(histos1,histos2,profiles,channel,rangeOS,"dR3body_ht",      ";#Delta#it{R}(#it{p}_{3#mu},#it{#Sigma});Events",32,0.,2.*TMath::Pi());
-				addHist(histos1,histos2,profiles,channel,rangeOS,"njets",           ";#it{N}_{jets};Events",5,-0.5,4.5);
-				addHist(histos1,histos2,profiles,channel,rangeOS,"muonauthor",      ";Muon author;Events",2,0.,2.); 
+				addHist(histos1,histos2,profiles,channel,rangeOS,"dR3body_ht",      ";#Delta#it{R}(#it{p}_{3#mu},#it{#Sigma});Events / (#it{#pi}/16)",32,0.,2.*TMath::Pi());
+				addHist(histos1,histos2,profiles,channel,rangeOS,"njets",           ";#it{N}_{jets};Events / 1",5,-0.5,4.5);
+				addHist(histos1,histos2,profiles,channel,rangeOS,"muonauthor",      ";Muon author;Events / 1",2,0.,2.); 
             	
 				if(k>0) continue;
-				addHist(histos2,channel,"Dalitz0",          ";m_{OS1}^{2} [GeV^{2}];m_{OS2}^{2} [GeV^{2}];Events",50,0.,1.9*1.9, 50,0.,1.9*1.9); 
-				addHist(histos2,channel,"Dalitz1",          ";m_{OS1}^{2} [GeV^{2}];m_{SS}^{2} [GeV^{2}];Events",50,0.,1.9*1.9, 50,0.,1.9*1.9); 
-				addHist(histos2,channel,"Dalitz2",          ";m_{OS2}^{2} [GeV^{2}];m_{SS}^{2} [GeV^{2}];Events",50,0.,1.9*1.9, 50,0.,1.9*1.9);
+				addHist(histos2,channel,"Dalitz0",          ";m_{OS1}^{2} [GeV^{2}];m_{OS2}^{2} [GeV^{2}];Events / (0.072 GeV^{2} #times 0.072 GeV^{2})",50,0.,1.9*1.9, 50,0.,1.9*1.9); 
+				addHist(histos2,channel,"Dalitz1",          ";m_{OS1}^{2} [GeV^{2}];m_{SS}^{2} [GeV^{2}];Events / (0.072 GeV^{2} #times 0.072 GeV^{2})",50,0.,1.9*1.9, 50,0.,1.9*1.9); 
+				addHist(histos2,channel,"Dalitz2",          ";m_{OS2}^{2} [GeV^{2}];m_{SS}^{2} [GeV^{2}];Events / (0.072 GeV^{2} #times 0.072 GeV^{2})",50,0.,1.9*1.9, 50,0.,1.9*1.9);
 			}
 		}
 	}

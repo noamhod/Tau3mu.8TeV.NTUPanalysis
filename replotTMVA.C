@@ -450,24 +450,24 @@ void replotTMVA()
 	{
 		for(unsigned int i=TRAIN ; i<=TEST ; ++i)
 		{
-			addHist(histos1,i,j,"score",         ";BDT score;Events",40,-1,+1);
-			addHist(histos1,i,j,"PVNtrk",        ";#it{N}_{trk}^{PV};Events",50,0,200);
-			addHist(histos1,i,j,"pT3body",       ";#it{p}_{T}^{3body} [GeV];Events", 40,0.,100.);
-			addHist(histos1,i,j,"isolation020",  ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3body};Events", 60,0.,0.3);
-			addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",50,0.,1.);
+			addHist(histos1,i,j,"score",         ";BDT score;Events / 0.05",40,-1,+1);
+			addHist(histos1,i,j,"PVNtrk",        ";#it{N}_{trk}^{PV};Events / 4",50,0,200);
+			addHist(histos1,i,j,"pT3body",       ";#it{p}_{T}^{3body} [GeV];Events / 2.5 GeV", 40,0.,100.);
+			addHist(histos1,i,j,"isolation020",  ";#Sigma#it{p}_{T}^{trk}(cone #Delta#it{R}_{max}+0.20)/#it{p}_{T}^{3body};Events / 0.005", 60,0.,0.3);
+			addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events / 0.02",50,0.,1.);
 			// addHist(histos1,i,j,"trksfitprob",   ";#it{P}_{trks};Events",nPbins,Pbins);
-			addHist(histos1,i,j,"pvalue",        ";#it{p}-value (three-body vertex);Events", 50,0.,1.);				
-			addHist(histos1,i,j,"SLxy",          ";#it{S}(#it{L}_{xy});Events", 60,-10.,+50.);
-			addHist(histos1,i,j,"Sa0xy",         ";#it{S}(#it{a}_{0}^{xy});Events", 50,0.,25.);
-			addHist(histos1,i,j,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events",25,10.,110.);
-			addHist(histos1,i,j,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events",40,20.,140.);
-			addHist(histos1,i,j,"calo_dphi3mu",  ";#Delta#it{#phi}_{3body}^{cal};Events",32,0.,TMath::Pi());
-			addHist(histos1,i,j,"trk_met",       ";#it{E}_{T,trk}^{miss} [GeV];Events",25,10.,110.);
-			addHist(histos1,i,j,"trk_mt",        ";#it{m}_{T}^{trk} [GeV];Events",40,20.,140.);
-			addHist(histos1,i,j,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events",32,0.,TMath::Pi());
-			addHist(histos1,i,j,"dptreltrk",     ";p_{T}^{3body}/#it{E}_{T,trk}^{miss}-1;Events",60,-1.,+5.);
-			addHist(histos1,i,j,"dptrelcal",     ";p_{T}^{3body}/#it{E}_{T,cal}^{miss}-1;Events",60,-1.,+5.);
-			addHist(histos1,i,j,"ht",            ";#it{#Sigma}_{T} [GeV];Events",40,0.,100.);
+			addHist(histos1,i,j,"pvalue",        ";#it{p}-value (three-body vertex);Events / 0.02", 50,0.,1.);				
+			addHist(histos1,i,j,"SLxy",          ";#it{S}(#it{L}_{xy});Events / 1", 60,-10.,+50.);
+			addHist(histos1,i,j,"Sa0xy",         ";#it{S}(#it{a}_{0}^{xy});Events / 0.5", 50,0.,25.);
+			addHist(histos1,i,j,"calo_met",      ";#it{E}_{T,cal}^{miss} [GeV];Events / 4 GeV",25,10.,110.);
+			addHist(histos1,i,j,"calo_mt",       ";#it{m}_{T}^{cal} [GeV];Events / 3 GeV",40,20.,140.);
+			addHist(histos1,i,j,"calo_dphi3mu",  ";#Delta#it{#phi}_{3body}^{cal};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
+			addHist(histos1,i,j,"trk_met",       ";#it{E}_{T,trk}^{miss} [GeV];Events / 4 GeV",25,10.,110.);
+			addHist(histos1,i,j,"trk_mt",        ";#it{m}_{T}^{trk} [GeV];Events / 3 GeV",40,20.,140.);
+			addHist(histos1,i,j,"calo_trk_dphi", ";#Delta#it{#phi}_{trk}^{cal};Events / (#it{#pi}/32)",32,0.,TMath::Pi());
+			addHist(histos1,i,j,"dptreltrk",     ";#it{p}_{T}^{3body}/#it{E}_{T,trk}^{miss}-1;Events / 0.1",60,-1.,+5.);
+			addHist(histos1,i,j,"dptrelcal",     ";#it{p}_{T}^{3body}/#it{E}_{T,cal}^{miss}-1;Events / 0.1",60,-1.,+5.);
+			addHist(histos1,i,j,"ht",            ";#it{#Sigma}_{T} [GeV];Events / 2.5 GeV",40,0.,100.);
 		}
 	}
 	

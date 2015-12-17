@@ -561,8 +561,8 @@ void bdtroofit(Double_t xSBmin=0, Double_t xSBmax=0, Double_t xbdtcutoff=-1, Dou
 	//// This is relevant for the SB fit only and lot for the BDT fit.
 	//// For the final estimation this has to be called agin later with xbdtmaxuser instead of xbdtmax !
 	
-	TString mytitle = "Events"; // "Events / "+tstr((m3bodyMax-m3bodyMin)/nm3bodybins,0)+" MeV";
-	TString sytitle = "Events"; // "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,3);
+	TString mytitle = "Events / "+tstr((m3bodyMax-m3bodyMin)/nm3bodybins,0)+" MeV"; // "Events"; // "Events / "+tstr((m3bodyMax-m3bodyMin)/nm3bodybins,0)+" MeV";
+	TString sytitle = "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,2);               // "Events"; // "Events / "+tstr((xbdtmax-xbdtmin)/nbdtbins,3);
 	
 	TH1* hScoreSig  = new TH1F("s",";BDT score;"+sytitle,nbdtbins,xbdtmin,xbdtmax); hScoreSig->Sumw2();
 	TH1* hM3bodySig = new TH1F("m",";#it{m}_{3#mu} [MeV];"+mytitle,nm3bodybins,m3bodyMin,m3bodyMax); hM3bodySig->Sumw2();
